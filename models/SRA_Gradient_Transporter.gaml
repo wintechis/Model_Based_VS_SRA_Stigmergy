@@ -1,15 +1,13 @@
 /**
 * Name: model
-* Getting Things From A To B - GTFA2B
+* Model_Based_VS_SRA_Stigmergy
 * Author: Sebastian Schmid
-* Description: Implements the stigmergy approach by using "breadcrumbs" that are dropped after a succesful delivery, instead of fixed color marks  
+* Description: uses SRA with quantitative stigmergy   
 * Tags: 
 */
 
 @no_warning
-model BasicModel
-
-
+model SRA_Gradient_Transporter
 
 global{
 	int shop_floor_diameter <-500 min:10 max: 500;
@@ -41,9 +39,11 @@ global{
 		 */
 	string selected_color_mode <- color_mode[0]; //default is 'unique'
 	
+	int disturbance_cycles <- 500000#cycles; //in strict mode: all N cycles, we change the color of our stations	
+	
 	bool stigmergy_activated <- true; //flag for switching stigmergy on and off
-	bool activate_evaporation <- false; //flag for switching evopartion of stigmergy marks on and off
-	float evaporation_factor <- 0.001 min: 0.0; //how fast the evaporation takes place. Is direct subtracted from color mark value  
+	bool activate_evaporation <- true; //flag for switching evopartion of stigmergy marks on and off
+	float evaporation_factor <- 0.004 min: 0.0; //how fast the evaporation takes place. Is direct subtracted from color mark value  
 	
 	/*I define the color of the thing as maximum (= 1.0) s.t. all other gradient have to lie below that. To make them distinguishable, the STRONG mark may have (color_gradient_max )*THING_COLOR. All other WEAK gradients are below. */
 	float color_gradient_max <- 0.75 max: 0.99;
@@ -62,7 +62,6 @@ global{
 		float moving_average_SUM <- 0; //holds the average value over the moving average
 		
 		map<string, int> transporter_usage <- []; //transporter will add themselves in their init block
-
 	
 	init{
 							
@@ -141,8 +140,10 @@ global{
 		/*After the colors have been assigned, choose valid colors for thing production */
 		ask stations{
 			
-			valid_colors <- delivered.keys; //delivered keys holds the list of all colors used by stations
-			remove all: self.accept_color from: valid_colors; //remove the station's own color s.t. only other colors are produced			
+			valid_colors <- delivered.keys - accept_color; //delivered keys holds the list of all colors used by stations, exclude my own color
+			
+			//valid_colors <- delivered.keys; //delivered keys holds the list of all colors used by stations
+			//remove all: self.accept_color from: valid_colors; //remove the station's own color s.t. only other colors are produced			
 		}
 		
 		/*Place stations acc. to simulation settings */
@@ -251,6 +252,39 @@ global{
 		create transporter number: no_transporter;	
 	}
 	
+	/*For random color change of stations */
+	//every 1000 cycles, we take the already given colors and switch them randomly around
+	reflex change_station_colors when: (cycle > 1) and every(disturbance_cycles) and (selected_placement_mode = "strict"){
+		
+		list<rgb> col_tmp <- nil; //will hold all current colors
+		ask station{
+			col_tmp <- col_tmp + accept_color; //add your color to the list of all color
+		}
+		
+		col_tmp <- shuffle(col_tmp); // shuffle randomly
+		
+		int i <- 0 ;
+				
+		loop s over: station{
+			
+			ask s{										
+				accept_color <- col_tmp[i]; //assign possibly new color
+				
+				color <- accept_color; //the color we display
+				valid_colors <- col_tmp - accept_color; //update items that may be created
+				
+				//sanity check for assignment of new color - manipulate item, if it has the same color as the station now...
+				if(storage != nil and (storage.color = accept_color))
+				{
+					storage.color <- one_of(valid_colors); //choose a random valid one
+				}
+				 
+			}
+			
+			i <- i+1;//to get next color
+		}	
+	}
+	
 	/* Investigation variables - PART II (other part is places before init block)*/
 	//nothing	
 }
@@ -354,7 +388,7 @@ species station parent: superclass{
 
 species transporter parent: superclass {
 	thing load <- nil;
-	bool wanderlust <- true; //to steer the random wandering or following color marks
+	//bool wanderlust <- true; //to steer the random wandering or following color marks
 	
 	//aphid approach uses memory of last delivery
 	float steps_left <- number_of_steps; //the amount of steps we take to leave little color marks behind us after a deliver
@@ -367,7 +401,7 @@ species transporter parent: superclass {
 		add 0 at: name to: transporter_usage;  		
 	}
 	
-	reflex wander when:(wanderlust = true) {
+	reflex wander when: (load = nil) {//(wanderlust = true) {
 		
 		//generate a list of all my neighbor cells in a random order
 		list<shop_floor> s <- shuffle(my_cell.neighbors); //get all cells with distance ONE
@@ -386,7 +420,7 @@ species transporter parent: superclass {
 		}
 	}
 	
-	reflex color_mark_wandering when:(wanderlust = false and load != nil) {
+	reflex color_mark_wandering when:(load != nil) {//(wanderlust = false and load != nil) {
 		
 		//generate a list of all my neighbor cells in a random order
 		list<shop_floor> s <- shuffle(my_cell.neighbors); //get all cells with distance ONE
@@ -407,7 +441,7 @@ species transporter parent: superclass {
 		
 		loop while: !(empty(transporter inside cell) and empty(station inside cell)){ 
 			
-			//if no cells with marks are left to check (or no are there..?)
+			//if no cells with marks are left to check (or no are there..?), just wander
 			if(empty(sorted)){
 					
 					if(empty(s)){
@@ -425,7 +459,7 @@ species transporter parent: superclass {
 				cell <- first(sorted); //first option is always best, because it's sorted in descending order of strength. If more than one cell have the same strength, the probability to be at the front is the same.
 				remove cell from: sorted; //s.t. we wont pick it again, if the check will state it is occupied
 				sorted <- reverse(sorted sort_by (each.color_marks at rgb((load.get_states())["color"]))); //sort cells again in descending order
-			}
+			} 
 		}
 								
 		my_cell <- cell; //cell is determined as goal for next step - go there
@@ -480,7 +514,7 @@ species transporter parent: superclass {
 				
 				
 				do deliver_load(); //load is delivered
-				wanderlust <- true; //wander around and try to find things again
+				//wanderlust <- true; //wander around and try to find things again
 				
 				break; //as we have loaded off our item, we do not need to check any leftover stations (also it would lead to an expection because load is now nil)
 			}
@@ -501,9 +535,9 @@ species transporter parent: superclass {
 			
 			if( load != nil){
 				
-				if(stigmergy_activated){		
-					wanderlust <- false; //set our wanderlust state to false, s.t. we will now randomly wander, but ALSO look for matching color marks			
-				}
+				//if(stigmergy_activated){		
+					//wanderlust <- false; //set our wanderlust state to false, s.t. we will now randomly wander, but ALSO look for matching color marks			
+				//}
 				//if load is NOT nil now, we took something over. If it would still be nil, then the station was simply empty
 				s.storage <- nil; //we took the thing, thus set station's storage to nil
 				//Remark: here used to be an update for the load's location, but as the reflex for updating the thing follows immediately after this reflex here, we don't need it
@@ -553,8 +587,12 @@ species transporter parent: superclass {
 	
 			
 	aspect base{
-		
 		draw circle(cell_width*0.5) color: #grey border:#black;
+	}
+	
+	aspect info{	
+		draw circle(cell_width*0.5) color: #grey border:#black;
+		draw replace(name, "transporter", "") size: 10 at: location-(cell_width/2) color: #red;
 	}
 	
 }
@@ -665,9 +703,16 @@ grid shop_floor cell_width: cell_width cell_height: cell_height neighbors: 8 use
 
 
 //##########################################################
-experiment Aphid_GTFA2B_No_Charts type:gui{
+experiment SRA_Transporter_No_Charts type:gui{
 	parameter "Activate stigmergy" category: "Simulation settings" var: stigmergy_activated; //switch stigmergy on or off 
 	parameter "Station placement distribution" category: "Simulation settings" var: selected_placement_mode among:placement_mode; //provides drop down list
+	
+	parameter "Activate evaporation" category: "Stigmergy settings" var: activate_evaporation ; //switch evaopration of stigmergy on or off	
+	
+	parameter "Number of steps to remember" category: "Stigmergy settings" var: number_of_steps<-50; //how many steps the transporter remembers 
+	parameter "Evaporation factor" category: "Stigmergy settings" var: evaporation_factor<-0.003 ; //switch evaopration of stigmergy on or off	
+	
+	
 		
 	output {	
 		layout #split;
@@ -675,7 +720,7 @@ experiment Aphid_GTFA2B_No_Charts type:gui{
 				
 		 		grid shop_floor lines: #black;
 		 		species shop_floor aspect:info;
-		 		species transporter aspect: base;
+		 		species transporter aspect: info;
 		 		species station aspect: base;
 		 		species thing aspect: base;
 	
@@ -684,7 +729,7 @@ experiment Aphid_GTFA2B_No_Charts type:gui{
 	
 }
 
-experiment Aphid_GTFA2B type: gui {
+experiment SRA_Transporter type: gui {
 
 	
 	// Define parameters here if necessary
@@ -699,8 +744,8 @@ experiment Aphid_GTFA2B type: gui {
 	parameter "Activate stigmergy" category: "Simulation settings" var: stigmergy_activated; //switch stigmergy on or off
 	parameter "Activate evaporation" category: "Simulation settings" var: activate_evaporation ; //switch evaopration of stigmergy on or off	
 	
-	parameter "Number of steps to rememberg" category: "Simulation settings" var: number_of_steps; //how many steps the transporter remembers 
-	parameter "Evaporation factor" category: "Simulation settings" var: evaporation_factor ; //switch evaopration of stigmergy on or off	
+	parameter "Number of steps to remembe" category: "Simulation settings" var: number_of_steps<-50; //how many steps the transporter remembers 
+	parameter "Evaporation factor" category: "Simulation settings" var: evaporation_factor<-0.003 ; //switch evaopration of stigmergy on or off	
 	
 	
 	parameter "Moving average window breadth" category: "Simulation settings" var: window_for_last_N_deliveries ; //window for average of last N deliveries and their cycles 
@@ -729,11 +774,11 @@ experiment Aphid_GTFA2B type: gui {
 				datalist (transporter collect each.name) value: (transporter collect each.usage_prct)  color: #lightblue;
 			}*/
 				
-			chart "Mean cycles to deliver" type:series size:{1 ,0.5} position:{0, 0.25}{
+			chart "Mean cycles to deliver" type:series size:{1 ,0.5} position:{0, 0}{
 					data "Mean of delivered cycles" value: mean_of_delivered_cycles color:#purple marker:false ;		
 			}
 			
-			chart "Mean over last " + string(window_for_last_N_deliveries) +" deliveries" type:series size:{1 ,0.25} position:{0, 0.75}{
+			chart "Mean over last " + string(window_for_last_N_deliveries) +" deliveries" type:series size:{1 ,0.5} position:{0, 0.5}{
 					data "Mean over last " + string(window_for_last_N_deliveries) +" deliveries" value: moving_average_SUM color: #red marker: false;		
 			}
 	 }
@@ -755,7 +800,7 @@ experiment Aphid_GTFA2B type: gui {
   
 }
 
-experiment APHID_batch type: batch until: (cycle >= 10000) repeat: 10 autorun: true keep_seed: true{
+experiment SRA_Transporter_batch type: batch until: (cycle >= 10000) repeat: 10 autorun: true keep_seed: true{
 
 	//parameters are sufficiently defined with their default values  
 	parameter "Use stigmergy" var: stigmergy_activated among:[false, true]; //switch stigmergy on or off
@@ -771,5 +816,23 @@ experiment APHID_batch type: batch until: (cycle >= 10000) repeat: 10 autorun: t
     	save [int(self), self.seed, self.stigmergy_activated, self.cycle, self.total_delivered, mean_cyc_to_deliver] //..., ((total_delivered = 0) ? 0 : time_to_deliver_SUM/(total_delivered)) 
           to: "result/APHID_results.csv" type: "csv" rewrite: false header: true; //rewrite: (int(self) = 0) ? true : false
     	}       
+	}		
+}
+
+experiment SRA_Transporter_evap_steps type: batch until: (cycle >= 2000) autorun: true keep_seed: true{
+
+	//parameters are sufficiently defined with their default values  
+	//parameter "Number of steps to remembe"  var: number_of_steps min: 3 max: 20 step: 1; //how many steps the transporter remembers //20
+	//parameter "Evaporation factor" var: evaporation_factor min: 0.001 max: 0.01 step: 0.001 ; //switch evaopration of stigmergy on or off	//0.01
+	parameter "Number of steps to remembe"  var: number_of_steps min: 62 max: 70 step: 1; //how many steps the transporter remembers //20
+	parameter "Evaporation factor" var: evaporation_factor min: 0.001 max: 0.01 step: 0.001 ; //switch evaopration of stigmergy on or off	//0.01
+	
+	method exhaustive maximize: total_delivered ;
+
+	reflex save_results_explo {
+    	ask simulations {
+    	save [int(self), number_of_steps, evaporation_factor, total_delivered, ((total_delivered = 0) ? 0 : time_to_deliver_SUM/(total_delivered))] 
+          to: "result/results"+ "transporterMin"+ ".csv" type: "csv" rewrite: false header: true; //rewrite: (int(self) = 0) ? true : false	
+		}		
 	}		
 }
