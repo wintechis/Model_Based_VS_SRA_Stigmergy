@@ -62,7 +62,9 @@ global{
 		float moving_average_SUM <- 0; //holds the average value over the moving average
 		
 		map<string, int> transporter_usage <- []; //transporter will add themselves in their init block
-	
+		
+		rgb observe_color <- #red;
+		
 	reflex pause_it when: cycle = 5000{
 		do pause;
 	}
@@ -443,6 +445,7 @@ species transporter parent: superclass {
 			sorted <- reverse(sorted); //now descending order of strength
 		}
 		
+		
 		loop while: !(empty(transporter inside cell) and empty(station inside cell)){ 
 			
 			//if no cells with marks are left to check (or no are there..?), just wander
@@ -465,7 +468,19 @@ species transporter parent: superclass {
 				sorted <- reverse(sorted sort_by (each.color_marks at rgb((load.get_states())["color"]))); //sort cells again in descending order
 			} 
 		}
-								
+		
+		
+		//we determined an adjacent, free cell. Check if this would REALLY lead to a stronger stigmergy patch
+		//@@@I know this could be solved above more easily with just taking the first entry of my sorted list, but I want to keep the possibility to go to cells that are not the optimum path, e.g. if optimum is blocked (deadlock!!) 
+		
+		/* 
+		if((cell.color_marks at load.color) < (my_cell.color_marks at load.color)){ //(cell.color_marks contains load.color) and 
+					
+			//write name + " is there col:" + cell.color_marks.keys contains load.color + " how strong:" + cell.color_marks at load.color;
+			return; //then we'll just stay where we have been for now.
+		}*/
+		
+		
 		my_cell <- cell; //cell is determined as goal for next step - go there
 		location <- my_cell.location;
 		
@@ -527,8 +542,8 @@ species transporter parent: superclass {
 	//in the above reflexes, we checked our surrounding, looked for a possible maximum of color marks, took a step and checked for stations.
 	//NOW, we check, if we maybe are trapped in a local maximum, e.g. created by evaporation or an "island"?
 	//this can happen independently of our transporatation task and the chance to deliver something,....
-	//... BUT it might be smart to only apply this, we do not have any steps left to place marks..? Or just consider marks of the thing we are currently transporting
-	reflex negative_stigmergy when: ((load != nil) and !(steps_left > 0) and activate_negative_stigmergy) {
+	//@@@ just consider marks of the thing we are currently transporting
+	reflex negative_stigmergy when: ((load != nil) and  activate_negative_stigmergy) {
 		
 		//generate a list of all my neighbor cells in a random order with my color marks
 		list<shop_floor> cells_with_color_marks <- my_cell.neighbors where (each.color_marks.keys contains load.color); //get cells that do have OUR color marks
@@ -537,27 +552,74 @@ species transporter parent: superclass {
 		
 		if(!empty(cells_with_color_marks)){
 		
-			float max_strength_of_neighbors <- cells_with_color_marks max_of (each.color_marks at load.color); //get maximum strength of my surroundings with seeked color marks 
+			max_strength_of_neighbors <- cells_with_color_marks max_of (each.color_marks at load.color); //get maximum strength of my surroundings with seeked color marks 
 		
 		}
-		
+			
 		//if my strength is higher than my surroundings... and I DID NOT deliver my item (load = nil), then I am trapped in a local maximum
 		if((my_cell.color_marks at load.color) >= max_strength_of_neighbors){ //greater OR EQUAL
 			
-			//write name + " killed " + load.color + " at " + my_cell;
 			
-			remove key: load.color from: my_cell.color_marks ;
+			//@@@for testing purposes of deactivated evaporation
+			if(activate_evaporation){
+				add 0.0 at:load.color to: my_cell.color_marks; ///sets value of stigmergy for color strength
+			}else{
+				remove key: load.color from: my_cell.color_marks ; //deletes color mark without a trace << not using evaporation gives better results up to now! (@@@)
+			}
+			
+			
 			my_cell.changed <- true;
-			
-			//delete cluster around me cluster
-			/* 
-			ask cells_with_color_marks{	
-				remove key: myself.load.color from: self.color_marks ;
-				self.changed <- true;
-			}*/
+		
 				
 		}		
 		
+	}
+	
+	/*Transporter check all of their surrounding marks, if there is a local maximum and if so, if an applicable station is adjacent. If not, they delete it - althoug it is officially not their responsibility.
+	 *AKA "Please leave your stigmergy marks in the state in which you would like to find them" ...  
+	 @@@ an idea would be to give this social respnsibility to transporters that are currently transporting nothing OR just let it do every transporter??*/
+	reflex social_negative_stigmergy when: ((load = nil) and activate_negative_stigmergy) {
+		
+		//generate a list of all my neighbor cells in a random order with my color marks
+		list<rgb> local_color_marks <- my_cell.color_marks.keys; //
+		
+		//if there's nothing to compare, abort
+		if(empty(local_color_marks)){
+			return;
+		}
+		
+		write name + " "+ local_color_marks ;
+		
+		list<shop_floor> cells_with_color_marks <- my_cell.neighbors where (each.color_marks.keys contains_any local_color_marks); //get cells that do have any of OUR local color marks
+		
+		if(empty(cells_with_color_marks )){
+			return;
+		}
+		
+		loop col over: local_color_marks {
+			float max_strength_of_neighbors <- (cells_with_color_marks where (each.color_marks contains col)) max_of (each.color_marks at col);
+			
+			//suiting stations
+			list<station> cell_with_suiting_station <-  agents_inside(my_cell.neighbors) where (string(type_of(each)) = station); //
+			
+			if(!empty(cell_with_suiting_station)){
+				write ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> "+name + " found these stations " + cell_with_suiting_station color:#red;
+				//@@@@@ this does not work.... i dont find any station aroundme. Why??
+			}
+			
+			//if my strength is higher than my surroundings and there is no station around..?
+			if(((my_cell.color_marks at col) >= max_strength_of_neighbors) and (false) ){ //greater OR EQUAL
+				
+				if(activate_evaporation){
+					add 0.0 at:col to: my_cell.color_marks; ///sets value of stigmergy for color strength
+				}else{
+					remove key:col from: my_cell.color_marks ; //deletes color mark without a trace
+				}
+							
+				my_cell.changed <- true;
+			
+			}
+		}			
 	}
 	
 	//search adjacency for a station. If it has a thing, pick it up. Depending in stigmergy settings, also initiate color marks
@@ -574,9 +636,6 @@ species transporter parent: superclass {
 			
 			if( load != nil){
 				
-				//if(stigmergy_activated){		
-					//wanderlust <- false; //set our wanderlust state to false, s.t. we will now randomly wander, but ALSO look for matching color marks			
-				//}
 				//if load is NOT nil now, we took something over. If it would still be nil, then the station was simply empty
 				s.storage <- nil; //we took the thing, thus set station's storage to nil
 				//Remark: here used to be an update for the load's location, but as the reflex for updating the thing follows immediately after this reflex here, we don't need it
@@ -683,22 +742,42 @@ grid shop_floor cell_width: cell_width cell_height: cell_height neighbors: 8 use
 	reflex when: ((length(color_marks) >= 1) and changed){
 		//operates the following way: first(color_marks.keys) gets the first rgb value and first(color_marks) the associate strength, which modifies the alpha channel gives blended_color its first value 
 		
-		rgb blended_color <- first(color_marks.keys); //variable to mix colors. There is at least one color mark
-		blended_color <-rgb(blended_color.red * first(color_marks.values), blended_color.green * first(color_marks.values), blended_color.blue * first(color_marks.values));
 		
-		if(length(color_marks) > 1){
+		 /* 
+		//just display sepcififed color
+		if(color_marks.keys contains observe_color)
+		{
 			
-			list<rgb> colors <- color_marks.keys;
-			list<float> strengths <- color_marks.values;
-				
-			loop i from: 1 to: length(colors)-1 { //REMARK: We skip the first value ON PURPOSE, because it is already included in blended_color!!
-								
-				blended_color <- blend(blended_color, rgb(colors[i].red*strengths[i], colors[i].green*strengths[i], colors[i].blue*strengths[i])); //mix colors by taking each channel and manipulating the strength w.r.t. factor 
-			}
-		}
+			rgb blended_color <- observe_color; //variable to mix colors. There is at least one color mark
+			blended_color <-rgb(blended_color.red * (color_marks at observe_color), blended_color.green * (color_marks at observe_color), blended_color.blue * (color_marks at observe_color));
+			
+			color <- blended_color; //display
+			changed <- false;
+			
+			
+		}*/
 		
-		color <- blended_color; //display
-		changed <- false;
+		//displays all colors
+
+		
+				rgb blended_color <- first(color_marks.keys); //variable to mix colors. There is at least one color mark
+				blended_color <-rgb(blended_color.red * first(color_marks.values), blended_color.green * first(color_marks.values), blended_color.blue * first(color_marks.values));
+				
+				if(length(color_marks) > 1){
+					
+					list<rgb> colors <- color_marks.keys;
+					list<float> strengths <- color_marks.values;
+						
+					loop i from: 1 to: length(colors)-1 { //REMARK: We skip the first value ON PURPOSE, because it is already included in blended_color!!
+										
+						blended_color <- blend(blended_color, rgb(colors[i].red*strengths[i], colors[i].green*strengths[i], colors[i].blue*strengths[i])); //mix colors by taking each channel and manipulating the strength w.r.t. factor 
+					}
+				}
+				
+				color <- blended_color; //display
+				changed <- false;
+				
+		
 	}
 	
 
@@ -735,7 +814,8 @@ grid shop_floor cell_width: cell_width cell_height: cell_height neighbors: 8 use
 	}
 	
 	 aspect info {
-        draw string(name) size: 3 color: #black;
+        draw string(name) + " - " + string(color_marks at #red with_precision 5) size: 3 color: #grey;
+        
     }
 }
 
@@ -746,11 +826,21 @@ experiment SRA_Transporter_No_Charts type:gui{
 	parameter "Activate stigmergy" category: "Simulation settings" var: stigmergy_activated; //switch stigmergy on or off 
 	parameter "Station placement distribution" category: "Simulation settings" var: selected_placement_mode among:placement_mode; //provides drop down list
 	
-	parameter "Activate evaporation" category: "Stigmergy settings" var: activate_evaporation ; //switch evaopration of stigmergy on or off	
+	parameter "No. of transporters" category: "Transporter" var: no_transporter<-5;
 	
-	parameter "Activate negative stigmergy" category: "Simulation settings" var: activate_negative_stigmergy<-false ; //window for average of last N deliveries and their cycles 
+	parameter "Activate evaporation" category: "Stigmergy settings" var: activate_evaporation<-true ; //switch evaopration of stigmergy on or off		
+	parameter "Activate negative stigmergy" category: "Simulation settings" var: activate_negative_stigmergy<-true; //window for average of last N deliveries and their cycles
+	 
 	parameter "Number of steps to remember" category: "Simulation settings" var: number_of_steps<-50; //how many steps the transporter remembers 
-	parameter "Evaporation factor" category: "Simulation settings" var: evaporation_factor<-0.003 ; //switch evaopration of stigmergy on or off	
+	parameter "Evaporation factor" category: "Simulation settings" var: evaporation_factor<-0.001 ; //switch evaopration of stigmergy on or off	
+	parameter "Disturbance cycles" category: "Simulation settings" var: disturbance_cycles<-500#cycles;
+	parameter "Observe color" category: "Simulation settings" var: observe_color among:[#red, #green, #blue,#orange] on_change:{
+		
+		ask shop_floor{
+			color <- #white;
+		}
+		
+	};
 	
 	
 		
@@ -780,15 +870,17 @@ experiment SRA_Transporter type: gui {
 	parameter "Station placement distribution" category: "Simulation settings" var: selected_placement_mode among:placement_mode; //provides drop down list
 	parameter "Station placement parameter (only for strict mode)" category: "Simulation settings" var: strict_placement_factor; //provides drop down list
 	
-	parameter "Station colors" category: "Simulation settings" var: selected_color_mode among:color_mode; //provides drop down list
-	parameter "Activate stigmergy" category: "Simulation settings" var: stigmergy_activated; //switch stigmergy on or off
-	parameter "Activate evaporation" category: "Simulation settings" var: activate_evaporation ; //switch evaopration of stigmergy on or off	
+	parameter "Station colors" category: "Simulation settings" var: selected_color_mode among:color_mode; //provides drop down list	
 	parameter "Moving average window breadth" category: "Simulation settings" var: window_for_last_N_deliveries ; //window for average of last N deliveries and their cycles
-	 
-	parameter "Activate negative stigmergy" category: "Simulation settings" var: activate_negative_stigmergy<-false ; //window for average of last N deliveries and their cycles 
-	parameter "Number of steps to remember" category: "Simulation settings" var: number_of_steps<-50; //how many steps the transporter remembers 
-	parameter "Evaporation factor" category: "Simulation settings" var: evaporation_factor<-0.003 ; //switch evaopration of stigmergy on or off	
 	
+	
+	parameter "Activate stigmergy" category: "Simulation settings" var: stigmergy_activated<-true; //switch stigmergy on or off
+	parameter "Activate evaporation" category: "Simulation settings" var: activate_evaporation<-false ; //switch evaopration of stigmergy on or off
+	parameter "Activate negative stigmergy" category: "Simulation settings" var: activate_negative_stigmergy<-true; //window for average of last N deliveries and their cycles 
+	parameter "Number of steps to remember" category: "Simulation settings" var: number_of_steps<-50; //how many steps the transporter remembers 
+	parameter "Evaporation factor" category: "Simulation settings" var: evaporation_factor<-0.001 ; //switch evaopration of stigmergy on or off	
+	
+	parameter "Disturbance cycles" category: "Simulation settings" var: disturbance_cycles<-500#cycles; //amount of cycles until stations change their positions
 	
 	
 	//Define attributes, actions, a init section and behaviors if necessary
