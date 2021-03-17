@@ -616,7 +616,7 @@ species transporter parent: superclass {
 					remove key:col from: my_cell.color_marks ; //deletes color mark without a trace
 				}
 							
-				my_cell.changed <- true;
+				my_cell.changed <- true; //tell cell that it should update its displayed color
 			
 			}
 		}			

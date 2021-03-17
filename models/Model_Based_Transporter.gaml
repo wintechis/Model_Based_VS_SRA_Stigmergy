@@ -56,6 +56,8 @@ global{
 		int window_for_last_N_deliveries <- 10 min: 1; //breadth of the moving average window for the last N deliveries
 		list<float> moving_average <- []; //holds the last "window_for_last_N_deliveries" values for deliveries to calculate a moving average 
 		float moving_average_SUM <- 0; //holds the average value over the moving average
+		
+		list<float> moving_average_steps <- []; //  holds the last "window_for_last_N_deliveries" values for the amount of steps it took a transporter to find its destination after picking up an item
 			
 	
 	init{
@@ -353,7 +355,9 @@ species transporter parent: superclass{
 	map<rgb, point> station_position <- []; //represents the knowledge about positions of already found or communicated stations. Entries have shape [rgb::location]
 	
 	float usage <- 0;
-	float usage_prct <- 0 update: usage / (cycle = 0 ? 1 : cycle);  
+	float usage_prct <- 0 update: usage / (cycle = 0 ? 1 : cycle);
+	
+	float amount_of_steps<- 0.0; //the amount of steps this transporter made after it pickep up an item   
 	
 	init{
 		
@@ -363,8 +367,8 @@ species transporter parent: superclass{
 	reflex exchange_knowledge when:(!empty(agents_inside(my_cell.neighbors) where (string(type_of(each)) = "transporter"))) {//!empty((my_cell.neighbors) where (!(empty(transporter inside (each))))){
 		
 		
-		/**!!!!!Ok this is a funny idea to take real big groups of agents, but wrong knowledge is predestined to be shared all the time, hence only take ONE of them for no */
-		//---> that means, I choose only ONE random neighbor of mine and share my knowledge each cycle...
+		/**Big groups of agents are much more likely to share wrong knowledge, hence only take ONE of them for now - basically we have a mini Voter Model about our knowledge (cf. Hamann)*/
+		//---> choose only ONE random neighbor and share knowledge each cycle
 		
 		list<transporter> neighbor_transporters <- one_of(agents_inside(my_cell.neighbors) where (string(type_of(each)) = "transporter")); //TAKE ONE OF THESE
 		
@@ -424,8 +428,7 @@ species transporter parent: superclass{
 		loop cell over: s{ //check all cells in order if they are already taken.
 			if(empty(transporter inside cell) and empty(station inside cell)) //as long as there is no other transporter or station
 			{
-				my_cell <- cell; //if the cell is free - go there
-				location <- my_cell.location;		
+				do take_a_step_to(cell); //if the cell is free - go there		
 			}
 		}
 	}
@@ -444,8 +447,7 @@ species transporter parent: superclass{
 			
 			if(empty(transporter inside cell) and empty(station inside cell)) //as long as there is no other transporter or station
 			{
-				my_cell <- cell; //if the cell is free - go there
-				location <- my_cell.location;
+				do take_a_step_to(cell); //if the cell is free - go there
 				break;		
 			}else{
 				
@@ -461,14 +463,14 @@ species transporter parent: superclass{
 		if(target.neighbors contains my_cell)
 		{
 			// I am standing next to where I THINK my station should be. If so: in the next Reflex we deliver it automatically
-			write name + " is next to its target" color:#lightgrey;
+			//write name + " is next to its target" color:#lightgrey;
 			
 			station s <- one_of(station inside target); //there should only be one station per cell, but this ensures that only one is picked.
 		
 			//if there is no station or it has the wrong color, my knowledge is WRONG
 			if((s = nil) or (s.accept_color != load.color)) {
 				
-				write name + ": "+ s.accept_color + " is not what I expected (" + load.color + ")" color:#red;
+				//write name + ": "+ s.accept_color + " is not what I expected (" + load.color + ")" color:#red;
 				
 				do remove_knowledge(load.color); //remove wrong knowledge
 				
@@ -506,12 +508,23 @@ species transporter parent: superclass{
 					time_to_deliver_SUM <- time_to_deliver_SUM + cycle_difference ; //add it to the total sum
 					mean_of_delivered_cycles <- time_to_deliver_SUM/(total_delivered); //after successful delivery, update average amount of cycles
 					moving_average <- moving_average + float(cycle_difference / window_for_last_N_deliveries);
+					moving_average_steps <- moving_average_steps + amount_of_steps; //add to rest
+					amount_of_steps <- 0.0; //reset amount of steps
 					
+					//MoAvg cycles to deliver
 					if(length(moving_average) > window_for_last_N_deliveries) //make sure that only the requested amount of data is saved
 					{
 						//as time_to_deliver is filled successively, we only have to get rid of the first entry (FIFO)  
 						remove index: 0 from:moving_average;
 						moving_average_SUM <- sum(moving_average);
+					}
+					
+					//MoAvg steps taken until destination
+					if(length(moving_average_steps ) > window_for_last_N_deliveries) //make sure that only the requested amount of data is saved
+					{
+						//as time_to_deliver is filled successively, we only have to get rid of the first entry (FIFO)  
+						remove index: 0 from:moving_average_steps;
+						//moving_average_SUM <- sum(moving_average);
 					}
 				
 				//if i did not know about this station before, add it to my model 
@@ -588,6 +601,18 @@ species transporter parent: superclass{
 		load<-nil; //reset load after delivery
 	}
 	
+	action take_a_step_to(shop_floor cell){
+				
+		my_cell <- cell; //if the cell is free - go there
+		location <- my_cell.location;
+		
+		//if I am also carrying something aroung, increase my step counter
+		if(load != nil)
+		{
+			amount_of_steps <- amount_of_steps +1;
+		}
+		
+	}
 			
 	aspect base{
 		
@@ -739,7 +764,11 @@ experiment Model_Based_Transporters type: gui {
 	 }	 
 	  
 	display statistics{
-				
+			
+			chart "Average steps of last "+ string(window_for_last_N_deliveries) +" transporters to correct destination" type:series size:{1 ,0.25} position:{0, 0}{
+				data "Average steps of last "+ string(window_for_last_N_deliveries) +" transporters to correct destination" value: sum(moving_average_steps)/window_for_last_N_deliveries color:#darkgreen marker:false ;
+			}
+			
 			chart "Mean cycles to deliver" type:series size:{1 ,0.5} position:{0, 0.25}{
 					data "Mean of delivered cycles" value: mean_of_delivered_cycles color:#purple marker:false ;		
 			}
