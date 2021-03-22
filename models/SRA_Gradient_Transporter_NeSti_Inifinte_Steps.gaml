@@ -47,7 +47,7 @@ global{
 	bool activate_negative_stigmergy <- false;
 	/*I define the color of the thing as maximum (= 1.0) s.t. all other gradient have to lie below that. To make them distinguishable, the STRONG mark may have (color_gradient_max )*THING_COLOR. All other WEAK gradients are below. */
 	float color_gradient_max <- 0.75 max: 0.99;
-	float number_of_steps <- 10.0 min: 1; //the amount of steps the transporter remembers it's former item
+	//float number_of_steps <- 10.0 min: 1; //the amount of steps the transporter remembers it's former item
 	
 	
 	/* Investigation variables - PART I (other part is places behind init block)*/
@@ -65,9 +65,6 @@ global{
 		
 		rgb observe_color <- #red;
 		
-	reflex pause_it when: cycle = 5000{
-		do pause;
-	}
 	
 	init{
 							
@@ -395,10 +392,9 @@ species station parent: superclass{
 
 species transporter parent: superclass {
 	thing load <- nil;
-	//bool wanderlust <- true; //to steer the random wandering or following color marks
 	
 	//aphid approach uses memory of last delivery
-	float steps_left <- number_of_steps; //the amount of steps we take to leave little color marks behind us after a deliver
+//	float steps_left <- number_of_steps; //the amount of steps we take to leave little color marks behind us after a deliver
 	rgb remember_color <- nil; //the color of our last delivery
 	
 	float usage <- 0;
@@ -421,10 +417,11 @@ species transporter parent: superclass {
 			}
 		}
 		
+		/* 
 		if(stigmergy_activated and steps_left > 0 and remember_color != nil){//if we have sth to remember and steps left, mark it
 			
 			do set_aphid_marks;
-		}
+		}*/
 	}
 	
 	reflex color_mark_wandering when:(load != nil) {
@@ -474,10 +471,12 @@ species transporter parent: superclass {
 		my_cell <- cell; //cell is determined as goal for next step - go there
 		location <- my_cell.location;
 		
+		/* 
 		if(steps_left > 0 and remember_color != nil){//if we have sth to remember and steps left, mark it
 			
 			do set_aphid_marks;
-		}		
+		}	
+		*/	
 
 	}
 		
@@ -517,51 +516,83 @@ species transporter parent: superclass {
 				if(stigmergy_activated){
 					//after our thing has been successfully delivered, let the transporter create a color mark for others (stigmergy)
 					remember_color <- rgb((load.get_states())["color"]); // save color of item for aphid
-					steps_left <- number_of_steps ; //reset the amount of steps we will rememberor color
 					do set_aphid_marks;
+					//steps_left <- number_of_steps ; //reset the amount of steps we will rememberor color
 				}
-				
-				
+								
 				do deliver_load(); //load is delivered
-				
 				break; //as we have loaded off our item, we do not need to check any leftover stations (also it would lead to an expection because load is now nil)
 			}
 		}		
 	}
 	
-	//in the above reflexes, we checked our surrounding, looked for a possible maximum of color marks, took a step and checked for stations.
-	//NOW, we check, if we maybe are trapped in a local maximum, e.g. created by evaporation or an "island"?
-	//this can happen independently of our transporatation task and the chance to deliver something,....
+	
+	reflex check_aphid_marks{
+		
+		list<shop_floor> cell_tmp <-my_cell.neighbors;// take all neighboring cells
+		
+		map<rgb, float> my_marks <- my_cell.color_marks; //take MY current color marks
+		
+		map<rgb, float> neighbor_marks <- nil; 
+		
+		//check all neighboring cells
+		loop cell over: cell_tmp{
+			
+			map<rgb, float> marks <- cell.color_marks; //get neighbors color marks
+			
+			//check for each entry its color marks
+			loop col over: marks.keys{
+				
+				if((marks at col) > (neighbor_marks at col)){ //check if their color mark is stronger than current one
+					add (marks at col) at: col to: neighbor_marks;//if so, overwrite it and gather these maximum values in the neighbor color mark map
+				}
+				
+			}
+		}
+		
+		//check all entries in the neighbors marks
+		loop col over: neighbor_marks.keys{
+						
+			if((neighbor_marks at col) > (my_marks at col)){//check if the maximum around me is bigger than my value
+				add (neighbor_marks at col)*0.9 at: col to: my_marks; //if so, add an entry to myself with reduced maximum
+				ask my_cell{changed <- true;} //set status to changend s.t. color display is updated 
+			}
+			
+		}
+		
+		/* 
+		ask my_cell.neighbors{
+			
+				loop col over: neighbor_marks.keys{
+								
+				if((my_marks at col) > (self.color_marks at col)){//if neighborhood is smaller than new update value set reduced new value
+					//add (my_marks at col)*0.9 at: col to: self.color_marks; //if so, add an entry to myself with 0.9 of this maximum
+					do add_color_mark(col, (my_marks at col)*0.9); 
+				}
+				
+			}
+		}*/
+		
+		ask my_cell	{
+			do set_color_marks(my_marks); //update my color mark values
+		}
+		
+			
+	}
+	
+	
+	//in the above reflexes, we checked our surroundings, looked for a possible maximum of color marks, took a step and checked for stations.
+	//NOW, we check, if we are trapped in a local maximum, e.g. created by evaporation or an "island"?
+	//this can happen independently of our transportation task and the chance to deliver something,....
 	//We just consider marks of the thing we are currently transporting
 	reflex negative_stigmergy when: ((load != nil) and  activate_negative_stigmergy) {
 		
-		do remove_color_marks(load.color);
-		
-		/*
-		//generate a list of all my neighbor cells in a random order with my color marks
-		list<shop_floor> cells_with_color_marks <- my_cell.neighbors where (each.color_marks.keys contains load.color); //get cells that do have OUR color marks
-		
-		float max_strength_of_neighbors <- 0;
-		
-		if(!empty(cells_with_color_marks)){
-		
-			max_strength_of_neighbors <- cells_with_color_marks max_of (each.color_marks at load.color); //get maximum strength of my surroundings with seeked color marks 
-		
-		}
-			
-		//if my strength is higher than my surroundings... and I DID NOT deliver my item (load = nil), then I am trapped in a local maximum
-		if((my_cell.color_marks at load.color) >= max_strength_of_neighbors){ //greater OR EQUAL
-			remove key: load.color from: my_cell.color_marks ; //deletes color mark without a trace << not using evaporation gives better results up to now!	
-			my_cell.changed <- true;	
-		}	
-		*/	
-		
+		do check_for_local_maximum(load.color);		
 	}
 	
 	/*Transporter check all of their surrounding marks, if there is a local maximum and if so, if an applicable station is adjacent. If not, they delete it - althoug it is officially not their responsibility.
 	 *AKA "Please leave your stigmergy marks in the state in which you would like to find them" ...*/  
 	//This applies to all transporters, independently of their load color, and only considers their environment
-	//reflex social_negative_stigmergy when: ((load = nil) and activate_negative_stigmergy) {
 	reflex social_negative_stigmergy when: activate_negative_stigmergy {
 		
 		//generate a list of all my neighbor cells in a random order with my color marks
@@ -592,10 +623,12 @@ species transporter parent: superclass {
 			}
 			
 			//if NO suitable station is nearby, we check for a local maximum that has to be removed 
-			do remove_color_marks(col);
+			do check_for_local_maximum(col);
 	
 		}			
 	}
+	
+
 	
 	//search adjacency for a station. If it has a thing, pick it up. Depending in stigmergy settings, also initiate color marks
 	reflex search_thing when: load = nil{			
@@ -619,22 +652,16 @@ species transporter parent: superclass {
 		}		
 	}
 	
+	//updates position of the current load s.t. it appears at the same posiiton as the transporter
 	reflex update_thing when: (load != nil){
 		ask load{
 				my_cell <- myself.my_cell; //just ask the thing you carry to go to the same spot as you.
 				location <- myself.my_cell.location;
 			}			
 	}
-	
-	reflex update_usage_counter{
-		if(load != nil)
-		{
-			usage <- usage + 1;
-		}
-	}
-	
+		
 	//check for and remove a specific color marks if it is part of a specific local maximum that should not be there...
-	action remove_color_marks(rgb col){
+	action check_for_local_maximum(rgb col){
 		list<shop_floor> cells_with_color_marks <- my_cell.neighbors where (each.color_marks.keys contains col); //get cells that do have OUR color marks
 		
 		float max_strength_of_neighbors <- 0;
@@ -654,6 +681,21 @@ species transporter parent: superclass {
 	}
 	
 	action set_aphid_marks{
+		//only for setting the maximum mark on successful deliver
+		ask my_cell{
+			
+			if(get_color_strength(myself.remember_color) < color_gradient_max ){ //if it's weaker, overwrite
+				do add_color_mark(myself.remember_color, color_gradient_max);
+			
+			}
+		}
+		
+
+			
+	}
+	
+	/* 
+	action set_aphid_marks{
 		//the own cell ond direct surroundings get a strong mark
 		//as transporter agents can ONLY see their own and adjacent fields, they can hence only set marks there. And nowhere else.
 
@@ -668,7 +710,7 @@ species transporter parent: superclass {
 		
 		steps_left <- steps_left - 1; //we took a step and marked it
 		
-	}
+	}*/
 	
 	action deliver_load{
 		ask load{
@@ -803,6 +845,11 @@ grid shop_floor cell_width: cell_width cell_height: cell_height neighbors: 8 use
 		return color_marks;
 	}
 	
+	action set_color_marks(map<rgb,float> new_color_marks){
+		color_marks <- new_color_marks; //override color marks with new values
+		changed <- true;
+	}
+	
 	float get_color_strength(rgb col)
 	{	
 		return (color_marks at col);
@@ -826,8 +873,6 @@ experiment SRA_Transporter_No_Charts type:gui{
 	parameter "Activate evaporation" category: "Stigmergy settings" var: activate_evaporation<-false ; //switch evaopration of stigmergy on or off		
 	parameter "Activate negative stigmergy" category: "Simulation settings" var: activate_negative_stigmergy<-true; //window for average of last N deliveries and their cycles
 	 
-	parameter "Number of steps to remember" category: "Simulation settings" var: number_of_steps<-50; //how many steps the transporter remembers 
-	parameter "Evaporation factor" category: "Simulation settings" var: evaporation_factor<-0.001 ; //switch evaopration of stigmergy on or off	
 	parameter "Disturbance cycles" category: "Simulation settings" var: disturbance_cycles<-500#cycles;
 	parameter "Observe color" category: "Simulation settings" var: observe_color among:[#red, #green, #blue,#orange] on_change:{
 		
@@ -872,7 +917,7 @@ experiment SRA_Transporter type: gui {
 	parameter "Activate stigmergy" category: "Simulation settings" var: stigmergy_activated<-true; //switch stigmergy on or off
 	parameter "Activate evaporation" category: "Simulation settings" var: activate_evaporation<-false ; //switch evaopration of stigmergy on or off
 	parameter "Activate negative stigmergy" category: "Simulation settings" var: activate_negative_stigmergy<-true; //window for average of last N deliveries and their cycles 
-	parameter "Number of steps to remember" category: "Simulation settings" var: number_of_steps<-50; //how many steps the transporter remembers 
+	
 	parameter "Evaporation factor" category: "Simulation settings" var: evaporation_factor<-0.001 ; //switch evaopration of stigmergy on or off	
 	
 	parameter "Disturbance cycles" category: "Simulation settings" var: disturbance_cycles<-500#cycles; //amount of cycles until stations change their positions
@@ -893,12 +938,7 @@ experiment SRA_Transporter type: gui {
 
 	 }	 
 	  
-	 display statistics{// refresh: every(5#cycles){
-	 		
-	 		/* 		
-			chart "Transporter usage" type: histogram size: {1, 0.25} position: {0,0}{
-				datalist (transporter collect each.name) value: (transporter collect each.usage_prct)  color: #lightblue;
-			}*/
+	 display statistics{
 				
 			chart "Mean cycles to deliver" type:series size:{1 ,0.5} position:{0, 0}{
 					data "Mean of delivered cycles" value: mean_of_delivered_cycles color:#purple marker:false ;		
@@ -926,7 +966,7 @@ experiment SRA_Transporter type: gui {
   
 }
 
-experiment SRA_Transporter_batch type: batch until: (cycle >= 10000) repeat: 10 autorun: true keep_seed: true{
+experiment SRA_Transporter_STIGMERGY_batch type: batch until: (cycle >= 10000) repeat: 10 autorun: true keep_seed: true{
 
 	//parameters are sufficiently defined with their default values  
 	parameter "Use stigmergy" var: stigmergy_activated among:[false, true]; //switch stigmergy on or off
@@ -945,20 +985,24 @@ experiment SRA_Transporter_batch type: batch until: (cycle >= 10000) repeat: 10 
 	}		
 }
 
-experiment SRA_Transporter_evap_steps type: batch until: (cycle >= 2000) autorun: true keep_seed: true{
-
-	//parameters are sufficiently defined with their default values  
-	//parameter "Number of steps to remembe"  var: number_of_steps min: 3 max: 20 step: 1; //how many steps the transporter remembers //20
-	//parameter "Evaporation factor" var: evaporation_factor min: 0.001 max: 0.01 step: 0.001 ; //switch evaopration of stigmergy on or off	//0.01
-	parameter "Number of steps to remembe"  var: number_of_steps min: 62 max: 70 step: 1; //how many steps the transporter remembers //20
-	parameter "Evaporation factor" var: evaporation_factor min: 0.001 max: 0.01 step: 0.001 ; //switch evaopration of stigmergy on or off	//0.01
+/*Runs an amount of simulations in parallel, keeps the seeds and gives the final values after 10k cycles*/
+experiment SRA_Transporter_batch type: batch until: (cycle >= 10000) repeat: 40 autorun: true keep_seed: true{
+		
+	parameter "Activate stigmergy" category: "Simulation settings" var: stigmergy_activated<-true; //switch stigmergy on or off
+	parameter "Activate evaporation" category: "Simulation settings" var: activate_evaporation<-false ; //switch evaopration of stigmergy on or off
+	parameter "Activate negative stigmergy" category: "Simulation settings" var: activate_negative_stigmergy<-true; //window for average of last N deliveries and their cycles 
 	
-	method exhaustive maximize: total_delivered ;
-
+	parameter "Disturbance cycles" category: "Simulation settings" var: disturbance_cycles<-500#cycles; //amount of cycles until stations change their positions
+	
+	
 	reflex save_results_explo {
-    	ask simulations {
-    	save [int(self), number_of_steps, evaporation_factor, total_delivered, ((total_delivered = 0) ? 0 : time_to_deliver_SUM/(total_delivered))] 
-          to: "result/results"+ "transporterMin"+ ".csv" type: "csv" rewrite: false header: true; //rewrite: (int(self) = 0) ? true : false	
-		}		
+    ask simulations {
+    	
+    	float mean_cyc_to_deliver <- ((self.total_delivered = 0) ? 0 : self.time_to_deliver_SUM/(self.total_delivered));
+    	
+    	save [int(self), self.seed, disturbance_cycles ,self.cycle, self.activate_negative_stigmergy, self.total_delivered, mean_cyc_to_deliver]  
+          to: "result/SRA_Transporter_batch_results.csv" type: "csv" rewrite: false header: true; 
+    	}       
 	}		
 }
+

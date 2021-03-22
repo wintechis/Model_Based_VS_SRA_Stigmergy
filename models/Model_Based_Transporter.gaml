@@ -794,6 +794,19 @@ experiment Model_Based_Transporters type: gui {
   
 }
 
+/*Runs an amount of simulations in parallel, keeps the seeds and gives the final values after 10k cycles*/
+experiment Model_Based_batch type: batch until: (cycle >= 10000) repeat: 40 autorun: true keep_seed: true{
 
+	
+	reflex save_results_explo {
+    ask simulations {
+    	
+    	float mean_cyc_to_deliver <- ((self.total_delivered = 0) ? 0 : self.time_to_deliver_SUM/(self.total_delivered)); //
+    	
+    	save [int(self), self.seed, disturbance_cycles ,self.cycle, self.total_delivered, mean_cyc_to_deliver] //..., ((total_delivered = 0) ? 0 : time_to_deliver_SUM/(total_delivered)) 
+          to: "result/Model_Based_batch_results.csv" type: "csv" rewrite: false header: true; //rewrite: (int(self) = 0) ? true : false
+    	}       
+	}		
+}
 
 
