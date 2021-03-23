@@ -395,28 +395,8 @@ species transporter parent: superclass{
 			loop col over: interested_in{
 				add (cumulated_knowledge at col) to: station_position at: col; //add previously unknown keys and values to my knowledge
 				//this possibly means that a WRONG (contradictory) value that has been accumulated above is now shared. Last one overwrites all others here. 
-			}
-			
-		}
-	
-		/* ----old knowledge exchange 	
-		loop n over: neighbor_transporters{
-			//if our keys are the same, we know the same. If not, one of us knows more!
-			if(!(n.station_position.keys contains_all station_position.keys)){
-				station_position <- station_position + n.station_position; //unite both models
-				//write name + " learned sth. new: " + station_position;  
-			}  
-		}
-		
-		//refresh every neighbors knowledge with own sum of everyone's knowledge
-		loop n over: neighbor_transporters{
-			//if our keys are the same, we know the same. If not, one of us knows more!
-			if(!(n.station_position.keys contains_all station_position.keys)){
-				n.station_position <- station_position; //unite both models
-				//write n.name + " learned sth. new: " + n.station_position; 
-			}  
-		}*/
-		
+			}	
+		}		
 	}
 	
 	//if i am empty or do not know where my item's station is -> wander
@@ -524,13 +504,11 @@ species transporter parent: superclass{
 					{
 						//as time_to_deliver is filled successively, we only have to get rid of the first entry (FIFO)  
 						remove index: 0 from:moving_average_steps;
-						//moving_average_SUM <- sum(moving_average);
 					}
 				
 				//if i did not know about this station before, add it to my model 
 				if(!(station_position contains_key load.color)){
 					do add_knowledge(s.location, load.color); // add/update knowledge about new station
-					//add s.location at:load.color to: station_position;  	
 				}
 		
 				do deliver_load(); //load is delivered
@@ -606,7 +584,7 @@ species transporter parent: superclass{
 		my_cell <- cell; //if the cell is free - go there
 		location <- my_cell.location;
 		
-		//if I am also carrying something aroung, increase my step counter
+		//if I am also carrying something around, increase my step counter
 		if(load != nil)
 		{
 			amount_of_steps <- amount_of_steps +1;
