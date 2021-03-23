@@ -278,6 +278,29 @@ global{
 		}	
 	}
 	
+	action create_blockade{
+		
+		shop_floor cell <- first(shop_floor overlapping #user_location); //get shop_floor that is overlapped by location of user interaction (=mouse click)
+		
+		//write "" + s + " gets a blockade!";
+		
+		ask cell{
+			
+			do delete_ALL_color_marks;
+			
+			if(empty(blockade inside cell)){
+				create blockade {
+					my_cell <- cell;
+					location <- my_cell.location;
+				}
+			}else{
+				blockade b <- first(blockade inside cell);
+				ask b{ do die;}
+			}
+		}
+		
+		
+	}
 	
 	/* Investigation variables - PART II (other part is places before init block)*/
 	//nothing	
@@ -293,6 +316,14 @@ species superclass{
 	}
 }
 
+//represents a cell that is now blocked and cannot be accessed anymore
+species blockade parent: superclass{
+	
+	aspect base{
+		draw file("bricks.jpg") size: {cell_width, cell_width} ;
+	}
+	
+}
 
 species thing parent: superclass{
 	rgb color <- #white;
@@ -353,9 +384,6 @@ species station parent: superclass{
 species transporter parent: superclass{
 	thing load <- nil;
 	map<rgb, point> station_position <- []; //represents the knowledge about positions of already found or communicated stations. Entries have shape [rgb::location]
-	
-	float usage <- 0;
-	float usage_prct <- 0 update: usage / (cycle = 0 ? 1 : cycle);
 	
 	float amount_of_steps<- 0.0; //the amount of steps this transporter made after it pickep up an item   
 	
@@ -426,7 +454,7 @@ species transporter parent: superclass{
 		list<shop_floor> s <- shuffle(my_cell.neighbors); //get all cells with distance ONE
 		
 		loop cell over: s{ //check all cells in order if they are already taken.
-			if(empty(transporter inside cell) and empty(station inside cell)) //as long as there is no other transporter or station
+			if(empty(transporter inside cell) and empty(station inside cell) and empty(blockade inside cell)) //as long as there is no other transporter or station
 			{
 				do take_a_step_to(cell); //if the cell is free - go there		
 			}
@@ -445,7 +473,7 @@ species transporter parent: superclass{
 			
 			shop_floor cell <- first(options);
 			
-			if(empty(transporter inside cell) and empty(station inside cell)) //as long as there is no other transporter or station
+			if(empty(transporter inside cell) and empty(station inside cell) and empty(blockade inside cell)) //as long as there is no other transporter or station
 			{
 				do take_a_step_to(cell); //if the cell is free - go there
 				break;		
@@ -573,14 +601,7 @@ species transporter parent: superclass{
 				location <- myself.my_cell.location;
 			}			
 	}
-	
-	reflex update_usage_counter{
-		if(load != nil)
-		{
-			usage <- usage + 1;
-		}
-	}
-	
+		
 	action add_knowledge(point pt, rgb col){
 		
 		add pt at:col to: station_position; // add/update knowledge about new station and assign a point to a color 	
@@ -691,6 +712,13 @@ grid shop_floor cell_width: cell_width cell_height: cell_height neighbors: 8 use
 		
 	}
 	
+	//deletes a color from the color mark container
+	action delete_ALL_color_marks {
+		
+			color_marks <- nil;
+			changed <- true;		
+	}
+	
 	map<rgb,float> get_color_marks{
 		return color_marks;
 	}
@@ -720,11 +748,17 @@ experiment Model_Based_Transporters_No_Charts type:gui{
 		 		species transporter aspect: info;
 		 		species station aspect: base;
 		 		species thing aspect: base;
+		 		species blockade aspect: base;
+		 		  
+		   		event mouse_down action: create_blockade;
 	
 		 }
 		 
 		  inspect "Knowledge" value: transporter attributes: ["station_position"] type:table;
+		
 	 }
+	 
+	
 	
 }
 
@@ -760,6 +794,9 @@ experiment Model_Based_Transporters type: gui {
 	 		species transporter aspect: base;
 	 		species station aspect: base;
 	 		species thing aspect: base;
+	 		species blockade aspect: base;
+	 		
+	 		event mouse_down action: create_blockade;
 
 	 }	 
 	  

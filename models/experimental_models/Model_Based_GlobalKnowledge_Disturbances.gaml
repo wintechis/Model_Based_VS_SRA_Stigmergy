@@ -58,7 +58,9 @@ global{
 		float moving_average_SUM <- 0; //holds the average value over the moving average
 		
 		list<float> moving_average_steps <- []; //  holds the last "window_for_last_N_deliveries" values for the amount of steps it took a transporter to find its destination after picking up an item
-			
+		
+	map<rgb, point> station_position <- []; //represents the knowledge about positions of already found or communicated stations. Entries have shape [rgb::location]
+		
 	
 	init{
 							
@@ -278,6 +280,29 @@ global{
 		}	
 	}
 	
+	action create_blockade{
+		
+		shop_floor cell <- first(shop_floor overlapping #user_location); //get shop_floor that is overlapped by location of user interaction (=mouse click)
+		
+		//write "" + s + " gets a blockade!";
+		
+		ask cell{
+			
+			do delete_ALL_color_marks;
+			
+			if(empty(blockade inside cell)){
+				create blockade {
+					my_cell <- cell;
+					location <- my_cell.location;
+				}
+			}else{
+				blockade b <- first(blockade inside cell);
+				ask b{ do die;}
+			}
+		}
+		
+		
+	}
 	
 	/* Investigation variables - PART II (other part is places before init block)*/
 	//nothing	
@@ -293,6 +318,14 @@ species superclass{
 	}
 }
 
+//represents a cell that is now blocked and cannot be accessed anymore
+species blockade parent: superclass{
+	
+	aspect base{
+
+		draw file("bricks.jpg") size: {cell_width, cell_width} ; 	
+	}
+}
 
 species thing parent: superclass{
 	rgb color <- #white;
@@ -352,70 +385,11 @@ species station parent: superclass{
 
 species transporter parent: superclass{
 	thing load <- nil;
-	map<rgb, point> station_position <- []; //represents the knowledge about positions of already found or communicated stations. Entries have shape [rgb::location]
-	
-	float usage <- 0;
-	float usage_prct <- 0 update: usage / (cycle = 0 ? 1 : cycle);
+//	map<rgb, point> station_position <- []; //represents the knowledge about positions of already found or communicated stations. Entries have shape [rgb::location]
 	
 	float amount_of_steps<- 0.0; //the amount of steps this transporter made after it pickep up an item   
 	
 	init{
-		
-	}
-	
-		//whenever other transporters are near me that is: at least one of my adjacent neighbors contains another transporter
-	reflex exchange_knowledge when:(!empty(agents_inside(my_cell.neighbors) where (string(type_of(each)) = "transporter"))) {//!empty((my_cell.neighbors) where (!(empty(transporter inside (each))))){
-		
-		
-		/**Big groups of agents are much more likely to share wrong knowledge, hence only take ONE of them for now - basically we have a mini Voter Model about our knowledge (cf. Hamann)*/
-		//---> choose only ONE random neighbor and share knowledge each cycle
-		
-		list<transporter> neighbor_transporters <- one_of(agents_inside(my_cell.neighbors) where (string(type_of(each)) = "transporter")); //TAKE ONE OF THESE
-		
-		
-		
-		//add all knowledges up, whenever there are differences
-		//But because of Open World Assumption we will ignore differing knowledge about the world - we cannot say for sure who is right (even if one is "more up to date" than the other... it could still be wrong, because the world changed meanwhile..) 	
-		
-		map<rgb, point> cumulated_knowledge <- station_position;
-		
-		loop n over: neighbor_transporters{
-			
-			cumulated_knowledge <- cumulated_knowledge + n.station_position;
-		}
-		//^ all knowledge, including possible contradictions
-		
-		neighbor_transporters <- neighbor_transporters + self; //add me to this group
-		
-		
-		ask neighbor_transporters{
-			
-			list<rgb> interested_in <- cumulated_knowledge.keys - station_position.keys; //ignore keys that i already know
-			
-			loop col over: interested_in{
-				add (cumulated_knowledge at col) to: station_position at: col; //add previously unknown keys and values to my knowledge
-				//this possibly means that a WRONG (contradictory) value that has been accumulated above is now shared. Last one overwrites all others here. 
-			}
-			
-		}
-	
-		/* ----old knowledge exchange 	
-		loop n over: neighbor_transporters{
-			//if our keys are the same, we know the same. If not, one of us knows more!
-			if(!(n.station_position.keys contains_all station_position.keys)){
-				station_position <- station_position + n.station_position; //unite both models
-				//write name + " learned sth. new: " + station_position;  
-			}  
-		}
-		
-		//refresh every neighbors knowledge with own sum of everyone's knowledge
-		loop n over: neighbor_transporters{
-			//if our keys are the same, we know the same. If not, one of us knows more!
-			if(!(n.station_position.keys contains_all station_position.keys)){
-				n.station_position <- station_position; //unite both models
-				//write n.name + " learned sth. new: " + n.station_position; 
-			}  
-		}*/
 		
 	}
 	
@@ -426,7 +400,7 @@ species transporter parent: superclass{
 		list<shop_floor> s <- shuffle(my_cell.neighbors); //get all cells with distance ONE
 		
 		loop cell over: s{ //check all cells in order if they are already taken.
-			if(empty(transporter inside cell) and empty(station inside cell)) //as long as there is no other transporter or station
+			if(empty(transporter inside cell) and empty(station inside cell) and empty(blockade inside cell)) //as long as there is no other transporter or station
 			{
 				do take_a_step_to(cell); //if the cell is free - go there		
 			}
@@ -445,7 +419,7 @@ species transporter parent: superclass{
 			
 			shop_floor cell <- first(options);
 			
-			if(empty(transporter inside cell) and empty(station inside cell)) //as long as there is no other transporter or station
+			if(empty(transporter inside cell) and empty(station inside cell) and empty(blockade inside cell)) //as long as there is no other transporter or station
 			{
 				do take_a_step_to(cell); //if the cell is free - go there
 				break;		
@@ -458,8 +432,7 @@ species transporter parent: superclass{
 			
 		}
 		
-		/*if am in the neighborhood of my target... and there is NO station, delete MY knowledge.*/
-		//But because of Open World Assumption I only modify my knowledge, but during exchange with other transporter I cannot say for sure if MY knowledge is now correct or not
+		/*if am in the neighborhood of my target... and there is NO station, delete global knowledge knowledge.*/
 		if(target.neighbors contains my_cell)
 		{
 			// I am standing next to where I THINK my station should be. If so: in the next Reflex we deliver it automatically
@@ -477,11 +450,8 @@ species transporter parent: superclass{
 				if(s != nil){
 					do add_knowledge(s.location, s.accept_color); //nevertheless, if there is a station, update my knowledge
 				}
-			}
-			
+			}	
 		}
-		
-
 	}	
 	
 	//this reflex is for the case that I have a thing and am now looking for a station. Up to now, i DO NOT have to queue
@@ -573,14 +543,7 @@ species transporter parent: superclass{
 				location <- myself.my_cell.location;
 			}			
 	}
-	
-	reflex update_usage_counter{
-		if(load != nil)
-		{
-			usage <- usage + 1;
-		}
-	}
-	
+		
 	action add_knowledge(point pt, rgb col){
 		
 		add pt at:col to: station_position; // add/update knowledge about new station and assign a point to a color 	
@@ -691,6 +654,13 @@ grid shop_floor cell_width: cell_width cell_height: cell_height neighbors: 8 use
 		
 	}
 	
+	//deletes a color from the color mark container
+	action delete_ALL_color_marks {
+		
+			color_marks <- nil;
+			changed <- true;		
+	}
+	
 	map<rgb,float> get_color_marks{
 		return color_marks;
 	}
@@ -720,11 +690,17 @@ experiment Model_Based_Transporters_No_Charts type:gui{
 		 		species transporter aspect: info;
 		 		species station aspect: base;
 		 		species thing aspect: base;
+		 		species blockade aspect: base;
+		 		  
+		   		event mouse_down action: create_blockade;
 	
 		 }
 		 
-		  inspect "Knowledge" value: transporter attributes: ["station_position"] type:table;
+		  inspect "Knowledge" value: simulation attributes: ["station_position"] type:table;
+		
 	 }
+	 
+	
 	
 }
 
@@ -760,6 +736,9 @@ experiment Model_Based_Transporters type: gui {
 	 		species transporter aspect: base;
 	 		species station aspect: base;
 	 		species thing aspect: base;
+	 		species blockade aspect: base;
+	 		
+	 		event mouse_down action: create_blockade;
 
 	 }	 
 	  
@@ -795,7 +774,7 @@ experiment Model_Based_Transporters type: gui {
 }
 
 /*Runs an amount of simulations in parallel, keeps the seeds and gives the final values after 10k cycles*/
-experiment Model_Based_batch type: batch until: (cycle >= 10000) repeat: 40 autorun: true keep_seed: true{
+experiment Model_GLOBAL_batch type: batch until: (cycle >= 10000) repeat: 40 autorun: true keep_seed: true{
 
 	
 	reflex save_results_explo {
@@ -804,7 +783,7 @@ experiment Model_Based_batch type: batch until: (cycle >= 10000) repeat: 40 auto
     	float mean_cyc_to_deliver <- ((self.total_delivered = 0) ? 0 : self.time_to_deliver_SUM/(self.total_delivered)); //
     	
     	save [int(self), self.seed, disturbance_cycles ,self.cycle, self.total_delivered, mean_cyc_to_deliver] //..., ((total_delivered = 0) ? 0 : time_to_deliver_SUM/(total_delivered)) 
-          to: "result/Model_Based_batch_results.csv" type: "csv" rewrite: false header: true; //rewrite: (int(self) = 0) ? true : false
+          to: "result/Model_GLOBAL_KNOWLWEDGE_results.csv" type: "csv" rewrite: false header: true; //rewrite: (int(self) = 0) ? true : false
     	}       
 	}		
 }
