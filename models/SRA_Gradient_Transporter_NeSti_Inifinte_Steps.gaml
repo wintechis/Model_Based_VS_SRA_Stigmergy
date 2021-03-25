@@ -47,7 +47,6 @@ global{
 	bool activate_negative_stigmergy <- false;
 	/*I define the color of the thing as maximum (= 1.0) s.t. all other gradient have to lie below that. To make them distinguishable, the STRONG mark may have (color_gradient_max )*THING_COLOR. All other WEAK gradients are below. */
 	float color_gradient_max <- 0.75 max: 0.99;
-	//float number_of_steps <- 10.0 min: 1; //the amount of steps the transporter remembers it's former item
 	
 	
 	/* Investigation variables - PART I (other part is places behind init block)*/
@@ -396,11 +395,9 @@ species transporter parent: superclass {
 	thing load <- nil;
 	
 	float amount_of_steps<- 0.0; //the amount of steps this transporter made after it pickep up an item   
-	float usage <- 0;
-	float usage_prct <- 0 update: usage / (cycle = 0 ? 1 : cycle);  
 	
 	init{
-		add 0 at: name to: transporter_usage;  		
+	
 	}
 	
 	reflex wander when: (load = nil) {
@@ -740,23 +737,7 @@ grid shop_floor cell_width: cell_width cell_height: cell_height neighbors: 8 use
 
 	//color blender for display
 	reflex when: ((length(color_marks) >= 1) and changed){
-		//operates the following way: first(color_marks.keys) gets the first rgb value and first(color_marks) the associate strength, which modifies the alpha channel gives blended_color its first value 
-		
-		
-		 /* 
-		//just display sepcififed color
-		if(color_marks.keys contains observe_color)
-		{
-			
-			rgb blended_color <- observe_color; //variable to mix colors. There is at least one color mark
-			blended_color <-rgb(blended_color.red * (color_marks at observe_color), blended_color.green * (color_marks at observe_color), blended_color.blue * (color_marks at observe_color));
-			
-			color <- blended_color; //display
-			changed <- false;
-			
-			
-		}*/
-		
+		//operates the following way: first(color_marks.keys) gets the first rgb value and first(color_marks) the associate strength, which modifies the alpha channel gives blended_color its first value 		
 		//displays all colors
 
 		

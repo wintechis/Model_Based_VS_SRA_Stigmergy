@@ -61,7 +61,8 @@ global{
 		list<float> moving_average <- []; //holds the last "window_for_last_N_deliveries" values for deliveries to calculate a moving average 
 		float moving_average_SUM <- 0; //holds the average value over the moving average
 		
-		map<string, int> transporter_usage <- []; //transporter will add themselves in their init block
+		list<float> moving_average_steps <- []; //  holds the last "window_for_last_N_deliveries" values for the amount of steps it took a transporter to find its destination after picking up an item
+	
 		
 		rgb observe_color <- #red;
 		
@@ -425,16 +426,9 @@ species station parent: superclass{
 species transporter parent: superclass {
 	thing load <- nil;
 	
-	//aphid approach uses memory of last delivery
-//	float steps_left <- number_of_steps; //the amount of steps we take to leave little color marks behind us after a deliver
-	rgb remember_color <- nil; //the color of our last delivery
+	//rgb remember_color <- nil; //the color of our last delivery
 	
-	float usage <- 0;
-	float usage_prct <- 0 update: usage / (cycle = 0 ? 1 : cycle);  
-	
-	init{
-		add 0 at: name to: transporter_usage;  		
-	}
+	float amount_of_steps<- 0.0; //the amount of steps this transporter made after it picked up an item   
 	
 	reflex wander when: (load = nil) {
 		
@@ -449,11 +443,7 @@ species transporter parent: superclass {
 			}
 		}
 		
-		/* 
-		if(stigmergy_activated and steps_left > 0 and remember_color != nil){//if we have sth to remember and steps left, mark it
-			
-			do set_aphid_marks;
-		}*/
+
 	}
 	
 	reflex color_mark_wandering when:(load != nil) {
@@ -499,17 +489,15 @@ species transporter parent: superclass {
 				sorted <- reverse(sorted sort_by (each.color_marks at rgb((load.get_states())["color"]))); //sort cells again in descending order
 			} 
 		}
-				
+		
+		//if I am also carrying something around and I actually DID take a step , increase my step counter
+		if(load != nil and (my_cell != cell))
+		{
+			amount_of_steps <- amount_of_steps +1;
+		}
+			
 		my_cell <- cell; //cell is determined as goal for next step - go there
 		location <- my_cell.location;
-		
-		/* 
-		if(steps_left > 0 and remember_color != nil){//if we have sth to remember and steps left, mark it
-			
-			do set_aphid_marks;
-		}	
-		*/	
-
 	}
 		
 	
@@ -537,6 +525,9 @@ species transporter parent: superclass {
 					time_to_deliver_SUM <- time_to_deliver_SUM + cycle_difference ; //add it to the total sum
 					mean_of_delivered_cycles <- time_to_deliver_SUM/(total_delivered); //after successful delivery, update average amount of cycles
 					moving_average <- moving_average + float(cycle_difference / window_for_last_N_deliveries);
+					moving_average_steps <- moving_average_steps + amount_of_steps; //add to rest
+					amount_of_steps <- 0.0; //reset amount of steps
+										
 					
 					if(length(moving_average) > window_for_last_N_deliveries) //make sure that only the requested amount of data is saved
 					{
@@ -544,12 +535,17 @@ species transporter parent: superclass {
 						remove index: 0 from:moving_average;
 						moving_average_SUM <- sum(moving_average);
 					}
+					
+					//MoAvg steps taken until destination
+					if(length(moving_average_steps ) > window_for_last_N_deliveries) //make sure that only the requested amount of data is saved
+					{
+						//as time_to_deliver is filled successively, we only have to get rid of the first entry (FIFO)  
+						remove index: 0 from:moving_average_steps;
+					}
 				
 				if(stigmergy_activated){
 					//after our thing has been successfully delivered, let the transporter create a color mark for others (stigmergy)
-					remember_color <- rgb((load.get_states())["color"]); // save color of item for aphid
 					do set_aphid_marks;
-					//steps_left <- number_of_steps ; //reset the amount of steps we will rememberor color
 				}
 								
 				do deliver_load(); //load is delivered
@@ -646,7 +642,6 @@ species transporter parent: superclass {
 	
 		}			
 	}
-	
 
 	
 	//search adjacency for a station. If it has a thing, pick it up. Depending in stigmergy settings, also initiate color marks
@@ -703,8 +698,8 @@ species transporter parent: superclass {
 		//only for setting the maximum mark on successful deliver
 		ask my_cell{
 			
-			if(get_color_strength(myself.remember_color) < color_gradient_max ){ //if it's weaker, overwrite
-				do add_color_mark(myself.remember_color, color_gradient_max);
+			if(get_color_strength(myself.load.color) < color_gradient_max ){ //if it's weaker, overwrite
+				do add_color_mark(myself.load.color, color_gradient_max);
 			
 			}
 		}
@@ -712,24 +707,6 @@ species transporter parent: superclass {
 
 			
 	}
-	
-	/* 
-	action set_aphid_marks{
-		//the own cell ond direct surroundings get a strong mark
-		//as transporter agents can ONLY see their own and adjacent fields, they can hence only set marks there. And nowhere else.
-
-		ask my_cell{
-			
-			if(get_color_strength(myself.remember_color) < color_gradient_max * myself.steps_left/number_of_steps){ //if it's weaker, overwrite
-				do add_color_mark(myself.remember_color, color_gradient_max * myself.steps_left/number_of_steps);
-			
-			}
-		}
-		
-		
-		steps_left <- steps_left - 1; //we took a step and marked it
-		
-	}*/
 	
 	action deliver_load{
 		ask load{
@@ -812,12 +789,9 @@ grid shop_floor cell_width: cell_width cell_height: cell_height neighbors: 8 use
 				}
 				
 				color <- blended_color; //display
-				changed <- false;
-				
-		
+				changed <- false;	
 	}
 	
-
 	list<shop_floor> neighbors_with_distance(int distance){
 		//if distance is one, naturally i am only my own neighbor
 		return (distance >= 1) ? self neighbors_at distance : (list<shop_floor>(self));
@@ -953,11 +927,15 @@ experiment SRA_Transporter type: gui {
 	  
 	 display statistics{
 				
-			chart "Mean cycles to deliver" type:series size:{1 ,0.5} position:{0, 0}{
+			chart "Average steps of last "+ string(window_for_last_N_deliveries) +" transporters to correct destination" type:series size:{1 ,0.25} position:{0, 0}{
+				data "Average steps of last "+ string(window_for_last_N_deliveries) +" transporters to correct destination" value: sum(moving_average_steps)/window_for_last_N_deliveries color:#darkgreen marker:false ;
+			}	
+			
+			chart "Mean cycles to deliver" type:series size:{1 ,0.5} position:{0, 0.25}{
 					data "Mean of delivered cycles" value: mean_of_delivered_cycles color:#purple marker:false ;		
 			}
 			
-			chart "Mean over last " + string(window_for_last_N_deliveries) +" deliveries" type:series size:{1 ,0.5} position:{0, 0.5}{
+			chart "Mean over last " + string(window_for_last_N_deliveries) +" deliveries" type:series size:{1 ,0.25} position:{0, 0.75}{
 					data "Mean over last " + string(window_for_last_N_deliveries) +" deliveries" value: moving_average_SUM color: #red marker: false;		
 			}
 	 }

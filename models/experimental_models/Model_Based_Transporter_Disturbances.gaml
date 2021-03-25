@@ -385,7 +385,7 @@ species transporter parent: superclass{
 	thing load <- nil;
 	map<rgb, point> station_position <- []; //represents the knowledge about positions of already found or communicated stations. Entries have shape [rgb::location]
 	
-	float amount_of_steps<- 0.0; //the amount of steps this transporter made after it pickep up an item   
+	float amount_of_steps<- 0.0; //the amount of steps this transporter made after it picked up an item   
 	
 	init{
 		
@@ -552,13 +552,11 @@ species transporter parent: superclass{
 					{
 						//as time_to_deliver is filled successively, we only have to get rid of the first entry (FIFO)  
 						remove index: 0 from:moving_average_steps;
-						//moving_average_SUM <- sum(moving_average);
 					}
 				
 				//if i did not know about this station before, add it to my model 
 				if(!(station_position contains_key load.color)){
-					do add_knowledge(s.location, load.color); // add/update knowledge about new station
-					//add s.location at:load.color to: station_position;  	
+					do add_knowledge(s.location, load.color); // add/update knowledge about new station  	
 				}
 		
 				do deliver_load(); //load is delivered
