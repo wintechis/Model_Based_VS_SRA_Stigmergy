@@ -1,8 +1,8 @@
 /**
-* Name: ModelBasedTransporter
+* Name: ModelBasedTransporter_GlobalKnowledge
 * Model_Based_VS_SRA_Stigmergy 
 * Author: Sebastian Schmid
-* Description: uses model-based agents with local communication and knowledge sharing 
+* Description: uses model-based agents with global, shared knowledge as a monolith 
 * Tags: 
 */
 
