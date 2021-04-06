@@ -75,12 +75,24 @@
           <layout>colset ITEM = with red | blue | none;</layout>
         </color>
         <color id="ID1414187216">
-          <id>COLORS</id>
-          <enum>
-            <id>gg</id>
-            <id>hh</id>
-          </enum>
-          <layout>colset COLORS = with gg | hh;</layout>
+          <id>COLNORED</id>
+          <subset>
+            <id>ITEM</id>
+            <with>
+              <ml>[blue, none]</ml>
+            </with>
+          </subset>
+          <layout>colset COLNORED = subset ITEM with [blue, none];</layout>
+        </color>
+        <color id="ID1414332412">
+          <id>COLNOBLUE</id>
+          <subset>
+            <id>ITEM</id>
+            <with>
+              <ml>[red, none]</ml>
+            </with>
+          </subset>
+          <layout>colset COLNOBLUE = subset ITEM with [red, none];</layout>
         </color>
         <color id="ID1414225606">
           <id>NO</id>
@@ -124,7 +136,7 @@
                   type="Solid"/>
         <textattr colour="Black"
                   bold="false"/>
-        <text>c0</text>
+        <text>C0</text>
         <ellipse w="54.000000"
                  h="48.000000"/>
         <token x="-10.000000"
@@ -176,7 +188,7 @@
                   type="Solid"/>
         <textattr colour="Black"
                   bold="false"/>
-        <text>c1</text>
+        <text>C1</text>
         <ellipse w="54.000000"
                  h="48.000000"/>
         <token x="-10.000000"
@@ -228,7 +240,7 @@
                   type="Solid"/>
         <textattr colour="Black"
                   bold="false"/>
-        <text>c2</text>
+        <text>C2</text>
         <ellipse w="54.000000"
                  h="48.000000"/>
         <token x="-10.000000"
@@ -280,7 +292,7 @@
                   type="Solid"/>
         <textattr colour="Black"
                   bold="false"/>
-        <text>c3</text>
+        <text>C3</text>
         <ellipse w="54.000000"
                  h="48.000000"/>
         <token x="-10.000000"
@@ -332,7 +344,7 @@
                   type="Solid"/>
         <textattr colour="Black"
                   bold="false"/>
-        <text>c5</text>
+        <text>C5</text>
         <ellipse w="54.000000"
                  h="48.000000"/>
         <token x="-10.000000"
@@ -384,7 +396,7 @@
                   type="Solid"/>
         <textattr colour="Black"
                   bold="false"/>
-        <text>c6</text>
+        <text>C6</text>
         <ellipse w="54.000000"
                  h="48.000000"/>
         <token x="-10.000000"
@@ -436,7 +448,7 @@
                   type="Solid"/>
         <textattr colour="Black"
                   bold="false"/>
-        <text>c7</text>
+        <text>C7</text>
         <ellipse w="54.000000"
                  h="48.000000"/>
         <token x="-10.000000"
@@ -488,7 +500,7 @@
                   type="Solid"/>
         <textattr colour="Black"
                   bold="false"/>
-        <text>c8</text>
+        <text>C8</text>
         <ellipse w="54.000000"
                  h="48.000000"/>
         <token x="-10.000000"
@@ -540,7 +552,7 @@
                   type="Solid"/>
         <textattr colour="Black"
                   bold="false"/>
-        <text>c4</text>
+        <text>C4</text>
         <ellipse w="54.000000"
                  h="48.000000"/>
         <token x="-10.000000"
@@ -619,7 +631,7 @@
                 version="4.0.1">ITEM</text>
         </type>
         <initmark id="ID1413906791">
-          <posattr x="394.500000"
+          <posattr x="397.000000"
                    y="339.000000"/>
           <fillattr colour="White"
                     pattern="Solid"
@@ -630,7 +642,7 @@
           <textattr colour="Black"
                     bold="false"/>
           <text tool="CPN Tools"
-                version="4.0.1">1`blue</text>
+                version="4.0.1">1`none</text>
         </initmark>
       </place>
       <place id="ID1413909472">
@@ -723,7 +735,7 @@
                 version="4.0.1">ITEM</text>
         </type>
         <initmark id="ID1413919693">
-          <posattr x="-702.500000"
+          <posattr x="-697.000000"
                    y="381.000000"/>
           <fillattr colour="White"
                     pattern="Solid"
@@ -734,7 +746,7 @@
           <textattr colour="Black"
                     bold="false"/>
           <text tool="CPN Tools"
-                version="4.0.1">1`red</text>
+                version="4.0.1">1`none</text>
         </initmark>
       </place>
       <place id="ID1413999767">
@@ -902,10 +914,10 @@
                   filled="false"/>
         <lineattr colour="Black"
                   thick="1"
-                  type="Solid"/>
+                  type="solid"/>
         <textattr colour="Black"
                   bold="false"/>
-        <text>a</text>
+        <text>c03</text>
         <box w="22.000000"
              h="20.000000"/>
         <binding x="7.200000"
@@ -976,10 +988,10 @@
                   filled="false"/>
         <lineattr colour="Black"
                   thick="1"
-                  type="Solid"/>
+                  type="solid"/>
         <textattr colour="Black"
                   bold="false"/>
-        <text>o</text>
+        <text>c01</text>
         <box w="22.000000"
              h="20.000000"/>
         <binding x="7.200000"
@@ -1050,10 +1062,10 @@
                   filled="false"/>
         <lineattr colour="Black"
                   thick="1"
-                  type="Solid"/>
+                  type="solid"/>
         <textattr colour="Black"
                   bold="false"/>
-        <text>n</text>
+        <text>c21</text>
         <box w="22.000000"
              h="20.000000"/>
         <binding x="7.200000"
@@ -1124,10 +1136,10 @@
                   filled="false"/>
         <lineattr colour="Black"
                   thick="1"
-                  type="Solid"/>
+                  type="solid"/>
         <textattr colour="Black"
                   bold="false"/>
-        <text>k</text>
+        <text>c25</text>
         <box w="22.000000"
              h="20.000000"/>
         <binding x="7.200000"
@@ -1198,10 +1210,10 @@
                   filled="false"/>
         <lineattr colour="Black"
                   thick="1"
-                  type="Solid"/>
+                  type="solid"/>
         <textattr colour="Black"
                   bold="false"/>
-        <text>g</text>
+        <text>c78</text>
         <box w="22.000000"
              h="20.000000"/>
         <binding x="7.200000"
@@ -1272,10 +1284,10 @@
                   filled="false"/>
         <lineattr colour="Black"
                   thick="1"
-                  type="Solid"/>
+                  type="solid"/>
         <textattr colour="Black"
                   bold="false"/>
-        <text>i</text>
+        <text>c58</text>
         <box w="22.000000"
              h="20.000000"/>
         <binding x="7.200000"
@@ -1346,10 +1358,10 @@
                   filled="false"/>
         <lineattr colour="Black"
                   thick="1"
-                  type="Solid"/>
+                  type="solid"/>
         <textattr colour="Black"
                   bold="false"/>
-        <text>e</text>
+        <text>c67</text>
         <box w="22.000000"
              h="20.000000"/>
         <binding x="7.200000"
@@ -1413,23 +1425,23 @@
       </trans>
       <trans id="ID1413863459"
              explicit="false">
-        <posattr x="-462.000000"
+        <posattr x="-485.000000"
                  y="84.000000"/>
         <fillattr colour="White"
                   pattern=""
                   filled="false"/>
         <lineattr colour="Black"
                   thick="1"
-                  type="Solid"/>
+                  type="solid"/>
         <textattr colour="Black"
                   bold="false"/>
-        <text>c</text>
+        <text>c36</text>
         <box w="22.000000"
              h="20.000000"/>
         <binding x="7.200000"
                  y="-3.000000"/>
         <cond id="ID1413863460">
-          <posattr x="-482.000000"
+          <posattr x="-505.000000"
                    y="105.000000"/>
           <fillattr colour="White"
                     pattern="Solid"
@@ -1443,7 +1455,7 @@
                 version="4.0.1"/>
         </cond>
         <time id="ID1413863461">
-          <posattr x="-436.500000"
+          <posattr x="-459.500000"
                    y="105.000000"/>
           <fillattr colour="White"
                     pattern="Solid"
@@ -1457,7 +1469,7 @@
                 version="4.0.1"/>
         </time>
         <code id="ID1413863462">
-          <posattr x="-416.500000"
+          <posattr x="-439.500000"
                    y="42.000000"/>
           <fillattr colour="White"
                     pattern="Solid"
@@ -1471,7 +1483,7 @@
                 version="4.0.1"/>
         </code>
         <priority id="ID1413863464">
-          <posattr x="-500.000000"
+          <posattr x="-523.000000"
                    y="63.000000"/>
           <fillattr colour="White"
                     pattern="Solid"
@@ -1494,10 +1506,10 @@
                   filled="false"/>
         <lineattr colour="Black"
                   thick="1"
-                  type="Solid"/>
+                  type="solid"/>
         <textattr colour="Black"
                   bold="false"/>
-        <text>b</text>
+        <text>c30</text>
         <box w="22.000000"
              h="20.000000"/>
         <binding x="7.200000"
@@ -1568,10 +1580,10 @@
                   filled="false"/>
         <lineattr colour="Black"
                   thick="1"
-                  type="Solid"/>
+                  type="solid"/>
         <textattr colour="Black"
                   bold="false"/>
-        <text>p</text>
+        <text>c10</text>
         <box w="22.000000"
              h="20.000000"/>
         <binding x="7.200000"
@@ -1642,10 +1654,10 @@
                   filled="false"/>
         <lineattr colour="Black"
                   thick="1"
-                  type="Solid"/>
+                  type="solid"/>
         <textattr colour="Black"
                   bold="false"/>
-        <text>m</text>
+        <text>c12</text>
         <box w="22.000000"
              h="20.000000"/>
         <binding x="7.200000"
@@ -1716,10 +1728,10 @@
                   filled="false"/>
         <lineattr colour="Black"
                   thick="1"
-                  type="Solid"/>
+                  type="solid"/>
         <textattr colour="Black"
                   bold="false"/>
-        <text>l</text>
+        <text>c52</text>
         <box w="22.000000"
              h="20.000000"/>
         <binding x="7.200000"
@@ -1790,10 +1802,10 @@
                   filled="false"/>
         <lineattr colour="Black"
                   thick="1"
-                  type="Solid"/>
+                  type="solid"/>
         <textattr colour="Black"
                   bold="false"/>
-        <text>f</text>
+        <text>c76</text>
         <box w="22.000000"
              h="20.000000"/>
         <binding x="7.200000"
@@ -1864,10 +1876,10 @@
                   filled="false"/>
         <lineattr colour="Black"
                   thick="1"
-                  type="Solid"/>
+                  type="solid"/>
         <textattr colour="Black"
                   bold="false"/>
-        <text>d</text>
+        <text>c63</text>
         <box w="22.000000"
              h="20.000000"/>
         <binding x="7.200000"
@@ -1938,10 +1950,10 @@
                   filled="false"/>
         <lineattr colour="Black"
                   thick="1"
-                  type="Solid"/>
+                  type="solid"/>
         <textattr colour="Black"
                   bold="false"/>
-        <text>h</text>
+        <text>c87</text>
         <box w="22.000000"
              h="20.000000"/>
         <binding x="7.200000"
@@ -2012,10 +2024,10 @@
                   filled="false"/>
         <lineattr colour="Black"
                   thick="1"
-                  type="Solid"/>
+                  type="solid"/>
         <textattr colour="Black"
                   bold="false"/>
-        <text>j</text>
+        <text>c85</text>
         <box w="22.000000"
              h="20.000000"/>
         <binding x="7.200000"
@@ -2086,10 +2098,10 @@
                   filled="false"/>
         <lineattr colour="Black"
                   thick="1"
-                  type="Solid"/>
+                  type="solid"/>
         <textattr colour="Black"
                   bold="false"/>
-        <text>q</text>
+        <text>c14</text>
         <box w="22.000000"
              h="20.000000"/>
         <binding x="7.200000"
@@ -2160,10 +2172,10 @@
                   filled="false"/>
         <lineattr colour="Black"
                   thick="1"
-                  type="Solid"/>
+                  type="solid"/>
         <textattr colour="Black"
                   bold="false"/>
-        <text>r</text>
+        <text>c41</text>
         <box w="22.000000"
              h="20.000000"/>
         <binding x="7.200000"
@@ -2234,10 +2246,10 @@
                   filled="false"/>
         <lineattr colour="Black"
                   thick="1"
-                  type="Solid"/>
+                  type="solid"/>
         <textattr colour="Black"
                   bold="false"/>
-        <text>v</text>
+        <text>c47</text>
         <box w="22.000000"
              h="20.000000"/>
         <binding x="7.200000"
@@ -2308,10 +2320,10 @@
                   filled="false"/>
         <lineattr colour="Black"
                   thick="1"
-                  type="Solid"/>
+                  type="solid"/>
         <textattr colour="Black"
                   bold="false"/>
-        <text>u</text>
+        <text>c74</text>
         <box w="22.000000"
              h="20.000000"/>
         <binding x="7.200000"
@@ -2382,10 +2394,10 @@
                   filled="false"/>
         <lineattr colour="Black"
                   thick="1"
-                  type="Solid"/>
+                  type="solid"/>
         <textattr colour="Black"
                   bold="false"/>
-        <text>s</text>
+        <text>c45</text>
         <box w="22.000000"
              h="20.000000"/>
         <binding x="7.200000"
@@ -2456,10 +2468,10 @@
                   filled="false"/>
         <lineattr colour="Black"
                   thick="1"
-                  type="Solid"/>
+                  type="solid"/>
         <textattr colour="Black"
                   bold="false"/>
-        <text>t</text>
+        <text>c54</text>
         <box w="23.280000"
              h="20.000000"/>
         <binding x="7.200000"
@@ -2530,10 +2542,10 @@
                   filled="false"/>
         <lineattr colour="Black"
                   thick="1"
-                  type="Solid"/>
+                  type="solid"/>
         <textattr colour="Black"
                   bold="false"/>
-        <text>x</text>
+        <text>c34</text>
         <box w="22.000000"
              h="20.000000"/>
         <binding x="7.200000"
@@ -2604,10 +2616,10 @@
                   filled="false"/>
         <lineattr colour="Black"
                   thick="1"
-                  type="Solid"/>
+                  type="solid"/>
         <textattr colour="Black"
                   bold="false"/>
-        <text>w</text>
+        <text>c43</text>
         <box w="22.000000"
              h="20.000000"/>
         <binding x="7.200000"
@@ -2678,10 +2690,10 @@
                   filled="false"/>
         <lineattr colour="Black"
                   thick="1"
-                  type="Solid"/>
+                  type="solid"/>
         <textattr colour="Black"
                   bold="false"/>
-        <text>chkSt1</text>
+        <text>chkStRed</text>
         <box w="60.000000"
              h="23.360000"/>
         <binding x="7.200000"
@@ -2752,11 +2764,11 @@
                   filled="false"/>
         <lineattr colour="Black"
                   thick="1"
-                  type="Solid"/>
+                  type="solid"/>
         <textattr colour="Black"
                   bold="false"/>
-        <text>chkSt2</text>
-        <box w="60.000000"
+        <text>chkStBlue</text>
+        <box w="68.192000"
              h="23.360000"/>
         <binding x="7.200000"
                  y="-3.000000"/>
@@ -2775,7 +2787,7 @@
                 version="4.0.1">[it&lt;&gt;none]</text>
         </cond>
         <time id="ID1413965550">
-          <posattr x="-558.500000"
+          <posattr x="-554.404000"
                    y="219.680000"/>
           <fillattr colour="White"
                     pattern="Solid"
@@ -2789,7 +2801,7 @@
                 version="4.0.1"/>
         </time>
         <code id="ID1413965551">
-          <posattr x="-538.500000"
+          <posattr x="-534.404000"
                    y="153.320000"/>
           <fillattr colour="White"
                     pattern="Solid"
@@ -2803,7 +2815,7 @@
                 version="4.0.1"/>
         </code>
         <priority id="ID1413965553">
-          <posattr x="-661.000000"
+          <posattr x="-665.096000"
                    y="174.320000"/>
           <fillattr colour="White"
                     pattern="Solid"
@@ -2826,16 +2838,16 @@
                   filled="false"/>
         <lineattr colour="Black"
                   thick="1"
-                  type="Solid"/>
+                  type="solid"/>
         <textattr colour="Black"
                   bold="false"/>
-        <text>dlvrSt2</text>
-        <box w="60.000000"
+        <text>dlvrStBlue</text>
+        <box w="95.840000"
              h="31.040000"/>
         <binding x="7.200000"
                  y="-3.000000"/>
         <cond id="ID1413996112">
-          <posattr x="-838.000000"
+          <posattr x="-855.920000"
                    y="553.000000"/>
           <fillattr colour="White"
                     pattern="Solid"
@@ -2849,7 +2861,7 @@
                 version="4.0.1">[col=it]</text>
         </cond>
         <time id="ID1413996113">
-          <posattr x="-737.500000"
+          <posattr x="-719.580000"
                    y="586.520000"/>
           <fillattr colour="White"
                     pattern="Solid"
@@ -2863,7 +2875,7 @@
                 version="4.0.1"/>
         </time>
         <code id="ID1413996114">
-          <posattr x="-717.500000"
+          <posattr x="-699.580000"
                    y="512.480000"/>
           <fillattr colour="White"
                     pattern="Solid"
@@ -2877,7 +2889,7 @@
                 version="4.0.1"/>
         </code>
         <priority id="ID1413996116">
-          <posattr x="-850.000000"
+          <posattr x="-867.920000"
                    y="533.480000"/>
           <fillattr colour="White"
                     pattern="Solid"
@@ -2900,16 +2912,16 @@
                   filled="false"/>
         <lineattr colour="Black"
                   thick="1"
-                  type="Solid"/>
+                  type="solid"/>
         <textattr colour="Black"
                   bold="false"/>
-        <text>dlvrSt1</text>
-        <box w="60.000000"
+        <text>dlvrStRed</text>
+        <box w="92.768000"
              h="31.040000"/>
         <binding x="7.200000"
                  y="-3.000000"/>
         <cond id="ID1414053513">
-          <posattr x="224.000000"
+          <posattr x="240.384000"
                    y="560.000000"/>
           <fillattr colour="White"
                     pattern="Solid"
@@ -2923,7 +2935,7 @@
                 version="4.0.1">[col=it]</text>
         </cond>
         <time id="ID1414053514">
-          <posattr x="212.500000"
+          <posattr x="228.884000"
                    y="586.520000"/>
           <fillattr colour="White"
                     pattern="Solid"
@@ -2937,7 +2949,7 @@
                 version="4.0.1"/>
         </time>
         <code id="ID1414053515">
-          <posattr x="232.500000"
+          <posattr x="248.884000"
                    y="512.480000"/>
           <fillattr colour="White"
                     pattern="Solid"
@@ -2951,7 +2963,7 @@
                 version="4.0.1"/>
         </code>
         <priority id="ID1414053517">
-          <posattr x="100.000000"
+          <posattr x="83.616000"
                    y="533.480000"/>
           <fillattr colour="White"
                     pattern="Solid"
@@ -2967,24 +2979,24 @@
       </trans>
       <trans id="ID1414115071"
              explicit="false">
-        <posattr x="-941.000000"
+        <posattr x="-1035.000000"
                  y="355.000000"/>
         <fillattr colour="White"
                   pattern=""
                   filled="false"/>
         <lineattr colour="Black"
                   thick="1"
-                  type="Solid"/>
+                  type="solid"/>
         <textattr colour="Black"
                   bold="false"/>
-        <text>createB</text>
-        <box w="24.800000"
-             h="22.400000"/>
+        <text>createItemStBlue</text>
+        <box w="113.376000"
+             h="23.424000"/>
         <binding x="7.200000"
                  y="-3.000000"/>
         <cond id="ID1414115072">
-          <posattr x="-962.400000"
-                   y="377.200000"/>
+          <posattr x="-1100.688000"
+                   y="377.712000"/>
           <fillattr colour="White"
                     pattern="Solid"
                     filled="false"/>
@@ -2997,8 +3009,8 @@
                 version="4.0.1"/>
         </cond>
         <time id="ID1414115073">
-          <posattr x="-914.100000"
-                   y="377.200000"/>
+          <posattr x="-963.812000"
+                   y="377.712000"/>
           <fillattr colour="White"
                     pattern="Solid"
                     filled="false"/>
@@ -3011,8 +3023,8 @@
                 version="4.0.1"/>
         </time>
         <code id="ID1414115074">
-          <posattr x="-894.100000"
-                   y="311.800000"/>
+          <posattr x="-943.812000"
+                   y="311.288000"/>
           <fillattr colour="White"
                     pattern="Solid"
                     filled="false"/>
@@ -3025,8 +3037,8 @@
                 version="4.0.1"/>
         </code>
         <priority id="ID1414115076">
-          <posattr x="-991.400000"
-                   y="332.800000"/>
+          <posattr x="-1129.688000"
+                   y="348.000000"/>
           <fillattr colour="White"
                     pattern="Solid"
                     filled="false"/>
@@ -3041,24 +3053,24 @@
       </trans>
       <trans id="ID1414137041"
              explicit="false">
-        <posattr x="588.000000"
+        <posattr x="630.000000"
                  y="378.000000"/>
         <fillattr colour="White"
                   pattern=""
                   filled="false"/>
         <lineattr colour="Black"
                   thick="1"
-                  type="Solid"/>
+                  type="solid"/>
         <textattr colour="Black"
                   bold="false"/>
-        <text>createA</text>
-        <box w="24.800000"
-             h="22.400000"/>
+        <text>createItemStRed</text>
+        <box w="124.128000"
+             h="21.376000"/>
         <binding x="7.200000"
                  y="-3.000000"/>
         <cond id="ID1414137042">
-          <posattr x="566.600000"
-                   y="400.200000"/>
+          <posattr x="558.936000"
+                   y="399.688000"/>
           <fillattr colour="White"
                     pattern="Solid"
                     filled="false"/>
@@ -3071,8 +3083,8 @@
                 version="4.0.1"/>
         </cond>
         <time id="ID1414137043">
-          <posattr x="614.900000"
-                   y="400.200000"/>
+          <posattr x="706.564000"
+                   y="399.688000"/>
           <fillattr colour="White"
                     pattern="Solid"
                     filled="false"/>
@@ -3085,8 +3097,8 @@
                 version="4.0.1"/>
         </time>
         <code id="ID1414271994">
-          <posattr x="634.900000"
-                   y="334.800000"/>
+          <posattr x="726.564000"
+                   y="335.312000"/>
           <fillattr colour="White"
                     pattern="Solid"
                     filled="false"/>
@@ -3099,8 +3111,8 @@
                 version="4.0.1"/>
         </code>
         <priority id="ID1414137046">
-          <posattr x="537.600000"
-                   y="355.800000"/>
+          <posattr x="529.936000"
+                   y="371.000000"/>
           <fillattr colour="White"
                     pattern="Solid"
                     filled="false"/>
@@ -3387,8 +3399,8 @@
         <transend idref="ID1413863459"/>
         <placeend idref="ID1413859932"/>
         <annot id="ID1413871646">
-          <posattr x="-455.500000"
-                   y="134.000000"/>
+          <posattr x="-467.500000"
+                   y="133.000000"/>
           <fillattr colour="White"
                     pattern="Solid"
                     filled="false"/>
@@ -3419,8 +3431,8 @@
         <transend idref="ID1413863459"/>
         <placeend idref="ID1413860157"/>
         <annot id="ID1413871915">
-          <posattr x="-468.500000"
-                   y="50.000000"/>
+          <posattr x="-483.500000"
+                   y="47.000000"/>
           <fillattr colour="White"
                     pattern="Solid"
                     filled="false"/>
@@ -4538,22 +4550,9 @@
                    currentcyckle="2"/>
         <transend idref="ID1413890782"/>
         <placeend idref="ID1413860079"/>
-        <bendpoint id="ID1413897612"
-                   serial="1">
-          <posattr x="-103.000000"
-                   y="154.000000"/>
-          <fillattr colour="White"
-                    pattern="Solid"
-                    filled="false"/>
-          <lineattr colour="Black"
-                    thick="0"
-                    type="Solid"/>
-          <textattr colour="Black"
-                    bold="false"/>
-        </bendpoint>
         <annot id="ID1413897611">
-          <posattr x="-50.500000"
-                   y="161.000000"/>
+          <posattr x="-48.500000"
+                   y="169.000000"/>
           <fillattr colour="White"
                     pattern="Solid"
                     filled="false"/>
@@ -4840,7 +4839,7 @@
         <transend idref="ID1413965548"/>
         <placeend idref="ID1413859932"/>
         <annot id="ID1413967172">
-          <posattr x="-541.000000"
+          <posattr x="-538.000000"
                    y="186.000000"/>
           <fillattr colour="White"
                     pattern="Solid"
@@ -4917,7 +4916,7 @@
                     bold="false"/>
         </bendpoint>
         <annot id="ID1413983764">
-          <posattr x="-744.000000"
+          <posattr x="-745.000000"
                    y="189.000000"/>
           <fillattr colour="White"
                     pattern="Solid"
@@ -5193,7 +5192,7 @@
         <transend idref="ID1413996111"/>
         <placeend idref="ID1413909472"/>
         <annot id="ID1414042890">
-          <posattr x="-356.000000"
+          <posattr x="-352.000000"
                    y="562.000000"/>
           <fillattr colour="White"
                     pattern="Solid"
@@ -5289,7 +5288,7 @@
         <transend idref="ID1414053512"/>
         <placeend idref="ID1413909472"/>
         <annot id="ID1414066707">
-          <posattr x="100.000000"
+          <posattr x="86.000000"
                    y="578.000000"/>
           <fillattr colour="White"
                     pattern="Solid"
@@ -5321,7 +5320,7 @@
         <transend idref="ID1414053512"/>
         <placeend idref="ID1413909472"/>
         <annot id="ID1414067833">
-          <posattr x="66.000000"
+          <posattr x="54.000000"
                    y="536.000000"/>
           <fillattr colour="White"
                     pattern="Solid"
@@ -5398,7 +5397,7 @@
         <transend idref="ID1414115071"/>
         <placeend idref="ID1413919691"/>
         <annot id="ID1414118802">
-          <posattr x="-894.000000"
+          <posattr x="-924.000000"
                    y="373.000000"/>
           <fillattr colour="White"
                     pattern="Solid"
@@ -5430,7 +5429,7 @@
         <transend idref="ID1414115071"/>
         <placeend idref="ID1413919691"/>
         <annot id="ID1414123071">
-          <posattr x="-879.000000"
+          <posattr x="-900.000000"
                    y="337.000000"/>
           <fillattr colour="White"
                     pattern="Solid"
@@ -5441,7 +5440,7 @@
           <textattr colour="Black"
                     bold="false"/>
           <text tool="CPN Tools"
-                version="4.0.1">ITEM.ran()</text>
+                version="4.0.1">COLNOBLUE.ran()</text>
         </annot>
       </arc>
       <arc id="ID1414138348"
@@ -5462,7 +5461,7 @@
         <transend idref="ID1414137041"/>
         <placeend idref="ID1413906789"/>
         <annot id="ID1414138349">
-          <posattr x="505.000000"
+          <posattr x="500.000000"
                    y="396.000000"/>
           <fillattr colour="White"
                     pattern="Solid"
@@ -5494,7 +5493,7 @@
         <transend idref="ID1414137041"/>
         <placeend idref="ID1413906789"/>
         <annot id="ID1414139656">
-          <posattr x="491.000000"
+          <posattr x="487.000000"
                    y="360.000000"/>
           <fillattr colour="White"
                     pattern="Solid"
@@ -5505,14 +5504,1988 @@
           <textattr colour="Black"
                     bold="false"/>
           <text tool="CPN Tools"
-                version="4.0.1">ITEM.ran()</text>
+                version="4.0.1">COLNORED.ran()</text>
         </annot>
       </arc>
       <constraints/>
     </page>
+    <page id="ID1414343004">
+      <pageattr name="StateSpace"/>
+      <constraints/>
+      <ssarc id="ID1414348182"
+             order="1"
+             number="2">
+        <posattr x="0.000000"
+                 y="0.000000"/>
+        <fillattr colour="White"
+                  pattern="Solid"
+                  filled="false"/>
+        <lineattr colour=""
+                  thick="0"
+                  type="Solid"/>
+        <textattr colour=""
+                  bold="false"/>
+        <arrowattr headsize="1.000000"
+                   currentcyckle="2"/>
+        <source idref="ID1414347648"/>
+        <destination idref="ID1414348174"/>
+        <descriptor x="-12.000000"
+                    y="-71.000000"
+                    visible="false"
+                    dead="true">
+          <text>2:1-&gt;3 New_Page&apos;c03 1: {t=()}</text>
+        </descriptor>
+      </ssarc>
+      <ssarc id="ID1414348187"
+             order="1"
+             number="1">
+        <posattr x="0.000000"
+                 y="0.000000"/>
+        <fillattr colour="White"
+                  pattern="Solid"
+                  filled="false"/>
+        <lineattr colour=""
+                  thick="0"
+                  type="Solid"/>
+        <textattr colour=""
+                  bold="false"/>
+        <arrowattr headsize="1.000000"
+                   currentcyckle="2"/>
+        <source idref="ID1414347648"/>
+        <destination idref="ID1414348178"/>
+        <descriptor x="0.000000"
+                    y="0.000000"
+                    visible="false"
+                    dead="true">
+          <text>1:1-&gt;2 New_Page&apos;c01 1: {t=()}</text>
+        </descriptor>
+      </ssarc>
+      <ssarc id="ID1414348720"
+             order="1"
+             number="6">
+        <posattr x="0.000000"
+                 y="0.000000"/>
+        <fillattr colour="White"
+                  pattern="Solid"
+                  filled="false"/>
+        <lineattr colour=""
+                  thick="0"
+                  type="Solid"/>
+        <textattr colour=""
+                  bold="false"/>
+        <arrowattr headsize="1.000000"
+                   currentcyckle="2"/>
+        <source idref="ID1414348174"/>
+        <destination idref="ID1414348716"/>
+        <descriptor x="-55.000000"
+                    y="-66.000000"
+                    visible="false"
+                    dead="true">
+          <text>6:3-&gt;6 New_Page&apos;chkStBlue 1: {t=(),it=red}</text>
+        </descriptor>
+      </ssarc>
+      <ssarc id="ID1414349264"
+             order="1"
+             number="5">
+        <posattr x="0.000000"
+                 y="0.000000"/>
+        <fillattr colour="White"
+                  pattern="Solid"
+                  filled="false"/>
+        <lineattr colour=""
+                  thick="0"
+                  type="Solid"/>
+        <textattr colour=""
+                  bold="false"/>
+        <arrowattr headsize="1.000000"
+                   currentcyckle="2"/>
+        <source idref="ID1414348178"/>
+        <destination idref="ID1414347648"/>
+        <descriptor x="0.000000"
+                    y="0.000000"
+                    visible="false"
+                    dead="true">
+          <text>5:2-&gt;1 New_Page&apos;c10 1: {t=()}</text>
+        </descriptor>
+      </ssarc>
+      <ssarc id="ID1414349269"
+             order="1"
+             number="4">
+        <posattr x="0.000000"
+                 y="0.000000"/>
+        <fillattr colour="White"
+                  pattern="Solid"
+                  filled="false"/>
+        <lineattr colour=""
+                  thick="0"
+                  type="Solid"/>
+        <textattr colour=""
+                  bold="false"/>
+        <arrowattr headsize="1.000000"
+                   currentcyckle="2"/>
+        <source idref="ID1414348178"/>
+        <destination idref="ID1414349256"/>
+        <descriptor x="0.000000"
+                    y="0.000000"
+                    visible="false"
+                    dead="true">
+          <text>4:2-&gt;5 New_Page&apos;c12 1: {t=()}</text>
+        </descriptor>
+      </ssarc>
+      <ssarc id="ID1414349274"
+             order="1"
+             number="3">
+        <posattr x="0.000000"
+                 y="0.000000"/>
+        <fillattr colour="White"
+                  pattern="Solid"
+                  filled="false"/>
+        <lineattr colour=""
+                  thick="0"
+                  type="Solid"/>
+        <textattr colour=""
+                  bold="false"/>
+        <arrowattr headsize="1.000000"
+                   currentcyckle="2"/>
+        <source idref="ID1414348178"/>
+        <destination idref="ID1414349260"/>
+        <descriptor x="0.000000"
+                    y="0.000000"
+                    visible="false"
+                    dead="true">
+          <text>3:2-&gt;4 New_Page&apos;c14 1: {t=()}</text>
+        </descriptor>
+      </ssarc>
+      <ssarc id="ID1414349809"
+             order="0"
+             number="12">
+        <posattr x="0.000000"
+                 y="0.000000"/>
+        <fillattr colour="White"
+                  pattern="Solid"
+                  filled="false"/>
+        <lineattr colour=""
+                  thick="0"
+                  type="Solid"/>
+        <textattr colour=""
+                  bold="false"/>
+        <arrowattr headsize="1.000000"
+                   currentcyckle="2"/>
+        <source idref="ID1414348716"/>
+        <destination idref="ID1414348716"/>
+        <bendpoint id="ID1414349811"
+                   serial="1">
+          <posattr x="0.500000"
+                   y="68.000000"/>
+          <fillattr colour="White"
+                    pattern="Solid"
+                    filled="false"/>
+          <lineattr colour="Black"
+                    thick="0"
+                    type="Solid"/>
+          <textattr colour="Black"
+                    bold="false"/>
+        </bendpoint>
+        <bendpoint id="ID1414349812"
+                   serial="2">
+          <posattr x="0.500000"
+                   y="28.000000"/>
+          <fillattr colour="White"
+                    pattern="Solid"
+                    filled="false"/>
+          <lineattr colour="Black"
+                    thick="0"
+                    type="Solid"/>
+          <textattr colour="Black"
+                    bold="false"/>
+        </bendpoint>
+        <bendpoint id="ID1414349813"
+                   serial="3">
+          <posattr x="-42.000000"
+                   y="28.000000"/>
+          <fillattr colour="White"
+                    pattern="Solid"
+                    filled="false"/>
+          <lineattr colour="Black"
+                    thick="0"
+                    type="Solid"/>
+          <textattr colour="Black"
+                    bold="false"/>
+        </bendpoint>
+        <descriptor x="42.000000"
+                    y="-15.000000"
+                    visible="false"
+                    dead="true">
+          <text>12:6-&gt;6 New_Page&apos;createItemStBlue 1: {}</text>
+        </descriptor>
+      </ssarc>
+      <ssarc id="ID1414350354"
+             order="1"
+             number="11">
+        <posattr x="0.000000"
+                 y="0.000000"/>
+        <fillattr colour="White"
+                  pattern="Solid"
+                  filled="false"/>
+        <lineattr colour=""
+                  thick="0"
+                  type="Solid"/>
+        <textattr colour=""
+                  bold="false"/>
+        <arrowattr headsize="1.000000"
+                   currentcyckle="2"/>
+        <source idref="ID1414349256"/>
+        <destination idref="ID1414350350"/>
+        <descriptor x="0.000000"
+                    y="0.000000"
+                    visible="false"
+                    dead="true">
+          <text>11:5-&gt;9 New_Page&apos;chkStRed 1: {t=(),it=blue}</text>
+        </descriptor>
+      </ssarc>
+      <ssarc id="ID1414350899"
+             order="1"
+             number="19">
+        <posattr x="0.000000"
+                 y="0.000000"/>
+        <fillattr colour="White"
+                  pattern="Solid"
+                  filled="false"/>
+        <lineattr colour=""
+                  thick="0"
+                  type="Solid"/>
+        <textattr colour=""
+                  bold="false"/>
+        <arrowattr headsize="1.000000"
+                   currentcyckle="2"/>
+        <source idref="ID1414350350"/>
+        <destination idref="ID1414350895"/>
+        <descriptor x="0.000000"
+                    y="0.000000"
+                    visible="false"
+                    dead="true">
+          <text>19:9-&gt;12 New_Page&apos;createItemStRed 1: {}</text>
+        </descriptor>
+      </ssarc>
+      <ssarc id="ID1414351453"
+             order="1"
+             number="25">
+        <posattr x="0.000000"
+                 y="0.000000"/>
+        <fillattr colour="White"
+                  pattern="Solid"
+                  filled="false"/>
+        <lineattr colour=""
+                  thick="0"
+                  type="Solid"/>
+        <textattr colour=""
+                  bold="false"/>
+        <arrowattr headsize="1.000000"
+                   currentcyckle="2"/>
+        <source idref="ID1414350895"/>
+        <destination idref="ID1414351445"/>
+        <descriptor x="0.000000"
+                    y="0.000000"
+                    visible="false"
+                    dead="true">
+          <text>25:12-&gt;14 New_Page&apos;c21 1: {t=()}</text>
+        </descriptor>
+      </ssarc>
+      <ssarc id="ID1414351458"
+             order="1"
+             number="24">
+        <posattr x="0.000000"
+                 y="0.000000"/>
+        <fillattr colour="White"
+                  pattern="Solid"
+                  filled="false"/>
+        <lineattr colour=""
+                  thick="0"
+                  type="Solid"/>
+        <textattr colour=""
+                  bold="false"/>
+        <arrowattr headsize="1.000000"
+                   currentcyckle="2"/>
+        <source idref="ID1414350895"/>
+        <destination idref="ID1414351449"/>
+        <descriptor x="0.000000"
+                    y="0.000000"
+                    visible="false"
+                    dead="true">
+          <text>24:12-&gt;13 New_Page&apos;c25 1: {t=()}</text>
+        </descriptor>
+      </ssarc>
+      <ssarc id="ID1414352017"
+             order="1"
+             number="31">
+        <posattr x="0.000000"
+                 y="0.000000"/>
+        <fillattr colour="White"
+                  pattern="Solid"
+                  filled="false"/>
+        <lineattr colour=""
+                  thick="0"
+                  type="Solid"/>
+        <textattr colour=""
+                  bold="false"/>
+        <arrowattr headsize="1.000000"
+                   currentcyckle="2"/>
+        <source idref="ID1414351445"/>
+        <destination idref="ID1414352009"/>
+        <descriptor x="0.000000"
+                    y="0.000000"
+                    visible="false"
+                    dead="true">
+          <text>31:14-&gt;17 New_Page&apos;c10 1: {t=()}</text>
+        </descriptor>
+      </ssarc>
+      <ssarc id="ID1414352022"
+             order="1"
+             number="30">
+        <posattr x="0.000000"
+                 y="0.000000"/>
+        <fillattr colour="White"
+                  pattern="Solid"
+                  filled="false"/>
+        <lineattr colour=""
+                  thick="0"
+                  type="Solid"/>
+        <textattr colour=""
+                  bold="false"/>
+        <arrowattr headsize="1.000000"
+                   currentcyckle="2"/>
+        <source idref="ID1414351445"/>
+        <destination idref="ID1414350895"/>
+        <descriptor x="0.000000"
+                    y="0.000000"
+                    visible="false"
+                    dead="true">
+          <text>30:14-&gt;12 New_Page&apos;c12 1: {t=()}</text>
+        </descriptor>
+      </ssarc>
+      <ssarc id="ID1414352027"
+             order="1"
+             number="29">
+        <posattr x="0.000000"
+                 y="0.000000"/>
+        <fillattr colour="White"
+                  pattern="Solid"
+                  filled="false"/>
+        <lineattr colour=""
+                  thick="0"
+                  type="Solid"/>
+        <textattr colour=""
+                  bold="false"/>
+        <arrowattr headsize="1.000000"
+                   currentcyckle="2"/>
+        <source idref="ID1414351445"/>
+        <destination idref="ID1414352013"/>
+        <descriptor x="0.000000"
+                    y="0.000000"
+                    visible="false"
+                    dead="true">
+          <text>29:14-&gt;15 New_Page&apos;c14 1: {t=()}</text>
+        </descriptor>
+      </ssarc>
+      <ssarc id="ID1414352583"
+             order="1"
+             number="39">
+        <posattr x="0.000000"
+                 y="0.000000"/>
+        <fillattr colour="White"
+                  pattern="Solid"
+                  filled="false"/>
+        <lineattr colour=""
+                  thick="0"
+                  type="Solid"/>
+        <textattr colour=""
+                  bold="false"/>
+        <arrowattr headsize="1.000000"
+                   currentcyckle="2"/>
+        <source idref="ID1414352009"/>
+        <destination idref="ID1414352579"/>
+        <descriptor x="0.000000"
+                    y="0.000000"
+                    visible="false"
+                    dead="true">
+          <text>39:17-&gt;18 New_Page&apos;c03 1: {t=()}</text>
+        </descriptor>
+      </ssarc>
+      <ssarc id="ID1414352588"
+             order="1"
+             number="38">
+        <posattr x="0.000000"
+                 y="0.000000"/>
+        <fillattr colour="White"
+                  pattern="Solid"
+                  filled="false"/>
+        <lineattr colour=""
+                  thick="0"
+                  type="Solid"/>
+        <textattr colour=""
+                  bold="false"/>
+        <arrowattr headsize="1.000000"
+                   currentcyckle="2"/>
+        <source idref="ID1414352009"/>
+        <destination idref="ID1414351445"/>
+        <descriptor x="0.000000"
+                    y="0.000000"
+                    visible="false"
+                    dead="true">
+          <text>38:17-&gt;14 New_Page&apos;c01 1: {t=()}</text>
+        </descriptor>
+      </ssarc>
+      <ssarc id="ID1414353145"
+             order="1"
+             number="40">
+        <posattr x="0.000000"
+                 y="0.000000"/>
+        <fillattr colour="White"
+                  pattern="Solid"
+                  filled="false"/>
+        <lineattr colour=""
+                  thick="0"
+                  type="Solid"/>
+        <textattr colour=""
+                  bold="false"/>
+        <arrowattr headsize="1.000000"
+                   currentcyckle="2"/>
+        <source idref="ID1414352579"/>
+        <destination idref="ID1414353141"/>
+        <descriptor x="0.000000"
+                    y="0.000000"
+                    visible="false"
+                    dead="true">
+          <text>40:18-&gt;20 New_Page&apos;dlvrStBlue 1: {t=(),col=blue,it=blue}</text>
+        </descriptor>
+      </ssarc>
+      <ssarc id="ID1414353705"
+             order="1"
+             number="44">
+        <posattr x="0.000000"
+                 y="0.000000"/>
+        <fillattr colour="White"
+                  pattern="Solid"
+                  filled="false"/>
+        <lineattr colour=""
+                  thick="0"
+                  type="Solid"/>
+        <textattr colour=""
+                  bold="false"/>
+        <arrowattr headsize="1.000000"
+                   currentcyckle="2"/>
+        <source idref="ID1414353141"/>
+        <destination idref="ID1414353701"/>
+        <descriptor x="-154.000000"
+                    y="147.000000"
+                    visible="true"
+                    dead="true">
+          <text>44:20-&gt;22 New_Page&apos;chkStBlue 1: {t=(),it=red}</text>
+        </descriptor>
+      </ssarc>
+      <ssarc id="ID1414354278"
+             order="1"
+             number="10">
+        <posattr x="0.000000"
+                 y="0.000000"/>
+        <fillattr colour="White"
+                  pattern="Solid"
+                  filled="false"/>
+        <lineattr colour=""
+                  thick="0"
+                  type="Solid"/>
+        <textattr colour=""
+                  bold="false"/>
+        <arrowattr headsize="1.000000"
+                   currentcyckle="2"/>
+        <source idref="ID1414349260"/>
+        <destination idref="ID1414348178"/>
+        <descriptor x="0.000000"
+                    y="0.000000"
+                    visible="false"
+                    dead="true">
+          <text>10:4-&gt;2 New_Page&apos;c41 1: {t=()}</text>
+        </descriptor>
+      </ssarc>
+      <ssarc id="ID1414354283"
+             order="1"
+             number="9">
+        <posattr x="0.000000"
+                 y="0.000000"/>
+        <fillattr colour="White"
+                  pattern="Solid"
+                  filled="false"/>
+        <lineattr colour=""
+                  thick="0"
+                  type="Solid"/>
+        <textattr colour=""
+                  bold="false"/>
+        <arrowattr headsize="1.000000"
+                   currentcyckle="2"/>
+        <source idref="ID1414349260"/>
+        <destination idref="ID1414354270"/>
+        <descriptor x="0.000000"
+                    y="0.000000"
+                    visible="false"
+                    dead="true">
+          <text>9:4-&gt;8 New_Page&apos;c47 1: {t=()}</text>
+        </descriptor>
+      </ssarc>
+      <ssarc id="ID1414354288"
+             order="1"
+             number="8">
+        <posattr x="0.000000"
+                 y="0.000000"/>
+        <fillattr colour="White"
+                  pattern="Solid"
+                  filled="false"/>
+        <lineattr colour=""
+                  thick="0"
+                  type="Solid"/>
+        <textattr colour=""
+                  bold="false"/>
+        <arrowattr headsize="1.000000"
+                   currentcyckle="2"/>
+        <source idref="ID1414349260"/>
+        <destination idref="ID1414354274"/>
+        <descriptor x="0.000000"
+                    y="0.000000"
+                    visible="false"
+                    dead="true">
+          <text>8:4-&gt;7 New_Page&apos;c45 1: {t=()}</text>
+        </descriptor>
+      </ssarc>
+      <ssarc id="ID1414354293"
+             order="1"
+             number="7">
+        <posattr x="0.000000"
+                 y="0.000000"/>
+        <fillattr colour="White"
+                  pattern="Solid"
+                  filled="false"/>
+        <lineattr colour=""
+                  thick="0"
+                  type="Solid"/>
+        <textattr colour=""
+                  bold="false"/>
+        <arrowattr headsize="1.000000"
+                   currentcyckle="2"/>
+        <source idref="ID1414349260"/>
+        <destination idref="ID1414348174"/>
+        <descriptor x="0.000000"
+                    y="0.000000"
+                    visible="false"
+                    dead="true">
+          <text>7:4-&gt;3 New_Page&apos;c43 1: {t=()}</text>
+        </descriptor>
+      </ssarc>
+      <ssarc id="ID1414354867"
+             order="1"
+             number="18">
+        <posattr x="0.000000"
+                 y="0.000000"/>
+        <fillattr colour="White"
+                  pattern="Solid"
+                  filled="false"/>
+        <lineattr colour=""
+                  thick="0"
+                  type="Solid"/>
+        <textattr colour=""
+                  bold="false"/>
+        <arrowattr headsize="1.000000"
+                   currentcyckle="2"/>
+        <source idref="ID1414354270"/>
+        <destination idref="ID1414354859"/>
+        <descriptor x="0.000000"
+                    y="0.000000"
+                    visible="false"
+                    dead="true">
+          <text>18:8-&gt;10 New_Page&apos;c78 1: {t=()}</text>
+        </descriptor>
+      </ssarc>
+      <ssarc id="ID1414354872"
+             order="1"
+             number="17">
+        <posattr x="0.000000"
+                 y="0.000000"/>
+        <fillattr colour="White"
+                  pattern="Solid"
+                  filled="false"/>
+        <lineattr colour=""
+                  thick="0"
+                  type="Solid"/>
+        <textattr colour=""
+                  bold="false"/>
+        <arrowattr headsize="1.000000"
+                   currentcyckle="2"/>
+        <source idref="ID1414354270"/>
+        <destination idref="ID1414354863"/>
+        <descriptor x="0.000000"
+                    y="0.000000"
+                    visible="false"
+                    dead="true">
+          <text>17:8-&gt;11 New_Page&apos;c76 1: {t=()}</text>
+        </descriptor>
+      </ssarc>
+      <ssarc id="ID1414354877"
+             order="1"
+             number="16">
+        <posattr x="0.000000"
+                 y="0.000000"/>
+        <fillattr colour="White"
+                  pattern="Solid"
+                  filled="false"/>
+        <lineattr colour=""
+                  thick="0"
+                  type="Solid"/>
+        <textattr colour=""
+                  bold="false"/>
+        <arrowattr headsize="1.000000"
+                   currentcyckle="2"/>
+        <source idref="ID1414354270"/>
+        <destination idref="ID1414349260"/>
+        <descriptor x="0.000000"
+                    y="0.000000"
+                    visible="false"
+                    dead="true">
+          <text>16:8-&gt;4 New_Page&apos;c74 1: {t=()}</text>
+        </descriptor>
+      </ssarc>
+      <ssarc id="ID1414355446"
+             order="1"
+             number="15">
+        <posattr x="0.000000"
+                 y="0.000000"/>
+        <fillattr colour="White"
+                  pattern="Solid"
+                  filled="false"/>
+        <lineattr colour=""
+                  thick="0"
+                  type="Solid"/>
+        <textattr colour=""
+                  bold="false"/>
+        <arrowattr headsize="1.000000"
+                   currentcyckle="2"/>
+        <source idref="ID1414354274"/>
+        <destination idref="ID1414354859"/>
+        <descriptor x="0.000000"
+                    y="0.000000"
+                    visible="false"
+                    dead="true">
+          <text>15:7-&gt;10 New_Page&apos;c58 1: {t=()}</text>
+        </descriptor>
+      </ssarc>
+      <ssarc id="ID1414355451"
+             order="1"
+             number="14">
+        <posattr x="0.000000"
+                 y="0.000000"/>
+        <fillattr colour="White"
+                  pattern="Solid"
+                  filled="false"/>
+        <lineattr colour=""
+                  thick="0"
+                  type="Solid"/>
+        <textattr colour=""
+                  bold="false"/>
+        <arrowattr headsize="1.000000"
+                   currentcyckle="2"/>
+        <source idref="ID1414354274"/>
+        <destination idref="ID1414349256"/>
+        <descriptor x="0.000000"
+                    y="0.000000"
+                    visible="false"
+                    dead="true">
+          <text>14:7-&gt;5 New_Page&apos;c52 1: {t=()}</text>
+        </descriptor>
+      </ssarc>
+      <ssarc id="ID1414355456"
+             order="1"
+             number="13">
+        <posattr x="0.000000"
+                 y="0.000000"/>
+        <fillattr colour="White"
+                  pattern="Solid"
+                  filled="false"/>
+        <lineattr colour=""
+                  thick="0"
+                  type="Solid"/>
+        <textattr colour=""
+                  bold="false"/>
+        <arrowattr headsize="1.000000"
+                   currentcyckle="2"/>
+        <source idref="ID1414354274"/>
+        <destination idref="ID1414349260"/>
+        <descriptor x="0.000000"
+                    y="0.000000"
+                    visible="false"
+                    dead="true">
+          <text>13:7-&gt;4 New_Page&apos;c54 1: {t=()}</text>
+        </descriptor>
+      </ssarc>
+      <ssarc id="ID1414356026"
+             order="1"
+             number="21">
+        <posattr x="0.000000"
+                 y="0.000000"/>
+        <fillattr colour="White"
+                  pattern="Solid"
+                  filled="false"/>
+        <lineattr colour=""
+                  thick="0"
+                  type="Solid"/>
+        <textattr colour=""
+                  bold="false"/>
+        <arrowattr headsize="1.000000"
+                   currentcyckle="2"/>
+        <source idref="ID1414354859"/>
+        <destination idref="ID1414354270"/>
+        <descriptor x="0.000000"
+                    y="0.000000"
+                    visible="false"
+                    dead="true">
+          <text>21:10-&gt;8 New_Page&apos;c87 1: {t=()}</text>
+        </descriptor>
+      </ssarc>
+      <ssarc id="ID1414356031"
+             order="1"
+             number="20">
+        <posattr x="0.000000"
+                 y="0.000000"/>
+        <fillattr colour="White"
+                  pattern="Solid"
+                  filled="false"/>
+        <lineattr colour=""
+                  thick="0"
+                  type="Solid"/>
+        <textattr colour=""
+                  bold="false"/>
+        <arrowattr headsize="1.000000"
+                   currentcyckle="2"/>
+        <source idref="ID1414354859"/>
+        <destination idref="ID1414354274"/>
+        <descriptor x="0.000000"
+                    y="0.000000"
+                    visible="false"
+                    dead="true">
+          <text>20:10-&gt;7 New_Page&apos;c85 1: {t=()}</text>
+        </descriptor>
+      </ssarc>
+      <ssarc id="ID1414356604"
+             order="1"
+             number="23">
+        <posattr x="0.000000"
+                 y="0.000000"/>
+        <fillattr colour="White"
+                  pattern="Solid"
+                  filled="false"/>
+        <lineattr colour=""
+                  thick="0"
+                  type="Solid"/>
+        <textattr colour=""
+                  bold="false"/>
+        <arrowattr headsize="1.000000"
+                   currentcyckle="2"/>
+        <source idref="ID1414354863"/>
+        <destination idref="ID1414354270"/>
+        <descriptor x="0.000000"
+                    y="0.000000"
+                    visible="false"
+                    dead="true">
+          <text>23:11-&gt;8 New_Page&apos;c67 1: {t=()}</text>
+        </descriptor>
+      </ssarc>
+      <ssarc id="ID1414356609"
+             order="1"
+             number="22">
+        <posattr x="0.000000"
+                 y="0.000000"/>
+        <fillattr colour="White"
+                  pattern="Solid"
+                  filled="false"/>
+        <lineattr colour=""
+                  thick="0"
+                  type="Solid"/>
+        <textattr colour=""
+                  bold="false"/>
+        <arrowattr headsize="1.000000"
+                   currentcyckle="2"/>
+        <source idref="ID1414354863"/>
+        <destination idref="ID1414348174"/>
+        <descriptor x="-220.000000"
+                    y="159.000000"
+                    visible="false"
+                    dead="true">
+          <text>22:11-&gt;3 New_Page&apos;c63 1: {t=()}</text>
+        </descriptor>
+      </ssarc>
+      <ssarc id="ID1414357191"
+             order="1"
+             number="28">
+        <posattr x="0.000000"
+                 y="0.000000"/>
+        <fillattr colour="White"
+                  pattern="Solid"
+                  filled="false"/>
+        <lineattr colour=""
+                  thick="0"
+                  type="Solid"/>
+        <textattr colour=""
+                  bold="false"/>
+        <arrowattr headsize="1.000000"
+                   currentcyckle="2"/>
+        <source idref="ID1414351449"/>
+        <destination idref="ID1414357187"/>
+        <descriptor x="0.000000"
+                    y="0.000000"
+                    visible="false"
+                    dead="true">
+          <text>28:13-&gt;16 New_Page&apos;c58 1: {t=()}</text>
+        </descriptor>
+      </ssarc>
+      <ssarc id="ID1414357196"
+             order="1"
+             number="27">
+        <posattr x="0.000000"
+                 y="0.000000"/>
+        <fillattr colour="White"
+                  pattern="Solid"
+                  filled="false"/>
+        <lineattr colour=""
+                  thick="0"
+                  type="Solid"/>
+        <textattr colour=""
+                  bold="false"/>
+        <arrowattr headsize="1.000000"
+                   currentcyckle="2"/>
+        <source idref="ID1414351449"/>
+        <destination idref="ID1414350895"/>
+        <descriptor x="0.000000"
+                    y="0.000000"
+                    visible="false"
+                    dead="true">
+          <text>27:13-&gt;12 New_Page&apos;c52 1: {t=()}</text>
+        </descriptor>
+      </ssarc>
+      <ssarc id="ID1414357201"
+             order="1"
+             number="26">
+        <posattr x="0.000000"
+                 y="0.000000"/>
+        <fillattr colour="White"
+                  pattern="Solid"
+                  filled="false"/>
+        <lineattr colour=""
+                  thick="0"
+                  type="Solid"/>
+        <textattr colour=""
+                  bold="false"/>
+        <arrowattr headsize="1.000000"
+                   currentcyckle="2"/>
+        <source idref="ID1414351449"/>
+        <destination idref="ID1414352013"/>
+        <descriptor x="0.000000"
+                    y="0.000000"
+                    visible="false"
+                    dead="true">
+          <text>26:13-&gt;15 New_Page&apos;c54 1: {t=()}</text>
+        </descriptor>
+      </ssarc>
+      <ssarc id="ID1414364298"
+             order="1"
+             number="37">
+        <posattr x="0.000000"
+                 y="0.000000"/>
+        <fillattr colour="White"
+                  pattern="Solid"
+                  filled="false"/>
+        <lineattr colour=""
+                  thick="0"
+                  type="Solid"/>
+        <textattr colour=""
+                  bold="false"/>
+        <arrowattr headsize="1.000000"
+                   currentcyckle="2"/>
+        <source idref="ID1414357187"/>
+        <destination idref="ID1414364294"/>
+        <descriptor x="0.000000"
+                    y="0.000000"
+                    visible="false"
+                    dead="true">
+          <text>37:16-&gt;19 New_Page&apos;c87 1: {t=()}</text>
+        </descriptor>
+      </ssarc>
+      <ssarc id="ID1414364303"
+             order="1"
+             number="36">
+        <posattr x="0.000000"
+                 y="0.000000"/>
+        <fillattr colour="White"
+                  pattern="Solid"
+                  filled="false"/>
+        <lineattr colour=""
+                  thick="0"
+                  type="Solid"/>
+        <textattr colour=""
+                  bold="false"/>
+        <arrowattr headsize="1.000000"
+                   currentcyckle="2"/>
+        <source idref="ID1414357187"/>
+        <destination idref="ID1414351449"/>
+        <descriptor x="0.000000"
+                    y="0.000000"
+                    visible="false"
+                    dead="true">
+          <text>36:16-&gt;13 New_Page&apos;c85 1: {t=()}</text>
+        </descriptor>
+      </ssarc>
+      <ssarc id="ID1414364924"
+             order="1"
+             number="43">
+        <posattr x="0.000000"
+                 y="0.000000"/>
+        <fillattr colour="White"
+                  pattern="Solid"
+                  filled="false"/>
+        <lineattr colour=""
+                  thick="0"
+                  type="Solid"/>
+        <textattr colour=""
+                  bold="false"/>
+        <arrowattr headsize="1.000000"
+                   currentcyckle="2"/>
+        <source idref="ID1414364294"/>
+        <destination idref="ID1414357187"/>
+        <descriptor x="0.000000"
+                    y="0.000000"
+                    visible="false"
+                    dead="true">
+          <text>43:19-&gt;16 New_Page&apos;c78 1: {t=()}</text>
+        </descriptor>
+      </ssarc>
+      <ssarc id="ID1414364929"
+             order="1"
+             number="42">
+        <posattr x="0.000000"
+                 y="0.000000"/>
+        <fillattr colour="White"
+                  pattern="Solid"
+                  filled="false"/>
+        <lineattr colour=""
+                  thick="0"
+                  type="Solid"/>
+        <textattr colour=""
+                  bold="false"/>
+        <arrowattr headsize="1.000000"
+                   currentcyckle="2"/>
+        <source idref="ID1414364294"/>
+        <destination idref="ID1414364920"/>
+        <descriptor x="0.000000"
+                    y="0.000000"
+                    visible="false"
+                    dead="true">
+          <text>42:19-&gt;21 New_Page&apos;c76 1: {t=()}</text>
+        </descriptor>
+      </ssarc>
+      <ssarc id="ID1414364934"
+             order="1"
+             number="41">
+        <posattr x="0.000000"
+                 y="0.000000"/>
+        <fillattr colour="White"
+                  pattern="Solid"
+                  filled="false"/>
+        <lineattr colour=""
+                  thick="0"
+                  type="Solid"/>
+        <textattr colour=""
+                  bold="false"/>
+        <arrowattr headsize="1.000000"
+                   currentcyckle="2"/>
+        <source idref="ID1414364294"/>
+        <destination idref="ID1414352013"/>
+        <descriptor x="0.000000"
+                    y="0.000000"
+                    visible="false"
+                    dead="true">
+          <text>41:19-&gt;15 New_Page&apos;c74 1: {t=()}</text>
+        </descriptor>
+      </ssarc>
+      <ssarc id="ID1414365552"
+             order="1"
+             number="46">
+        <posattr x="0.000000"
+                 y="0.000000"/>
+        <fillattr colour="White"
+                  pattern="Solid"
+                  filled="false"/>
+        <lineattr colour=""
+                  thick="0"
+                  type="Solid"/>
+        <textattr colour=""
+                  bold="false"/>
+        <arrowattr headsize="1.000000"
+                   currentcyckle="2"/>
+        <source idref="ID1414364920"/>
+        <destination idref="ID1414364294"/>
+        <descriptor x="0.000000"
+                    y="0.000000"
+                    visible="false"
+                    dead="true">
+          <text>46:21-&gt;19 New_Page&apos;c67 1: {t=()}</text>
+        </descriptor>
+      </ssarc>
+      <ssarc id="ID1414365557"
+             order="1"
+             number="45">
+        <posattr x="0.000000"
+                 y="0.000000"/>
+        <fillattr colour="White"
+                  pattern="Solid"
+                  filled="false"/>
+        <lineattr colour=""
+                  thick="0"
+                  type="Solid"/>
+        <textattr colour=""
+                  bold="false"/>
+        <arrowattr headsize="1.000000"
+                   currentcyckle="2"/>
+        <source idref="ID1414364920"/>
+        <destination idref="ID1414352579"/>
+        <descriptor x="0.000000"
+                    y="0.000000"
+                    visible="false"
+                    dead="true">
+          <text>45:21-&gt;18 New_Page&apos;c63 1: {t=()}</text>
+        </descriptor>
+      </ssarc>
+      <ssarc id="ID1414413554"
+             order="0"
+             number="47">
+        <posattr x="0.000000"
+                 y="0.000000"/>
+        <fillattr colour="White"
+                  pattern="Solid"
+                  filled="false"/>
+        <lineattr colour=""
+                  thick="0"
+                  type="Solid"/>
+        <textattr colour=""
+                  bold="false"/>
+        <arrowattr headsize="1.000000"
+                   currentcyckle="2"/>
+        <source idref="ID1414353701"/>
+        <destination idref="ID1414353701"/>
+        <bendpoint id="ID1414413556"
+                   serial="1">
+          <posattr x="630.500000"
+                   y="16.000000"/>
+          <fillattr colour="White"
+                    pattern="Solid"
+                    filled="false"/>
+          <lineattr colour="Black"
+                    thick="0"
+                    type="Solid"/>
+          <textattr colour="Black"
+                    bold="false"/>
+        </bendpoint>
+        <bendpoint id="ID1414413557"
+                   serial="2">
+          <posattr x="630.500000"
+                   y="-24.000000"/>
+          <fillattr colour="White"
+                    pattern="Solid"
+                    filled="false"/>
+          <lineattr colour="Black"
+                    thick="0"
+                    type="Solid"/>
+          <textattr colour="Black"
+                    bold="false"/>
+        </bendpoint>
+        <bendpoint id="ID1414413558"
+                   serial="3">
+          <posattr x="588.000000"
+                   y="-24.000000"/>
+          <fillattr colour="White"
+                    pattern="Solid"
+                    filled="false"/>
+          <lineattr colour="Black"
+                    thick="0"
+                    type="Solid"/>
+          <textattr colour="Black"
+                    bold="false"/>
+        </bendpoint>
+        <descriptor x="0.000000"
+                    y="0.000000"
+                    visible="false"
+                    dead="true">
+          <text>47:22-&gt;22 New_Page&apos;createItemStBlue 1: {}</text>
+        </descriptor>
+      </ssarc>
+      <ssnode id="ID1414347648"
+              number="1"
+              predecessors="1"
+              successors="2">
+        <posattr x="-198.000000"
+                 y="68.000000"/>
+        <fillattr colour="White"
+                  pattern=""
+                  filled="false"/>
+        <lineattr colour="Gray"
+                  thick="1"
+                  type="Solid"/>
+        <textattr colour="Gray"
+                  bold="false"/>
+        <descriptor x="-271.000000"
+                    y="-69.000000"
+                    visible="false"
+                    dead="true">
+          <text>1:
+New_Page&apos;C0 1: 1`()
+New_Page&apos;C1 1: empty
+New_Page&apos;C2 1: empty
+New_Page&apos;C3 1: empty
+New_Page&apos;C5 1: empty
+New_Page&apos;C6 1: empty
+New_Page&apos;C7 1: empty
+New_Page&apos;C8 1: empty
+New_Page&apos;C4 1: empty
+New_Page&apos;station_storage_R 1: 1`blue
+New_Page&apos;transporter_load 1: 1`none
+New_Page&apos;station_storage_b 1: 1`red
+New_Page&apos;station_blue 1: 1`blue
+New_Page&apos;delivered_Items 1: empty
+New_Page&apos;station_red 1: 1`red
+</text>
+        </descriptor>
+        <roundbox w="45.000000"
+                  h="40.000000"/>
+      </ssnode>
+      <ssnode id="ID1414348174"
+              number="3"
+              predecessors="3"
+              successors="1">
+        <posattr x="-126.000000"
+                 y="68.000000"/>
+        <fillattr colour="White"
+                  pattern=""
+                  filled="false"/>
+        <lineattr colour="Gray"
+                  thick="1"
+                  type="Solid"/>
+        <textattr colour="Gray"
+                  bold="false"/>
+        <descriptor x="-265.000000"
+                    y="132.000000"
+                    visible="false"
+                    dead="true">
+          <text>3:
+New_Page&apos;C0 1: empty
+New_Page&apos;C1 1: empty
+New_Page&apos;C2 1: empty
+New_Page&apos;C3 1: 1`()
+New_Page&apos;C5 1: empty
+New_Page&apos;C6 1: empty
+New_Page&apos;C7 1: empty
+New_Page&apos;C8 1: empty
+New_Page&apos;C4 1: empty
+New_Page&apos;station_storage_R 1: 1`blue
+New_Page&apos;transporter_load 1: 1`none
+New_Page&apos;station_storage_b 1: 1`red
+New_Page&apos;station_blue 1: 1`blue
+New_Page&apos;delivered_Items 1: empty
+New_Page&apos;station_red 1: 1`red
+</text>
+        </descriptor>
+        <roundbox w="45.000000"
+                  h="40.000000"/>
+      </ssnode>
+      <ssnode id="ID1414348178"
+              number="2"
+              predecessors="2"
+              successors="3">
+        <posattr x="-84.000000"
+                 y="16.000000"/>
+        <fillattr colour="White"
+                  pattern=""
+                  filled="false"/>
+        <lineattr colour="Gray"
+                  thick="1"
+                  type="Solid"/>
+        <textattr colour="Gray"
+                  bold="false"/>
+        <descriptor x="0.000000"
+                    y="0.000000"
+                    visible="false"
+                    dead="true">
+          <text>2:
+New_Page&apos;C0 1: empty
+New_Page&apos;C1 1: 1`()
+New_Page&apos;C2 1: empty
+New_Page&apos;C3 1: empty
+New_Page&apos;C5 1: empty
+New_Page&apos;C6 1: empty
+New_Page&apos;C7 1: empty
+New_Page&apos;C8 1: empty
+New_Page&apos;C4 1: empty
+New_Page&apos;station_storage_R 1: 1`blue
+New_Page&apos;transporter_load 1: 1`none
+New_Page&apos;station_storage_b 1: 1`red
+New_Page&apos;station_blue 1: 1`blue
+New_Page&apos;delivered_Items 1: empty
+New_Page&apos;station_red 1: 1`red
+</text>
+        </descriptor>
+        <roundbox w="45.000000"
+                  h="40.000000"/>
+      </ssnode>
+      <ssnode id="ID1414348716"
+              number="6"
+              predecessors="2"
+              successors="1">
+        <posattr x="-42.000000"
+                 y="68.000000"/>
+        <fillattr colour="White"
+                  pattern=""
+                  filled="false"/>
+        <lineattr colour="Gray"
+                  thick="1"
+                  type="Solid"/>
+        <textattr colour="Gray"
+                  bold="false"/>
+        <descriptor x="-89.000000"
+                    y="135.000000"
+                    visible="false"
+                    dead="true">
+          <text>6:
+New_Page&apos;C0 1: empty
+New_Page&apos;C1 1: empty
+New_Page&apos;C2 1: empty
+New_Page&apos;C3 1: 1`()
+New_Page&apos;C5 1: empty
+New_Page&apos;C6 1: empty
+New_Page&apos;C7 1: empty
+New_Page&apos;C8 1: empty
+New_Page&apos;C4 1: empty
+New_Page&apos;station_storage_R 1: 1`blue
+New_Page&apos;transporter_load 1: 1`red
+New_Page&apos;station_storage_b 1: 1`none
+New_Page&apos;station_blue 1: 1`blue
+New_Page&apos;delivered_Items 1: empty
+New_Page&apos;station_red 1: 1`red
+</text>
+        </descriptor>
+        <roundbox w="45.000000"
+                  h="40.000000"/>
+      </ssnode>
+      <ssnode id="ID1414349256"
+              number="5"
+              predecessors="2"
+              successors="1">
+        <posattr x="0.000000"
+                 y="16.000000"/>
+        <fillattr colour="White"
+                  pattern=""
+                  filled="false"/>
+        <lineattr colour="Gray"
+                  thick="1"
+                  type="Solid"/>
+        <textattr colour="Gray"
+                  bold="false"/>
+        <descriptor x="0.000000"
+                    y="0.000000"
+                    visible="false"
+                    dead="true">
+          <text>5:
+New_Page&apos;C0 1: empty
+New_Page&apos;C1 1: empty
+New_Page&apos;C2 1: 1`()
+New_Page&apos;C3 1: empty
+New_Page&apos;C5 1: empty
+New_Page&apos;C6 1: empty
+New_Page&apos;C7 1: empty
+New_Page&apos;C8 1: empty
+New_Page&apos;C4 1: empty
+New_Page&apos;station_storage_R 1: 1`blue
+New_Page&apos;transporter_load 1: 1`none
+New_Page&apos;station_storage_b 1: 1`red
+New_Page&apos;station_blue 1: 1`blue
+New_Page&apos;delivered_Items 1: empty
+New_Page&apos;station_red 1: 1`red
+</text>
+        </descriptor>
+        <roundbox w="45.000000"
+                  h="40.000000"/>
+      </ssnode>
+      <ssnode id="ID1414349260"
+              number="4"
+              predecessors="3"
+              successors="4">
+        <posattr x="42.000000"
+                 y="-42.000000"/>
+        <fillattr colour="White"
+                  pattern=""
+                  filled="false"/>
+        <lineattr colour="Gray"
+                  thick="1"
+                  type="Solid"/>
+        <textattr colour="Gray"
+                  bold="false"/>
+        <descriptor x="0.000000"
+                    y="0.000000"
+                    visible="false"
+                    dead="true">
+          <text>4:
+New_Page&apos;C0 1: empty
+New_Page&apos;C1 1: empty
+New_Page&apos;C2 1: empty
+New_Page&apos;C3 1: empty
+New_Page&apos;C5 1: empty
+New_Page&apos;C6 1: empty
+New_Page&apos;C7 1: empty
+New_Page&apos;C8 1: empty
+New_Page&apos;C4 1: 1`()
+New_Page&apos;station_storage_R 1: 1`blue
+New_Page&apos;transporter_load 1: 1`none
+New_Page&apos;station_storage_b 1: 1`red
+New_Page&apos;station_blue 1: 1`blue
+New_Page&apos;delivered_Items 1: empty
+New_Page&apos;station_red 1: 1`red
+</text>
+        </descriptor>
+        <roundbox w="45.000000"
+                  h="40.000000"/>
+      </ssnode>
+      <ssnode id="ID1414350350"
+              number="9"
+              predecessors="1"
+              successors="1">
+        <posattr x="84.000000"
+                 y="16.000000"/>
+        <fillattr colour="White"
+                  pattern=""
+                  filled="false"/>
+        <lineattr colour="Gray"
+                  thick="1"
+                  type="Solid"/>
+        <textattr colour="Gray"
+                  bold="false"/>
+        <descriptor x="0.000000"
+                    y="0.000000"
+                    visible="false"
+                    dead="true">
+          <text>9:
+New_Page&apos;C0 1: empty
+New_Page&apos;C1 1: empty
+New_Page&apos;C2 1: 1`()
+New_Page&apos;C3 1: empty
+New_Page&apos;C5 1: empty
+New_Page&apos;C6 1: empty
+New_Page&apos;C7 1: empty
+New_Page&apos;C8 1: empty
+New_Page&apos;C4 1: empty
+New_Page&apos;station_storage_R 1: 1`none
+New_Page&apos;transporter_load 1: 1`blue
+New_Page&apos;station_storage_b 1: 1`red
+New_Page&apos;station_blue 1: 1`blue
+New_Page&apos;delivered_Items 1: empty
+New_Page&apos;station_red 1: 1`red
+</text>
+        </descriptor>
+        <roundbox w="45.000000"
+                  h="40.000000"/>
+      </ssnode>
+      <ssnode id="ID1414350895"
+              number="12"
+              predecessors="3"
+              successors="2">
+        <posattr x="168.000000"
+                 y="16.000000"/>
+        <fillattr colour="White"
+                  pattern=""
+                  filled="false"/>
+        <lineattr colour="Gray"
+                  thick="1"
+                  type="Solid"/>
+        <textattr colour="Gray"
+                  bold="false"/>
+        <descriptor x="0.000000"
+                    y="0.000000"
+                    visible="false"
+                    dead="true">
+          <text>12:
+New_Page&apos;C0 1: empty
+New_Page&apos;C1 1: empty
+New_Page&apos;C2 1: 1`()
+New_Page&apos;C3 1: empty
+New_Page&apos;C5 1: empty
+New_Page&apos;C6 1: empty
+New_Page&apos;C7 1: empty
+New_Page&apos;C8 1: empty
+New_Page&apos;C4 1: empty
+New_Page&apos;station_storage_R 1: 1`blue
+New_Page&apos;transporter_load 1: 1`blue
+New_Page&apos;station_storage_b 1: 1`red
+New_Page&apos;station_blue 1: 1`blue
+New_Page&apos;delivered_Items 1: empty
+New_Page&apos;station_red 1: 1`red
+</text>
+        </descriptor>
+        <roundbox w="45.000000"
+                  h="40.000000"/>
+      </ssnode>
+      <ssnode id="ID1414351445"
+              number="14"
+              predecessors="3"
+              successors="3">
+        <posattr x="252.000000"
+                 y="16.000000"/>
+        <fillattr colour="White"
+                  pattern=""
+                  filled="false"/>
+        <lineattr colour="Gray"
+                  thick="1"
+                  type="Solid"/>
+        <textattr colour="Gray"
+                  bold="false"/>
+        <descriptor x="0.000000"
+                    y="0.000000"
+                    visible="false"
+                    dead="true">
+          <text>14:
+New_Page&apos;C0 1: empty
+New_Page&apos;C1 1: 1`()
+New_Page&apos;C2 1: empty
+New_Page&apos;C3 1: empty
+New_Page&apos;C5 1: empty
+New_Page&apos;C6 1: empty
+New_Page&apos;C7 1: empty
+New_Page&apos;C8 1: empty
+New_Page&apos;C4 1: empty
+New_Page&apos;station_storage_R 1: 1`blue
+New_Page&apos;transporter_load 1: 1`blue
+New_Page&apos;station_storage_b 1: 1`red
+New_Page&apos;station_blue 1: 1`blue
+New_Page&apos;delivered_Items 1: empty
+New_Page&apos;station_red 1: 1`red
+</text>
+        </descriptor>
+        <roundbox w="45.000000"
+                  h="40.000000"/>
+      </ssnode>
+      <ssnode id="ID1414351449"
+              number="13"
+              predecessors="3"
+              successors="3">
+        <posattr x="294.000000"
+                 y="-42.000000"/>
+        <fillattr colour="White"
+                  pattern=""
+                  filled="false"/>
+        <lineattr colour="Gray"
+                  thick="1"
+                  type="Solid"/>
+        <textattr colour="Gray"
+                  bold="false"/>
+        <descriptor x="0.000000"
+                    y="0.000000"
+                    visible="false"
+                    dead="true">
+          <text>13:
+New_Page&apos;C0 1: empty
+New_Page&apos;C1 1: empty
+New_Page&apos;C2 1: empty
+New_Page&apos;C3 1: empty
+New_Page&apos;C5 1: 1`()
+New_Page&apos;C6 1: empty
+New_Page&apos;C7 1: empty
+New_Page&apos;C8 1: empty
+New_Page&apos;C4 1: empty
+New_Page&apos;station_storage_R 1: 1`blue
+New_Page&apos;transporter_load 1: 1`blue
+New_Page&apos;station_storage_b 1: 1`red
+New_Page&apos;station_blue 1: 1`blue
+New_Page&apos;delivered_Items 1: empty
+New_Page&apos;station_red 1: 1`red
+</text>
+        </descriptor>
+        <roundbox w="45.000000"
+                  h="40.000000"/>
+      </ssnode>
+      <ssnode id="ID1414352009"
+              number="17"
+              predecessors="1"
+              successors="2">
+        <posattr x="336.000000"
+                 y="16.000000"/>
+        <fillattr colour="White"
+                  pattern=""
+                  filled="false"/>
+        <lineattr colour="Gray"
+                  thick="1"
+                  type="Solid"/>
+        <textattr colour="Gray"
+                  bold="false"/>
+        <descriptor x="0.000000"
+                    y="0.000000"
+                    visible="false"
+                    dead="true">
+          <text>17:
+New_Page&apos;C0 1: 1`()
+New_Page&apos;C1 1: empty
+New_Page&apos;C2 1: empty
+New_Page&apos;C3 1: empty
+New_Page&apos;C5 1: empty
+New_Page&apos;C6 1: empty
+New_Page&apos;C7 1: empty
+New_Page&apos;C8 1: empty
+New_Page&apos;C4 1: empty
+New_Page&apos;station_storage_R 1: 1`blue
+New_Page&apos;transporter_load 1: 1`blue
+New_Page&apos;station_storage_b 1: 1`red
+New_Page&apos;station_blue 1: 1`blue
+New_Page&apos;delivered_Items 1: empty
+New_Page&apos;station_red 1: 1`red
+</text>
+        </descriptor>
+        <roundbox w="45.000000"
+                  h="40.000000"/>
+      </ssnode>
+      <ssnode id="ID1414352013"
+              number="15"
+              predecessors="3"
+              successors="4">
+        <posattr x="378.000000"
+                 y="-42.000000"/>
+        <fillattr colour="White"
+                  pattern=""
+                  filled="false"/>
+        <lineattr colour="Gray"
+                  thick="1"
+                  type="Solid"/>
+        <textattr colour="Gray"
+                  bold="false"/>
+        <descriptor x="0.000000"
+                    y="0.000000"
+                    visible="false"
+                    dead="true">
+          <text>15:
+New_Page&apos;C0 1: empty
+New_Page&apos;C1 1: empty
+New_Page&apos;C2 1: empty
+New_Page&apos;C3 1: empty
+New_Page&apos;C5 1: empty
+New_Page&apos;C6 1: empty
+New_Page&apos;C7 1: empty
+New_Page&apos;C8 1: empty
+New_Page&apos;C4 1: 1`()
+New_Page&apos;station_storage_R 1: 1`blue
+New_Page&apos;transporter_load 1: 1`blue
+New_Page&apos;station_storage_b 1: 1`red
+New_Page&apos;station_blue 1: 1`blue
+New_Page&apos;delivered_Items 1: empty
+New_Page&apos;station_red 1: 1`red
+</text>
+        </descriptor>
+        <roundbox w="45.000000"
+                  h="40.000000"/>
+      </ssnode>
+      <ssnode id="ID1414352579"
+              number="18"
+              predecessors="3"
+              successors="1">
+        <posattr x="420.000000"
+                 y="16.000000"/>
+        <fillattr colour="White"
+                  pattern=""
+                  filled="false"/>
+        <lineattr colour="Gray"
+                  thick="1"
+                  type="Solid"/>
+        <textattr colour="Gray"
+                  bold="false"/>
+        <descriptor x="0.000000"
+                    y="0.000000"
+                    visible="false"
+                    dead="true">
+          <text>18:
+New_Page&apos;C0 1: empty
+New_Page&apos;C1 1: empty
+New_Page&apos;C2 1: empty
+New_Page&apos;C3 1: 1`()
+New_Page&apos;C5 1: empty
+New_Page&apos;C6 1: empty
+New_Page&apos;C7 1: empty
+New_Page&apos;C8 1: empty
+New_Page&apos;C4 1: empty
+New_Page&apos;station_storage_R 1: 1`blue
+New_Page&apos;transporter_load 1: 1`blue
+New_Page&apos;station_storage_b 1: 1`red
+New_Page&apos;station_blue 1: 1`blue
+New_Page&apos;delivered_Items 1: empty
+New_Page&apos;station_red 1: 1`red
+</text>
+        </descriptor>
+        <roundbox w="45.000000"
+                  h="40.000000"/>
+      </ssnode>
+      <ssnode id="ID1414353141"
+              number="20"
+              predecessors="1"
+              successors="1">
+        <posattr x="504.000000"
+                 y="16.000000"/>
+        <fillattr colour="White"
+                  pattern=""
+                  filled="false"/>
+        <lineattr colour="Gray"
+                  thick="1"
+                  type="Solid"/>
+        <textattr colour="Gray"
+                  bold="false"/>
+        <descriptor x="-286.000000"
+                    y="163.000000"
+                    visible="true"
+                    dead="true">
+          <text>20:
+New_Page&apos;C0 1: empty
+New_Page&apos;C1 1: empty
+New_Page&apos;C2 1: empty
+New_Page&apos;C3 1: 1`()
+New_Page&apos;C5 1: empty
+New_Page&apos;C6 1: empty
+New_Page&apos;C7 1: empty
+New_Page&apos;C8 1: empty
+New_Page&apos;C4 1: empty
+New_Page&apos;station_storage_R 1: 1`blue
+New_Page&apos;transporter_load 1: 1`none
+New_Page&apos;station_storage_b 1: 1`red
+New_Page&apos;station_blue 1: 1`blue
+New_Page&apos;delivered_Items 1: 1`blue
+New_Page&apos;station_red 1: 1`red
+</text>
+        </descriptor>
+        <roundbox w="45.000000"
+                  h="40.000000"/>
+      </ssnode>
+      <ssnode id="ID1414353701"
+              number="22"
+              predecessors="2"
+              successors="1">
+        <posattr x="588.000000"
+                 y="16.000000"/>
+        <fillattr colour="White"
+                  pattern=""
+                  filled="false"/>
+        <lineattr colour="Gray"
+                  thick="1"
+                  type="Solid"/>
+        <textattr colour="Gray"
+                  bold="false"/>
+        <descriptor x="-103.000000"
+                    y="165.000000"
+                    visible="true"
+                    dead="true">
+          <text>22:
+New_Page&apos;C0 1: empty
+New_Page&apos;C1 1: empty
+New_Page&apos;C2 1: empty
+New_Page&apos;C3 1: 1`()
+New_Page&apos;C5 1: empty
+New_Page&apos;C6 1: empty
+New_Page&apos;C7 1: empty
+New_Page&apos;C8 1: empty
+New_Page&apos;C4 1: empty
+New_Page&apos;station_storage_R 1: 1`blue
+New_Page&apos;transporter_load 1: 1`red
+New_Page&apos;station_storage_b 1: 1`none
+New_Page&apos;station_blue 1: 1`blue
+New_Page&apos;delivered_Items 1: 1`blue
+New_Page&apos;station_red 1: 1`red
+</text>
+        </descriptor>
+        <roundbox w="45.000000"
+                  h="40.000000"/>
+      </ssnode>
+      <ssnode id="ID1414354270"
+              number="8"
+              predecessors="3"
+              successors="3">
+        <posattr x="126.000000"
+                 y="-42.000000"/>
+        <fillattr colour="White"
+                  pattern=""
+                  filled="false"/>
+        <lineattr colour="Gray"
+                  thick="1"
+                  type="Solid"/>
+        <textattr colour="Gray"
+                  bold="false"/>
+        <descriptor x="0.000000"
+                    y="0.000000"
+                    visible="false"
+                    dead="true">
+          <text>8:
+New_Page&apos;C0 1: empty
+New_Page&apos;C1 1: empty
+New_Page&apos;C2 1: empty
+New_Page&apos;C3 1: empty
+New_Page&apos;C5 1: empty
+New_Page&apos;C6 1: empty
+New_Page&apos;C7 1: 1`()
+New_Page&apos;C8 1: empty
+New_Page&apos;C4 1: empty
+New_Page&apos;station_storage_R 1: 1`blue
+New_Page&apos;transporter_load 1: 1`none
+New_Page&apos;station_storage_b 1: 1`red
+New_Page&apos;station_blue 1: 1`blue
+New_Page&apos;delivered_Items 1: empty
+New_Page&apos;station_red 1: 1`red
+</text>
+        </descriptor>
+        <roundbox w="45.000000"
+                  h="40.000000"/>
+      </ssnode>
+      <ssnode id="ID1414354274"
+              number="7"
+              predecessors="2"
+              successors="3">
+        <posattr x="168.000000"
+                 y="-94.000000"/>
+        <fillattr colour="White"
+                  pattern=""
+                  filled="false"/>
+        <lineattr colour="Gray"
+                  thick="1"
+                  type="Solid"/>
+        <textattr colour="Gray"
+                  bold="false"/>
+        <descriptor x="0.000000"
+                    y="0.000000"
+                    visible="false"
+                    dead="true">
+          <text>7:
+New_Page&apos;C0 1: empty
+New_Page&apos;C1 1: empty
+New_Page&apos;C2 1: empty
+New_Page&apos;C3 1: empty
+New_Page&apos;C5 1: 1`()
+New_Page&apos;C6 1: empty
+New_Page&apos;C7 1: empty
+New_Page&apos;C8 1: empty
+New_Page&apos;C4 1: empty
+New_Page&apos;station_storage_R 1: 1`blue
+New_Page&apos;transporter_load 1: 1`none
+New_Page&apos;station_storage_b 1: 1`red
+New_Page&apos;station_blue 1: 1`blue
+New_Page&apos;delivered_Items 1: empty
+New_Page&apos;station_red 1: 1`red
+</text>
+        </descriptor>
+        <roundbox w="45.000000"
+                  h="40.000000"/>
+      </ssnode>
+      <ssnode id="ID1414354859"
+              number="10"
+              predecessors="2"
+              successors="2">
+        <posattr x="210.000000"
+                 y="-42.000000"/>
+        <fillattr colour="White"
+                  pattern=""
+                  filled="false"/>
+        <lineattr colour="Gray"
+                  thick="1"
+                  type="Solid"/>
+        <textattr colour="Gray"
+                  bold="false"/>
+        <descriptor x="0.000000"
+                    y="0.000000"
+                    visible="false"
+                    dead="true">
+          <text>10:
+New_Page&apos;C0 1: empty
+New_Page&apos;C1 1: empty
+New_Page&apos;C2 1: empty
+New_Page&apos;C3 1: empty
+New_Page&apos;C5 1: empty
+New_Page&apos;C6 1: empty
+New_Page&apos;C7 1: empty
+New_Page&apos;C8 1: 1`()
+New_Page&apos;C4 1: empty
+New_Page&apos;station_storage_R 1: 1`blue
+New_Page&apos;transporter_load 1: 1`none
+New_Page&apos;station_storage_b 1: 1`red
+New_Page&apos;station_blue 1: 1`blue
+New_Page&apos;delivered_Items 1: empty
+New_Page&apos;station_red 1: 1`red
+</text>
+        </descriptor>
+        <roundbox w="45.000000"
+                  h="40.000000"/>
+      </ssnode>
+      <ssnode id="ID1414354863"
+              number="11"
+              predecessors="1"
+              successors="2">
+        <posattr x="252.000000"
+                 y="-94.000000"/>
+        <fillattr colour="White"
+                  pattern=""
+                  filled="false"/>
+        <lineattr colour="Gray"
+                  thick="1"
+                  type="Solid"/>
+        <textattr colour="Gray"
+                  bold="false"/>
+        <descriptor x="0.000000"
+                    y="0.000000"
+                    visible="false"
+                    dead="true">
+          <text>11:
+New_Page&apos;C0 1: empty
+New_Page&apos;C1 1: empty
+New_Page&apos;C2 1: empty
+New_Page&apos;C3 1: empty
+New_Page&apos;C5 1: empty
+New_Page&apos;C6 1: 1`()
+New_Page&apos;C7 1: empty
+New_Page&apos;C8 1: empty
+New_Page&apos;C4 1: empty
+New_Page&apos;station_storage_R 1: 1`blue
+New_Page&apos;transporter_load 1: 1`none
+New_Page&apos;station_storage_b 1: 1`red
+New_Page&apos;station_blue 1: 1`blue
+New_Page&apos;delivered_Items 1: empty
+New_Page&apos;station_red 1: 1`red
+</text>
+        </descriptor>
+        <roundbox w="45.000000"
+                  h="40.000000"/>
+      </ssnode>
+      <ssnode id="ID1414357187"
+              number="16"
+              predecessors="2"
+              successors="2">
+        <posattr x="378.000000"
+                 y="-42.000000"/>
+        <fillattr colour="White"
+                  pattern=""
+                  filled="false"/>
+        <lineattr colour="Gray"
+                  thick="1"
+                  type="Solid"/>
+        <textattr colour="Gray"
+                  bold="false"/>
+        <descriptor x="0.000000"
+                    y="0.000000"
+                    visible="false"
+                    dead="true">
+          <text>16:
+New_Page&apos;C0 1: empty
+New_Page&apos;C1 1: empty
+New_Page&apos;C2 1: empty
+New_Page&apos;C3 1: empty
+New_Page&apos;C5 1: empty
+New_Page&apos;C6 1: empty
+New_Page&apos;C7 1: empty
+New_Page&apos;C8 1: 1`()
+New_Page&apos;C4 1: empty
+New_Page&apos;station_storage_R 1: 1`blue
+New_Page&apos;transporter_load 1: 1`blue
+New_Page&apos;station_storage_b 1: 1`red
+New_Page&apos;station_blue 1: 1`blue
+New_Page&apos;delivered_Items 1: empty
+New_Page&apos;station_red 1: 1`red
+</text>
+        </descriptor>
+        <roundbox w="45.000000"
+                  h="40.000000"/>
+      </ssnode>
+      <ssnode id="ID1414364294"
+              number="19"
+              predecessors="3"
+              successors="3">
+        <posattr x="462.000000"
+                 y="-42.000000"/>
+        <fillattr colour="White"
+                  pattern=""
+                  filled="false"/>
+        <lineattr colour="Gray"
+                  thick="1"
+                  type="Solid"/>
+        <textattr colour="Gray"
+                  bold="false"/>
+        <descriptor x="0.000000"
+                    y="0.000000"
+                    visible="false"
+                    dead="true">
+          <text>19:
+New_Page&apos;C0 1: empty
+New_Page&apos;C1 1: empty
+New_Page&apos;C2 1: empty
+New_Page&apos;C3 1: empty
+New_Page&apos;C5 1: empty
+New_Page&apos;C6 1: empty
+New_Page&apos;C7 1: 1`()
+New_Page&apos;C8 1: empty
+New_Page&apos;C4 1: empty
+New_Page&apos;station_storage_R 1: 1`blue
+New_Page&apos;transporter_load 1: 1`blue
+New_Page&apos;station_storage_b 1: 1`red
+New_Page&apos;station_blue 1: 1`blue
+New_Page&apos;delivered_Items 1: empty
+New_Page&apos;station_red 1: 1`red
+</text>
+        </descriptor>
+        <roundbox w="45.000000"
+                  h="40.000000"/>
+      </ssnode>
+      <ssnode id="ID1414364920"
+              number="21"
+              predecessors="1"
+              successors="2">
+        <posattr x="546.000000"
+                 y="-42.000000"/>
+        <fillattr colour="White"
+                  pattern=""
+                  filled="false"/>
+        <lineattr colour="Gray"
+                  thick="1"
+                  type="Solid"/>
+        <textattr colour="Gray"
+                  bold="false"/>
+        <descriptor x="0.000000"
+                    y="0.000000"
+                    visible="false"
+                    dead="true">
+          <text>21:
+New_Page&apos;C0 1: empty
+New_Page&apos;C1 1: empty
+New_Page&apos;C2 1: empty
+New_Page&apos;C3 1: empty
+New_Page&apos;C5 1: empty
+New_Page&apos;C6 1: 1`()
+New_Page&apos;C7 1: empty
+New_Page&apos;C8 1: empty
+New_Page&apos;C4 1: empty
+New_Page&apos;station_storage_R 1: 1`blue
+New_Page&apos;transporter_load 1: 1`blue
+New_Page&apos;station_storage_b 1: 1`red
+New_Page&apos;station_blue 1: 1`blue
+New_Page&apos;delivered_Items 1: empty
+New_Page&apos;station_red 1: 1`red
+</text>
+        </descriptor>
+        <roundbox w="45.000000"
+                  h="40.000000"/>
+      </ssnode>
+    </page>
     <instances>
       <instance id="ID2149"
                 page="ID6"/>
+      <instance id="ID1414343006"
+                page="ID1414343004"/>
     </instances>
     <options>
       <option name="realtimestamp">
@@ -5535,7 +7508,7 @@
           <text>&lt;same as model&gt;</text>
         </value>
       </option>
-      <option name="extensions.10001.enable">
+      <option name="extensions.10008.enable">
         <value>
           <boolean>true</boolean>
         </value>
@@ -5545,32 +7518,7 @@
           <boolean>true</boolean>
         </value>
       </option>
-      <option name="extensions.10008.enable">
-        <value>
-          <boolean>true</boolean>
-        </value>
-      </option>
-      <option name="extensions.10005.enable">
-        <value>
-          <boolean>true</boolean>
-        </value>
-      </option>
-      <option name="extensions.10011.enable">
-        <value>
-          <boolean>true</boolean>
-        </value>
-      </option>
-      <option name="extensions.10003.enable">
-        <value>
-          <boolean>true</boolean>
-        </value>
-      </option>
       <option name="extensions.10004.enable">
-        <value>
-          <boolean>true</boolean>
-        </value>
-      </option>
-      <option name="extensions.10002.enable">
         <value>
           <boolean>true</boolean>
         </value>
@@ -5580,12 +7528,37 @@
           <boolean>true</boolean>
         </value>
       </option>
-      <option name="extensions.10011.options.disable">
+      <option name="extensions.10005.enable">
+        <value>
+          <boolean>true</boolean>
+        </value>
+      </option>
+      <option name="extensions.10001.enable">
+        <value>
+          <boolean>true</boolean>
+        </value>
+      </option>
+      <option name="extensions.10003.enable">
+        <value>
+          <boolean>true</boolean>
+        </value>
+      </option>
+      <option name="extensions.10002.enable">
+        <value>
+          <boolean>true</boolean>
+        </value>
+      </option>
+      <option name="extensions.10011.enable">
+        <value>
+          <boolean>true</boolean>
+        </value>
+      </option>
+      <option name="extensions.10007.options.discover">
         <value>
           <boolean>false</boolean>
         </value>
       </option>
-      <option name="extensions.10007.options.discover">
+      <option name="extensions.10011.options.disable">
         <value>
           <boolean>false</boolean>
         </value>
@@ -5788,22 +7761,32 @@
     </options>
     <binders>
       <cpnbinder id="ID2222"
-                 x="586"
-                 y="195"
-                 width="1280"
-                 height="997">
+                 x="248"
+                 y="47"
+                 width="1608"
+                 height="904">
         <sheets>
           <cpnsheet id="ID2215"
-                    panx="244.480000"
-                    pany="286.430000"
+                    panx="431.621000"
+                    pany="378.686000"
                     zoom="1.000000"
                     instance="ID2149">
             <zorder>
               <position value="0"/>
             </zorder>
           </cpnsheet>
+          <cpnsheet id="ID1414344495"
+                    panx="-210.000000"
+                    pany="-56.000000"
+                    zoom="1.000000"
+                    instance="ID1414343006">
+            <zorder>
+              <position value="0"/>
+            </zorder>
+          </cpnsheet>
         </sheets>
         <zorder>
+          <position value="1"/>
           <position value="0"/>
         </zorder>
       </cpnbinder>
@@ -5817,7 +7800,7 @@
         <IndexNode expanded="false"/>
         <IndexNode expanded="false"/>
         <IndexNode expanded="false"/>
-        <IndexNode expanded="false">
+        <IndexNode expanded="true">
           <IndexNode expanded="false">
             <IndexNode expanded="false">
               <IndexNode expanded="false"/>
@@ -5908,9 +7891,11 @@
           <IndexNode expanded="true"/>
           <IndexNode expanded="true"/>
           <IndexNode expanded="true"/>
+          <IndexNode expanded="true"/>
         </IndexNode>
       </IndexNode>
-      <IndexNode expanded="false"/>
+      <IndexNode expanded="true"/>
+      <IndexNode expanded="true"/>
       <IndexNode expanded="true"/>
     </IndexNode>
   </cpnet>
