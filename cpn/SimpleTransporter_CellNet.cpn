@@ -2586,7 +2586,7 @@
         </code>
         <priority id="ID1413925169">
           <posattr x="90.000000"
-                   y="355.320000"/>
+                   y="371.000000"/>
           <fillattr colour="White"
                     pattern="Solid"
                     filled="false"/>
@@ -2660,7 +2660,7 @@
         </code>
         <priority id="ID1413965553">
           <posattr x="-675.096000"
-                   y="174.320000"/>
+                   y="190.000000"/>
           <fillattr colour="White"
                     pattern="Solid"
                     filled="false"/>
@@ -5184,10 +5184,10 @@
         <fillattr colour="White"
                   pattern="Solid"
                   filled="false"/>
-        <lineattr colour="Black"
+        <lineattr colour=""
                   thick="0"
                   type="Solid"/>
-        <textattr colour="Black"
+        <textattr colour=""
                   bold="false"/>
         <arrowattr headsize="1.000000"
                    currentcyckle="2"/>
@@ -5196,7 +5196,7 @@
         <descriptor x="0.000000"
                     y="0.000000"
                     visible="false"
-                    dead="false">
+                    dead="true">
           <text>1:1-&gt;2 New_Page&apos;chkStRed 1: {t=(),it=blue}</text>
         </descriptor>
       </ssarc>
@@ -5208,10 +5208,10 @@
         <fillattr colour="White"
                   pattern="Solid"
                   filled="false"/>
-        <lineattr colour="Black"
+        <lineattr colour=""
                   thick="0"
                   type="Solid"/>
-        <textattr colour="Black"
+        <textattr colour=""
                   bold="false"/>
         <arrowattr headsize="1.000000"
                    currentcyckle="2"/>
@@ -5220,7 +5220,7 @@
         <descriptor x="0.000000"
                     y="0.000000"
                     visible="false"
-                    dead="false">
+                    dead="true">
           <text>2:2-&gt;3 New_Page&apos;createItemStRed 1: {}</text>
         </descriptor>
       </ssarc>
@@ -5232,10 +5232,10 @@
         <fillattr colour="White"
                   pattern="Solid"
                   filled="false"/>
-        <lineattr colour="Black"
+        <lineattr colour=""
                   thick="0"
                   type="Solid"/>
-        <textattr colour="Black"
+        <textattr colour=""
                   bold="false"/>
         <arrowattr headsize="1.000000"
                    currentcyckle="2"/>
@@ -5244,7 +5244,7 @@
         <descriptor x="0.000000"
                     y="0.000000"
                     visible="false"
-                    dead="false">
+                    dead="true">
           <text>4:3-&gt;5 New_Page&apos;c21 1: {t=()}</text>
         </descriptor>
       </ssarc>
@@ -5256,10 +5256,10 @@
         <fillattr colour="White"
                   pattern="Solid"
                   filled="false"/>
-        <lineattr colour="Black"
+        <lineattr colour=""
                   thick="0"
                   type="Solid"/>
-        <textattr colour="Black"
+        <textattr colour=""
                   bold="false"/>
         <arrowattr headsize="1.000000"
                    currentcyckle="2"/>
@@ -5268,7 +5268,7 @@
         <descriptor x="0.000000"
                     y="0.000000"
                     visible="false"
-                    dead="false">
+                    dead="true">
           <text>3:3-&gt;4 New_Page&apos;c25 1: {t=()}</text>
         </descriptor>
       </ssarc>
@@ -5280,10 +5280,10 @@
         <fillattr colour="White"
                   pattern="Solid"
                   filled="false"/>
-        <lineattr colour="Black"
+        <lineattr colour=""
                   thick="0"
                   type="Solid"/>
-        <textattr colour="Black"
+        <textattr colour=""
                   bold="false"/>
         <arrowattr headsize="1.000000"
                    currentcyckle="2"/>
@@ -5292,7 +5292,7 @@
         <descriptor x="0.000000"
                     y="0.000000"
                     visible="false"
-                    dead="false">
+                    dead="true">
           <text>10:5-&gt;8 New_Page&apos;c10 1: {t=()}</text>
         </descriptor>
       </ssarc>
@@ -5304,10 +5304,10 @@
         <fillattr colour="White"
                   pattern="Solid"
                   filled="false"/>
-        <lineattr colour="Black"
+        <lineattr colour=""
                   thick="0"
                   type="Solid"/>
-        <textattr colour="Black"
+        <textattr colour=""
                   bold="false"/>
         <arrowattr headsize="1.000000"
                    currentcyckle="2"/>
@@ -5316,7 +5316,7 @@
         <descriptor x="0.000000"
                     y="0.000000"
                     visible="false"
-                    dead="false">
+                    dead="true">
           <text>9:5-&gt;3 New_Page&apos;c12 1: {t=()}</text>
         </descriptor>
       </ssarc>
@@ -5328,10 +5328,10 @@
         <fillattr colour="White"
                   pattern="Solid"
                   filled="false"/>
-        <lineattr colour="Black"
+        <lineattr colour=""
                   thick="0"
                   type="Solid"/>
-        <textattr colour="Black"
+        <textattr colour=""
                   bold="false"/>
         <arrowattr headsize="1.000000"
                    currentcyckle="2"/>
@@ -5340,7 +5340,7 @@
         <descriptor x="0.000000"
                     y="0.000000"
                     visible="false"
-                    dead="false">
+                    dead="true">
           <text>8:5-&gt;6 New_Page&apos;c14 1: {t=()}</text>
         </descriptor>
       </ssarc>
@@ -5352,10 +5352,10 @@
         <fillattr colour="White"
                   pattern="Solid"
                   filled="false"/>
-        <lineattr colour="Black"
+        <lineattr colour=""
                   thick="0"
                   type="Solid"/>
-        <textattr colour="Black"
+        <textattr colour=""
                   bold="false"/>
         <arrowattr headsize="1.000000"
                    currentcyckle="2"/>
@@ -5364,7 +5364,7 @@
         <descriptor x="0.000000"
                     y="0.000000"
                     visible="false"
-                    dead="false">
+                    dead="true">
           <text>18:8-&gt;9 New_Page&apos;c03 1: {t=()}</text>
         </descriptor>
       </ssarc>
@@ -5376,10 +5376,10 @@
         <fillattr colour="White"
                   pattern="Solid"
                   filled="false"/>
-        <lineattr colour="Black"
+        <lineattr colour=""
                   thick="0"
                   type="Solid"/>
-        <textattr colour="Black"
+        <textattr colour=""
                   bold="false"/>
         <arrowattr headsize="1.000000"
                    currentcyckle="2"/>
@@ -5388,7 +5388,7 @@
         <descriptor x="0.000000"
                     y="0.000000"
                     visible="false"
-                    dead="false">
+                    dead="true">
           <text>17:8-&gt;5 New_Page&apos;c01 1: {t=()}</text>
         </descriptor>
       </ssarc>
@@ -5400,10 +5400,10 @@
         <fillattr colour="White"
                   pattern="Solid"
                   filled="false"/>
-        <lineattr colour="Black"
+        <lineattr colour=""
                   thick="0"
                   type="Solid"/>
-        <textattr colour="Black"
+        <textattr colour=""
                   bold="false"/>
         <arrowattr headsize="1.000000"
                    currentcyckle="2"/>
@@ -5412,7 +5412,7 @@
         <descriptor x="0.000000"
                     y="0.000000"
                     visible="false"
-                    dead="false">
+                    dead="true">
           <text>19:9-&gt;11 New_Page&apos;dlvrStBlue 1: {it=blue,t=()}</text>
         </descriptor>
       </ssarc>
@@ -5424,10 +5424,10 @@
         <fillattr colour="White"
                   pattern="Solid"
                   filled="false"/>
-        <lineattr colour="Black"
+        <lineattr colour=""
                   thick="0"
                   type="Solid"/>
-        <textattr colour="Black"
+        <textattr colour=""
                   bold="false"/>
         <arrowattr headsize="1.000000"
                    currentcyckle="2"/>
@@ -5436,7 +5436,7 @@
         <descriptor x="-57.000000"
                     y="-78.000000"
                     visible="false"
-                    dead="false">
+                    dead="true">
           <text>23:11-&gt;13 New_Page&apos;chkStBlue 1: {t=(),it=red}</text>
         </descriptor>
       </ssarc>
@@ -5448,10 +5448,10 @@
         <fillattr colour="White"
                   pattern="Solid"
                   filled="false"/>
-        <lineattr colour="Black"
+        <lineattr colour=""
                   thick="0"
                   type="Solid"/>
-        <textattr colour="Black"
+        <textattr colour=""
                   bold="false"/>
         <arrowattr headsize="1.000000"
                    currentcyckle="2"/>
@@ -5460,7 +5460,7 @@
         <descriptor x="0.000000"
                     y="0.000000"
                     visible="false"
-                    dead="false">
+                    dead="true">
           <text>26:13-&gt;14 New_Page&apos;createItemStBlue 1: {}</text>
         </descriptor>
       </ssarc>
@@ -5472,10 +5472,10 @@
         <fillattr colour="White"
                   pattern="Solid"
                   filled="false"/>
-        <lineattr colour="Black"
+        <lineattr colour=""
                   thick="0"
                   type="Solid"/>
-        <textattr colour="Black"
+        <textattr colour=""
                   bold="false"/>
         <arrowattr headsize="1.000000"
                    currentcyckle="2"/>
@@ -5484,7 +5484,7 @@
         <descriptor x="0.000000"
                     y="0.000000"
                     visible="false"
-                    dead="false">
+                    dead="true">
           <text>29:14-&gt;17 New_Page&apos;c36 1: {t=()}</text>
         </descriptor>
       </ssarc>
@@ -5496,10 +5496,10 @@
         <fillattr colour="White"
                   pattern="Solid"
                   filled="false"/>
-        <lineattr colour="Black"
+        <lineattr colour=""
                   thick="0"
                   type="Solid"/>
-        <textattr colour="Black"
+        <textattr colour=""
                   bold="false"/>
         <arrowattr headsize="1.000000"
                    currentcyckle="2"/>
@@ -5508,7 +5508,7 @@
         <descriptor x="0.000000"
                     y="0.000000"
                     visible="false"
-                    dead="false">
+                    dead="true">
           <text>28:14-&gt;16 New_Page&apos;c30 1: {t=()}</text>
         </descriptor>
       </ssarc>
@@ -5520,10 +5520,10 @@
         <fillattr colour="White"
                   pattern="Solid"
                   filled="false"/>
-        <lineattr colour="Black"
+        <lineattr colour=""
                   thick="0"
                   type="Solid"/>
-        <textattr colour="Black"
+        <textattr colour=""
                   bold="false"/>
         <arrowattr headsize="1.000000"
                    currentcyckle="2"/>
@@ -5532,7 +5532,7 @@
         <descriptor x="0.000000"
                     y="0.000000"
                     visible="false"
-                    dead="false">
+                    dead="true">
           <text>27:14-&gt;15 New_Page&apos;c34 1: {t=()}</text>
         </descriptor>
       </ssarc>
@@ -5544,10 +5544,10 @@
         <fillattr colour="White"
                   pattern="Solid"
                   filled="false"/>
-        <lineattr colour="Black"
+        <lineattr colour=""
                   thick="0"
                   type="Solid"/>
-        <textattr colour="Black"
+        <textattr colour=""
                   bold="false"/>
         <arrowattr headsize="1.000000"
                    currentcyckle="2"/>
@@ -5556,7 +5556,7 @@
         <descriptor x="0.000000"
                     y="0.000000"
                     visible="false"
-                    dead="false">
+                    dead="true">
           <text>37:17-&gt;19 New_Page&apos;c67 1: {t=()}</text>
         </descriptor>
       </ssarc>
@@ -5568,10 +5568,10 @@
         <fillattr colour="White"
                   pattern="Solid"
                   filled="false"/>
-        <lineattr colour="Black"
+        <lineattr colour=""
                   thick="0"
                   type="Solid"/>
-        <textattr colour="Black"
+        <textattr colour=""
                   bold="false"/>
         <arrowattr headsize="1.000000"
                    currentcyckle="2"/>
@@ -5580,7 +5580,7 @@
         <descriptor x="0.000000"
                     y="0.000000"
                     visible="false"
-                    dead="false">
+                    dead="true">
           <text>36:17-&gt;14 New_Page&apos;c63 1: {t=()}</text>
         </descriptor>
       </ssarc>
@@ -5592,10 +5592,10 @@
         <fillattr colour="White"
                   pattern="Solid"
                   filled="false"/>
-        <lineattr colour="Black"
+        <lineattr colour=""
                   thick="0"
                   type="Solid"/>
-        <textattr colour="Black"
+        <textattr colour=""
                   bold="false"/>
         <arrowattr headsize="1.000000"
                    currentcyckle="2"/>
@@ -5604,7 +5604,7 @@
         <descriptor x="0.000000"
                     y="0.000000"
                     visible="false"
-                    dead="false">
+                    dead="true">
           <text>35:16-&gt;14 New_Page&apos;c03 1: {t=()}</text>
         </descriptor>
       </ssarc>
@@ -5616,10 +5616,10 @@
         <fillattr colour="White"
                   pattern="Solid"
                   filled="false"/>
-        <lineattr colour="Black"
+        <lineattr colour=""
                   thick="0"
                   type="Solid"/>
-        <textattr colour="Black"
+        <textattr colour=""
                   bold="false"/>
         <arrowattr headsize="1.000000"
                    currentcyckle="2"/>
@@ -5628,7 +5628,7 @@
         <descriptor x="0.000000"
                     y="0.000000"
                     visible="false"
-                    dead="false">
+                    dead="true">
           <text>34:16-&gt;20 New_Page&apos;c01 1: {t=()}</text>
         </descriptor>
       </ssarc>
@@ -5640,10 +5640,10 @@
         <fillattr colour="White"
                   pattern="Solid"
                   filled="false"/>
-        <lineattr colour="Black"
+        <lineattr colour=""
                   thick="0"
                   type="Solid"/>
-        <textattr colour="Black"
+        <textattr colour=""
                   bold="false"/>
         <arrowattr headsize="1.000000"
                    currentcyckle="2"/>
@@ -5652,7 +5652,7 @@
         <descriptor x="0.000000"
                     y="0.000000"
                     visible="false"
-                    dead="false">
+                    dead="true">
           <text>14:6-&gt;5 New_Page&apos;c41 1: {t=()}</text>
         </descriptor>
       </ssarc>
@@ -5664,10 +5664,10 @@
         <fillattr colour="White"
                   pattern="Solid"
                   filled="false"/>
-        <lineattr colour="Black"
+        <lineattr colour=""
                   thick="0"
                   type="Solid"/>
-        <textattr colour="Black"
+        <textattr colour=""
                   bold="false"/>
         <arrowattr headsize="1.000000"
                    currentcyckle="2"/>
@@ -5676,7 +5676,7 @@
         <descriptor x="0.000000"
                     y="0.000000"
                     visible="false"
-                    dead="false">
+                    dead="true">
           <text>13:6-&gt;10 New_Page&apos;c47 1: {t=()}</text>
         </descriptor>
       </ssarc>
@@ -5688,10 +5688,10 @@
         <fillattr colour="White"
                   pattern="Solid"
                   filled="false"/>
-        <lineattr colour="Black"
+        <lineattr colour=""
                   thick="0"
                   type="Solid"/>
-        <textattr colour="Black"
+        <textattr colour=""
                   bold="false"/>
         <arrowattr headsize="1.000000"
                    currentcyckle="2"/>
@@ -5700,7 +5700,7 @@
         <descriptor x="0.000000"
                     y="0.000000"
                     visible="false"
-                    dead="false">
+                    dead="true">
           <text>12:6-&gt;4 New_Page&apos;c45 1: {t=()}</text>
         </descriptor>
       </ssarc>
@@ -5712,10 +5712,10 @@
         <fillattr colour="White"
                   pattern="Solid"
                   filled="false"/>
-        <lineattr colour="Black"
+        <lineattr colour=""
                   thick="0"
                   type="Solid"/>
-        <textattr colour="Black"
+        <textattr colour=""
                   bold="false"/>
         <arrowattr headsize="1.000000"
                    currentcyckle="2"/>
@@ -5724,7 +5724,7 @@
         <descriptor x="0.000000"
                     y="0.000000"
                     visible="false"
-                    dead="false">
+                    dead="true">
           <text>11:6-&gt;9 New_Page&apos;c43 1: {t=()}</text>
         </descriptor>
       </ssarc>
@@ -5736,10 +5736,10 @@
         <fillattr colour="White"
                   pattern="Solid"
                   filled="false"/>
-        <lineattr colour="Black"
+        <lineattr colour=""
                   thick="0"
                   type="Solid"/>
-        <textattr colour="Black"
+        <textattr colour=""
                   bold="false"/>
         <arrowattr headsize="1.000000"
                    currentcyckle="2"/>
@@ -5748,7 +5748,7 @@
         <descriptor x="0.000000"
                     y="0.000000"
                     visible="false"
-                    dead="false">
+                    dead="true">
           <text>7:4-&gt;7 New_Page&apos;c58 1: {t=()}</text>
         </descriptor>
       </ssarc>
@@ -5760,10 +5760,10 @@
         <fillattr colour="White"
                   pattern="Solid"
                   filled="false"/>
-        <lineattr colour="Black"
+        <lineattr colour=""
                   thick="0"
                   type="Solid"/>
-        <textattr colour="Black"
+        <textattr colour=""
                   bold="false"/>
         <arrowattr headsize="1.000000"
                    currentcyckle="2"/>
@@ -5772,7 +5772,7 @@
         <descriptor x="0.000000"
                     y="0.000000"
                     visible="false"
-                    dead="false">
+                    dead="true">
           <text>6:4-&gt;3 New_Page&apos;c52 1: {t=()}</text>
         </descriptor>
       </ssarc>
@@ -5784,10 +5784,10 @@
         <fillattr colour="White"
                   pattern="Solid"
                   filled="false"/>
-        <lineattr colour="Black"
+        <lineattr colour=""
                   thick="0"
                   type="Solid"/>
-        <textattr colour="Black"
+        <textattr colour=""
                   bold="false"/>
         <arrowattr headsize="1.000000"
                    currentcyckle="2"/>
@@ -5796,7 +5796,7 @@
         <descriptor x="0.000000"
                     y="0.000000"
                     visible="false"
-                    dead="false">
+                    dead="true">
           <text>5:4-&gt;6 New_Page&apos;c54 1: {t=()}</text>
         </descriptor>
       </ssarc>
@@ -5808,10 +5808,10 @@
         <fillattr colour="White"
                   pattern="Solid"
                   filled="false"/>
-        <lineattr colour="Black"
+        <lineattr colour=""
                   thick="0"
                   type="Solid"/>
-        <textattr colour="Black"
+        <textattr colour=""
                   bold="false"/>
         <arrowattr headsize="1.000000"
                    currentcyckle="2"/>
@@ -5820,7 +5820,7 @@
         <descriptor x="0.000000"
                     y="0.000000"
                     visible="false"
-                    dead="false">
+                    dead="true">
           <text>16:7-&gt;10 New_Page&apos;c87 1: {t=()}</text>
         </descriptor>
       </ssarc>
@@ -5832,10 +5832,10 @@
         <fillattr colour="White"
                   pattern="Solid"
                   filled="false"/>
-        <lineattr colour="Black"
+        <lineattr colour=""
                   thick="0"
                   type="Solid"/>
-        <textattr colour="Black"
+        <textattr colour=""
                   bold="false"/>
         <arrowattr headsize="1.000000"
                    currentcyckle="2"/>
@@ -5844,7 +5844,7 @@
         <descriptor x="0.000000"
                     y="0.000000"
                     visible="false"
-                    dead="false">
+                    dead="true">
           <text>15:7-&gt;4 New_Page&apos;c85 1: {t=()}</text>
         </descriptor>
       </ssarc>
@@ -5856,10 +5856,10 @@
         <fillattr colour="White"
                   pattern="Solid"
                   filled="false"/>
-        <lineattr colour="Black"
+        <lineattr colour=""
                   thick="0"
                   type="Solid"/>
-        <textattr colour="Black"
+        <textattr colour=""
                   bold="false"/>
         <arrowattr headsize="1.000000"
                    currentcyckle="2"/>
@@ -5868,7 +5868,7 @@
         <descriptor x="0.000000"
                     y="0.000000"
                     visible="false"
-                    dead="false">
+                    dead="true">
           <text>22:10-&gt;7 New_Page&apos;c78 1: {t=()}</text>
         </descriptor>
       </ssarc>
@@ -5880,10 +5880,10 @@
         <fillattr colour="White"
                   pattern="Solid"
                   filled="false"/>
-        <lineattr colour="Black"
+        <lineattr colour=""
                   thick="0"
                   type="Solid"/>
-        <textattr colour="Black"
+        <textattr colour=""
                   bold="false"/>
         <arrowattr headsize="1.000000"
                    currentcyckle="2"/>
@@ -5892,7 +5892,7 @@
         <descriptor x="0.000000"
                     y="0.000000"
                     visible="false"
-                    dead="false">
+                    dead="true">
           <text>21:10-&gt;12 New_Page&apos;c76 1: {t=()}</text>
         </descriptor>
       </ssarc>
@@ -5904,10 +5904,10 @@
         <fillattr colour="White"
                   pattern="Solid"
                   filled="false"/>
-        <lineattr colour="Black"
+        <lineattr colour=""
                   thick="0"
                   type="Solid"/>
-        <textattr colour="Black"
+        <textattr colour=""
                   bold="false"/>
         <arrowattr headsize="1.000000"
                    currentcyckle="2"/>
@@ -5916,7 +5916,7 @@
         <descriptor x="0.000000"
                     y="0.000000"
                     visible="false"
-                    dead="false">
+                    dead="true">
           <text>20:10-&gt;6 New_Page&apos;c74 1: {t=()}</text>
         </descriptor>
       </ssarc>
@@ -5928,10 +5928,10 @@
         <fillattr colour="White"
                   pattern="Solid"
                   filled="false"/>
-        <lineattr colour="Black"
+        <lineattr colour=""
                   thick="0"
                   type="Solid"/>
-        <textattr colour="Black"
+        <textattr colour=""
                   bold="false"/>
         <arrowattr headsize="1.000000"
                    currentcyckle="2"/>
@@ -5940,7 +5940,7 @@
         <descriptor x="0.000000"
                     y="0.000000"
                     visible="false"
-                    dead="false">
+                    dead="true">
           <text>25:12-&gt;10 New_Page&apos;c67 1: {t=()}</text>
         </descriptor>
       </ssarc>
@@ -5952,10 +5952,10 @@
         <fillattr colour="White"
                   pattern="Solid"
                   filled="false"/>
-        <lineattr colour="Black"
+        <lineattr colour=""
                   thick="0"
                   type="Solid"/>
-        <textattr colour="Black"
+        <textattr colour=""
                   bold="false"/>
         <arrowattr headsize="1.000000"
                    currentcyckle="2"/>
@@ -5964,7 +5964,7 @@
         <descriptor x="0.000000"
                     y="0.000000"
                     visible="false"
-                    dead="false">
+                    dead="true">
           <text>24:12-&gt;9 New_Page&apos;c63 1: {t=()}</text>
         </descriptor>
       </ssarc>
@@ -5976,10 +5976,10 @@
         <fillattr colour="White"
                   pattern="Solid"
                   filled="false"/>
-        <lineattr colour="Black"
+        <lineattr colour=""
                   thick="0"
                   type="Solid"/>
-        <textattr colour="Black"
+        <textattr colour=""
                   bold="false"/>
         <arrowattr headsize="1.000000"
                    currentcyckle="2"/>
@@ -5988,7 +5988,7 @@
         <descriptor x="0.000000"
                     y="0.000000"
                     visible="false"
-                    dead="false">
+                    dead="true">
           <text>33:15-&gt;20 New_Page&apos;c41 1: {t=()}</text>
         </descriptor>
       </ssarc>
@@ -6000,10 +6000,10 @@
         <fillattr colour="White"
                   pattern="Solid"
                   filled="false"/>
-        <lineattr colour="Black"
+        <lineattr colour=""
                   thick="0"
                   type="Solid"/>
-        <textattr colour="Black"
+        <textattr colour=""
                   bold="false"/>
         <arrowattr headsize="1.000000"
                    currentcyckle="2"/>
@@ -6012,7 +6012,7 @@
         <descriptor x="0.000000"
                     y="0.000000"
                     visible="false"
-                    dead="false">
+                    dead="true">
           <text>32:15-&gt;19 New_Page&apos;c47 1: {t=()}</text>
         </descriptor>
       </ssarc>
@@ -6024,10 +6024,10 @@
         <fillattr colour="White"
                   pattern="Solid"
                   filled="false"/>
-        <lineattr colour="Black"
+        <lineattr colour=""
                   thick="0"
                   type="Solid"/>
-        <textattr colour="Black"
+        <textattr colour=""
                   bold="false"/>
         <arrowattr headsize="1.000000"
                    currentcyckle="2"/>
@@ -6036,7 +6036,7 @@
         <descriptor x="0.000000"
                     y="0.000000"
                     visible="false"
-                    dead="false">
+                    dead="true">
           <text>31:15-&gt;18 New_Page&apos;c45 1: {t=()}</text>
         </descriptor>
       </ssarc>
@@ -6048,10 +6048,10 @@
         <fillattr colour="White"
                   pattern="Solid"
                   filled="false"/>
-        <lineattr colour="Black"
+        <lineattr colour=""
                   thick="0"
                   type="Solid"/>
-        <textattr colour="Black"
+        <textattr colour=""
                   bold="false"/>
         <arrowattr headsize="1.000000"
                    currentcyckle="2"/>
@@ -6060,7 +6060,7 @@
         <descriptor x="0.000000"
                     y="0.000000"
                     visible="false"
-                    dead="false">
+                    dead="true">
           <text>30:15-&gt;14 New_Page&apos;c43 1: {t=()}</text>
         </descriptor>
       </ssarc>
@@ -6072,10 +6072,10 @@
         <fillattr colour="White"
                   pattern="Solid"
                   filled="false"/>
-        <lineattr colour="Black"
+        <lineattr colour=""
                   thick="0"
                   type="Solid"/>
-        <textattr colour="Black"
+        <textattr colour=""
                   bold="false"/>
         <arrowattr headsize="1.000000"
                    currentcyckle="2"/>
@@ -6084,7 +6084,7 @@
         <descriptor x="0.000000"
                     y="0.000000"
                     visible="false"
-                    dead="false">
+                    dead="true">
           <text>46:20-&gt;16 New_Page&apos;c10 1: {t=()}</text>
         </descriptor>
       </ssarc>
@@ -6096,10 +6096,10 @@
         <fillattr colour="White"
                   pattern="Solid"
                   filled="false"/>
-        <lineattr colour="Black"
+        <lineattr colour=""
                   thick="0"
                   type="Solid"/>
-        <textattr colour="Black"
+        <textattr colour=""
                   bold="false"/>
         <arrowattr headsize="1.000000"
                    currentcyckle="2"/>
@@ -6121,7 +6121,7 @@
         <descriptor x="0.000000"
                     y="0.000000"
                     visible="false"
-                    dead="false">
+                    dead="true">
           <text>45:20-&gt;21 New_Page&apos;c12 1: {t=()}</text>
         </descriptor>
       </ssarc>
@@ -6133,10 +6133,10 @@
         <fillattr colour="White"
                   pattern="Solid"
                   filled="false"/>
-        <lineattr colour="Black"
+        <lineattr colour=""
                   thick="0"
                   type="Solid"/>
-        <textattr colour="Black"
+        <textattr colour=""
                   bold="false"/>
         <arrowattr headsize="1.000000"
                    currentcyckle="2"/>
@@ -6145,7 +6145,7 @@
         <descriptor x="0.000000"
                     y="0.000000"
                     visible="false"
-                    dead="false">
+                    dead="true">
           <text>44:20-&gt;15 New_Page&apos;c14 1: {t=()}</text>
         </descriptor>
       </ssarc>
@@ -6157,10 +6157,10 @@
         <fillattr colour="White"
                   pattern="Solid"
                   filled="false"/>
-        <lineattr colour="Black"
+        <lineattr colour=""
                   thick="0"
                   type="Solid"/>
-        <textattr colour="Black"
+        <textattr colour=""
                   bold="false"/>
         <arrowattr headsize="1.000000"
                    currentcyckle="2"/>
@@ -6169,7 +6169,7 @@
         <descriptor x="0.000000"
                     y="0.000000"
                     visible="false"
-                    dead="false">
+                    dead="true">
           <text>40:18-&gt;22 New_Page&apos;c58 1: {t=()}</text>
         </descriptor>
       </ssarc>
@@ -6181,10 +6181,10 @@
         <fillattr colour="White"
                   pattern="Solid"
                   filled="false"/>
-        <lineattr colour="Black"
+        <lineattr colour=""
                   thick="0"
                   type="Solid"/>
-        <textattr colour="Black"
+        <textattr colour=""
                   bold="false"/>
         <arrowattr headsize="1.000000"
                    currentcyckle="2"/>
@@ -6193,7 +6193,7 @@
         <descriptor x="0.000000"
                     y="0.000000"
                     visible="false"
-                    dead="false">
+                    dead="true">
           <text>39:18-&gt;21 New_Page&apos;c52 1: {t=()}</text>
         </descriptor>
       </ssarc>
@@ -6205,10 +6205,10 @@
         <fillattr colour="White"
                   pattern="Solid"
                   filled="false"/>
-        <lineattr colour="Black"
+        <lineattr colour=""
                   thick="0"
                   type="Solid"/>
-        <textattr colour="Black"
+        <textattr colour=""
                   bold="false"/>
         <arrowattr headsize="1.000000"
                    currentcyckle="2"/>
@@ -6217,7 +6217,7 @@
         <descriptor x="0.000000"
                     y="0.000000"
                     visible="false"
-                    dead="false">
+                    dead="true">
           <text>38:18-&gt;15 New_Page&apos;c54 1: {t=()}</text>
         </descriptor>
       </ssarc>
@@ -6229,10 +6229,10 @@
         <fillattr colour="White"
                   pattern="Solid"
                   filled="false"/>
-        <lineattr colour="Black"
+        <lineattr colour=""
                   thick="0"
                   type="Solid"/>
-        <textattr colour="Black"
+        <textattr colour=""
                   bold="false"/>
         <arrowattr headsize="1.000000"
                    currentcyckle="2"/>
@@ -6241,7 +6241,7 @@
         <descriptor x="0.000000"
                     y="0.000000"
                     visible="false"
-                    dead="false">
+                    dead="true">
           <text>49:22-&gt;19 New_Page&apos;c87 1: {t=()}</text>
         </descriptor>
       </ssarc>
@@ -6253,10 +6253,10 @@
         <fillattr colour="White"
                   pattern="Solid"
                   filled="false"/>
-        <lineattr colour="Black"
+        <lineattr colour=""
                   thick="0"
                   type="Solid"/>
-        <textattr colour="Black"
+        <textattr colour=""
                   bold="false"/>
         <arrowattr headsize="1.000000"
                    currentcyckle="2"/>
@@ -6265,7 +6265,7 @@
         <descriptor x="0.000000"
                     y="0.000000"
                     visible="false"
-                    dead="false">
+                    dead="true">
           <text>48:22-&gt;18 New_Page&apos;c85 1: {t=()}</text>
         </descriptor>
       </ssarc>
@@ -6277,10 +6277,10 @@
         <fillattr colour="White"
                   pattern="Solid"
                   filled="false"/>
-        <lineattr colour="Black"
+        <lineattr colour=""
                   thick="0"
                   type="Solid"/>
-        <textattr colour="Black"
+        <textattr colour=""
                   bold="false"/>
         <arrowattr headsize="1.000000"
                    currentcyckle="2"/>
@@ -6302,7 +6302,7 @@
         <descriptor x="0.000000"
                     y="0.000000"
                     visible="false"
-                    dead="false">
+                    dead="true">
           <text>47:21-&gt;1 New_Page&apos;dlvrStRed 1: {it=red,t=()}</text>
         </descriptor>
       </ssarc>
@@ -6314,10 +6314,10 @@
         <fillattr colour="White"
                   pattern="Solid"
                   filled="false"/>
-        <lineattr colour="Black"
+        <lineattr colour=""
                   thick="0"
                   type="Solid"/>
-        <textattr colour="Black"
+        <textattr colour=""
                   bold="false"/>
         <arrowattr headsize="1.000000"
                    currentcyckle="2"/>
@@ -6326,7 +6326,7 @@
         <descriptor x="0.000000"
                     y="0.000000"
                     visible="false"
-                    dead="false">
+                    dead="true">
           <text>43:19-&gt;22 New_Page&apos;c78 1: {t=()}</text>
         </descriptor>
       </ssarc>
@@ -6338,10 +6338,10 @@
         <fillattr colour="White"
                   pattern="Solid"
                   filled="false"/>
-        <lineattr colour="Black"
+        <lineattr colour=""
                   thick="0"
                   type="Solid"/>
-        <textattr colour="Black"
+        <textattr colour=""
                   bold="false"/>
         <arrowattr headsize="1.000000"
                    currentcyckle="2"/>
@@ -6350,7 +6350,7 @@
         <descriptor x="0.000000"
                     y="0.000000"
                     visible="false"
-                    dead="false">
+                    dead="true">
           <text>42:19-&gt;17 New_Page&apos;c76 1: {t=()}</text>
         </descriptor>
       </ssarc>
@@ -6362,10 +6362,10 @@
         <fillattr colour="White"
                   pattern="Solid"
                   filled="false"/>
-        <lineattr colour="Black"
+        <lineattr colour=""
                   thick="0"
                   type="Solid"/>
-        <textattr colour="Black"
+        <textattr colour=""
                   bold="false"/>
         <arrowattr headsize="1.000000"
                    currentcyckle="2"/>
@@ -6374,7 +6374,7 @@
         <descriptor x="0.000000"
                     y="0.000000"
                     visible="false"
-                    dead="false">
+                    dead="true">
           <text>41:19-&gt;15 New_Page&apos;c74 1: {t=()}</text>
         </descriptor>
       </ssarc>
@@ -6387,15 +6387,15 @@
         <fillattr colour="White"
                   pattern=""
                   filled="false"/>
-        <lineattr colour="Black"
+        <lineattr colour="Gray"
                   thick="1"
                   type="Solid"/>
-        <textattr colour="Black"
+        <textattr colour="Gray"
                   bold="false"/>
         <descriptor x="0.000000"
                     y="0.000000"
                     visible="false"
-                    dead="false">
+                    dead="true">
           <text>1:
 New_Page&apos;C0 1: empty
 New_Page&apos;C1 1: empty
@@ -6408,8 +6408,7 @@ New_Page&apos;C8 1: empty
 New_Page&apos;C4 1: empty
 New_Page&apos;station_storage_R 1: 1`blue
 New_Page&apos;transporter_load 1: 1`none
-New_Page&apos;station_storage_b 1: 1`red
-</text>
+New_Page&apos;station_storage_b 1: 1`red</text>
         </descriptor>
         <roundbox w="45.000000"
                   h="40.000000"/>
@@ -6423,15 +6422,15 @@ New_Page&apos;station_storage_b 1: 1`red
         <fillattr colour="White"
                   pattern=""
                   filled="false"/>
-        <lineattr colour="Black"
+        <lineattr colour="Gray"
                   thick="1"
                   type="Solid"/>
-        <textattr colour="Black"
+        <textattr colour="Gray"
                   bold="false"/>
         <descriptor x="0.000000"
                     y="0.000000"
                     visible="false"
-                    dead="false">
+                    dead="true">
           <text>2:
 New_Page&apos;C0 1: empty
 New_Page&apos;C1 1: empty
@@ -6444,8 +6443,7 @@ New_Page&apos;C8 1: empty
 New_Page&apos;C4 1: empty
 New_Page&apos;station_storage_R 1: 1`none
 New_Page&apos;transporter_load 1: 1`blue
-New_Page&apos;station_storage_b 1: 1`red
-</text>
+New_Page&apos;station_storage_b 1: 1`red</text>
         </descriptor>
         <roundbox w="45.000000"
                   h="40.000000"/>
@@ -6459,15 +6457,15 @@ New_Page&apos;station_storage_b 1: 1`red
         <fillattr colour="White"
                   pattern=""
                   filled="false"/>
-        <lineattr colour="Black"
+        <lineattr colour="Gray"
                   thick="1"
                   type="Solid"/>
-        <textattr colour="Black"
+        <textattr colour="Gray"
                   bold="false"/>
         <descriptor x="0.000000"
                     y="0.000000"
                     visible="false"
-                    dead="false">
+                    dead="true">
           <text>3:
 New_Page&apos;C0 1: empty
 New_Page&apos;C1 1: empty
@@ -6480,8 +6478,7 @@ New_Page&apos;C8 1: empty
 New_Page&apos;C4 1: empty
 New_Page&apos;station_storage_R 1: 1`blue
 New_Page&apos;transporter_load 1: 1`blue
-New_Page&apos;station_storage_b 1: 1`red
-</text>
+New_Page&apos;station_storage_b 1: 1`red</text>
         </descriptor>
         <roundbox w="45.000000"
                   h="40.000000"/>
@@ -6495,15 +6492,15 @@ New_Page&apos;station_storage_b 1: 1`red
         <fillattr colour="White"
                   pattern=""
                   filled="false"/>
-        <lineattr colour="Black"
+        <lineattr colour="Gray"
                   thick="1"
                   type="Solid"/>
-        <textattr colour="Black"
+        <textattr colour="Gray"
                   bold="false"/>
         <descriptor x="0.000000"
                     y="0.000000"
                     visible="false"
-                    dead="false">
+                    dead="true">
           <text>5:
 New_Page&apos;C0 1: empty
 New_Page&apos;C1 1: 1`()
@@ -6516,8 +6513,7 @@ New_Page&apos;C8 1: empty
 New_Page&apos;C4 1: empty
 New_Page&apos;station_storage_R 1: 1`blue
 New_Page&apos;transporter_load 1: 1`blue
-New_Page&apos;station_storage_b 1: 1`red
-</text>
+New_Page&apos;station_storage_b 1: 1`red</text>
         </descriptor>
         <roundbox w="45.000000"
                   h="40.000000"/>
@@ -6531,15 +6527,15 @@ New_Page&apos;station_storage_b 1: 1`red
         <fillattr colour="White"
                   pattern=""
                   filled="false"/>
-        <lineattr colour="Black"
+        <lineattr colour="Gray"
                   thick="1"
                   type="Solid"/>
-        <textattr colour="Black"
+        <textattr colour="Gray"
                   bold="false"/>
         <descriptor x="0.000000"
                     y="0.000000"
                     visible="false"
-                    dead="false">
+                    dead="true">
           <text>4:
 New_Page&apos;C0 1: empty
 New_Page&apos;C1 1: empty
@@ -6552,8 +6548,7 @@ New_Page&apos;C8 1: empty
 New_Page&apos;C4 1: empty
 New_Page&apos;station_storage_R 1: 1`blue
 New_Page&apos;transporter_load 1: 1`blue
-New_Page&apos;station_storage_b 1: 1`red
-</text>
+New_Page&apos;station_storage_b 1: 1`red</text>
         </descriptor>
         <roundbox w="45.000000"
                   h="40.000000"/>
@@ -6567,15 +6562,15 @@ New_Page&apos;station_storage_b 1: 1`red
         <fillattr colour="White"
                   pattern=""
                   filled="false"/>
-        <lineattr colour="Black"
+        <lineattr colour="Gray"
                   thick="1"
                   type="Solid"/>
-        <textattr colour="Black"
+        <textattr colour="Gray"
                   bold="false"/>
         <descriptor x="0.000000"
                     y="0.000000"
                     visible="false"
-                    dead="false">
+                    dead="true">
           <text>8:
 New_Page&apos;C0 1: 1`()
 New_Page&apos;C1 1: empty
@@ -6588,8 +6583,7 @@ New_Page&apos;C8 1: empty
 New_Page&apos;C4 1: empty
 New_Page&apos;station_storage_R 1: 1`blue
 New_Page&apos;transporter_load 1: 1`blue
-New_Page&apos;station_storage_b 1: 1`red
-</text>
+New_Page&apos;station_storage_b 1: 1`red</text>
         </descriptor>
         <roundbox w="45.000000"
                   h="40.000000"/>
@@ -6603,15 +6597,15 @@ New_Page&apos;station_storage_b 1: 1`red
         <fillattr colour="White"
                   pattern=""
                   filled="false"/>
-        <lineattr colour="Black"
+        <lineattr colour="Gray"
                   thick="1"
                   type="Solid"/>
-        <textattr colour="Black"
+        <textattr colour="Gray"
                   bold="false"/>
         <descriptor x="0.000000"
                     y="0.000000"
                     visible="false"
-                    dead="false">
+                    dead="true">
           <text>6:
 New_Page&apos;C0 1: empty
 New_Page&apos;C1 1: empty
@@ -6624,8 +6618,7 @@ New_Page&apos;C8 1: empty
 New_Page&apos;C4 1: 1`()
 New_Page&apos;station_storage_R 1: 1`blue
 New_Page&apos;transporter_load 1: 1`blue
-New_Page&apos;station_storage_b 1: 1`red
-</text>
+New_Page&apos;station_storage_b 1: 1`red</text>
         </descriptor>
         <roundbox w="45.000000"
                   h="40.000000"/>
@@ -6639,15 +6632,15 @@ New_Page&apos;station_storage_b 1: 1`red
         <fillattr colour="White"
                   pattern=""
                   filled="false"/>
-        <lineattr colour="Black"
+        <lineattr colour="Gray"
                   thick="1"
                   type="Solid"/>
-        <textattr colour="Black"
+        <textattr colour="Gray"
                   bold="false"/>
         <descriptor x="0.000000"
                     y="0.000000"
                     visible="false"
-                    dead="false">
+                    dead="true">
           <text>9:
 New_Page&apos;C0 1: empty
 New_Page&apos;C1 1: empty
@@ -6660,8 +6653,7 @@ New_Page&apos;C8 1: empty
 New_Page&apos;C4 1: empty
 New_Page&apos;station_storage_R 1: 1`blue
 New_Page&apos;transporter_load 1: 1`blue
-New_Page&apos;station_storage_b 1: 1`red
-</text>
+New_Page&apos;station_storage_b 1: 1`red</text>
         </descriptor>
         <roundbox w="45.000000"
                   h="40.000000"/>
@@ -6675,15 +6667,15 @@ New_Page&apos;station_storage_b 1: 1`red
         <fillattr colour="White"
                   pattern=""
                   filled="false"/>
-        <lineattr colour="Black"
+        <lineattr colour="Gray"
                   thick="1"
                   type="Solid"/>
-        <textattr colour="Black"
+        <textattr colour="Gray"
                   bold="false"/>
         <descriptor x="0.000000"
                     y="0.000000"
                     visible="false"
-                    dead="false">
+                    dead="true">
           <text>11:
 New_Page&apos;C0 1: empty
 New_Page&apos;C1 1: empty
@@ -6696,8 +6688,7 @@ New_Page&apos;C8 1: empty
 New_Page&apos;C4 1: empty
 New_Page&apos;station_storage_R 1: 1`blue
 New_Page&apos;transporter_load 1: 1`none
-New_Page&apos;station_storage_b 1: 1`red
-</text>
+New_Page&apos;station_storage_b 1: 1`red</text>
         </descriptor>
         <roundbox w="45.000000"
                   h="40.000000"/>
@@ -6711,15 +6702,15 @@ New_Page&apos;station_storage_b 1: 1`red
         <fillattr colour="White"
                   pattern=""
                   filled="false"/>
-        <lineattr colour="Black"
+        <lineattr colour="Gray"
                   thick="1"
                   type="Solid"/>
-        <textattr colour="Black"
+        <textattr colour="Gray"
                   bold="false"/>
         <descriptor x="0.000000"
                     y="0.000000"
                     visible="false"
-                    dead="false">
+                    dead="true">
           <text>13:
 New_Page&apos;C0 1: empty
 New_Page&apos;C1 1: empty
@@ -6732,8 +6723,7 @@ New_Page&apos;C8 1: empty
 New_Page&apos;C4 1: empty
 New_Page&apos;station_storage_R 1: 1`blue
 New_Page&apos;transporter_load 1: 1`red
-New_Page&apos;station_storage_b 1: 1`none
-</text>
+New_Page&apos;station_storage_b 1: 1`none</text>
         </descriptor>
         <roundbox w="45.000000"
                   h="40.000000"/>
@@ -6747,15 +6737,15 @@ New_Page&apos;station_storage_b 1: 1`none
         <fillattr colour="White"
                   pattern=""
                   filled="false"/>
-        <lineattr colour="Black"
+        <lineattr colour="Gray"
                   thick="1"
                   type="Solid"/>
-        <textattr colour="Black"
+        <textattr colour="Gray"
                   bold="false"/>
         <descriptor x="0.000000"
                     y="0.000000"
                     visible="false"
-                    dead="false">
+                    dead="true">
           <text>14:
 New_Page&apos;C0 1: empty
 New_Page&apos;C1 1: empty
@@ -6768,8 +6758,7 @@ New_Page&apos;C8 1: empty
 New_Page&apos;C4 1: empty
 New_Page&apos;station_storage_R 1: 1`blue
 New_Page&apos;transporter_load 1: 1`red
-New_Page&apos;station_storage_b 1: 1`red
-</text>
+New_Page&apos;station_storage_b 1: 1`red</text>
         </descriptor>
         <roundbox w="45.000000"
                   h="40.000000"/>
@@ -6783,15 +6772,15 @@ New_Page&apos;station_storage_b 1: 1`red
         <fillattr colour="White"
                   pattern=""
                   filled="false"/>
-        <lineattr colour="Black"
+        <lineattr colour="Gray"
                   thick="1"
                   type="Solid"/>
-        <textattr colour="Black"
+        <textattr colour="Gray"
                   bold="false"/>
         <descriptor x="0.000000"
                     y="0.000000"
                     visible="false"
-                    dead="false">
+                    dead="true">
           <text>17:
 New_Page&apos;C0 1: empty
 New_Page&apos;C1 1: empty
@@ -6804,8 +6793,7 @@ New_Page&apos;C8 1: empty
 New_Page&apos;C4 1: empty
 New_Page&apos;station_storage_R 1: 1`blue
 New_Page&apos;transporter_load 1: 1`red
-New_Page&apos;station_storage_b 1: 1`red
-</text>
+New_Page&apos;station_storage_b 1: 1`red</text>
         </descriptor>
         <roundbox w="45.000000"
                   h="40.000000"/>
@@ -6819,15 +6807,15 @@ New_Page&apos;station_storage_b 1: 1`red
         <fillattr colour="White"
                   pattern=""
                   filled="false"/>
-        <lineattr colour="Black"
+        <lineattr colour="Gray"
                   thick="1"
                   type="Solid"/>
-        <textattr colour="Black"
+        <textattr colour="Gray"
                   bold="false"/>
         <descriptor x="0.000000"
                     y="0.000000"
                     visible="false"
-                    dead="false">
+                    dead="true">
           <text>16:
 New_Page&apos;C0 1: 1`()
 New_Page&apos;C1 1: empty
@@ -6840,8 +6828,7 @@ New_Page&apos;C8 1: empty
 New_Page&apos;C4 1: empty
 New_Page&apos;station_storage_R 1: 1`blue
 New_Page&apos;transporter_load 1: 1`red
-New_Page&apos;station_storage_b 1: 1`red
-</text>
+New_Page&apos;station_storage_b 1: 1`red</text>
         </descriptor>
         <roundbox w="45.000000"
                   h="40.000000"/>
@@ -6855,15 +6842,15 @@ New_Page&apos;station_storage_b 1: 1`red
         <fillattr colour="White"
                   pattern=""
                   filled="false"/>
-        <lineattr colour="Black"
+        <lineattr colour="Gray"
                   thick="1"
                   type="Solid"/>
-        <textattr colour="Black"
+        <textattr colour="Gray"
                   bold="false"/>
         <descriptor x="0.000000"
                     y="0.000000"
                     visible="false"
-                    dead="false">
+                    dead="true">
           <text>15:
 New_Page&apos;C0 1: empty
 New_Page&apos;C1 1: empty
@@ -6876,8 +6863,7 @@ New_Page&apos;C8 1: empty
 New_Page&apos;C4 1: 1`()
 New_Page&apos;station_storage_R 1: 1`blue
 New_Page&apos;transporter_load 1: 1`red
-New_Page&apos;station_storage_b 1: 1`red
-</text>
+New_Page&apos;station_storage_b 1: 1`red</text>
         </descriptor>
         <roundbox w="45.000000"
                   h="40.000000"/>
@@ -6891,15 +6877,15 @@ New_Page&apos;station_storage_b 1: 1`red
         <fillattr colour="White"
                   pattern=""
                   filled="false"/>
-        <lineattr colour="Black"
+        <lineattr colour="Gray"
                   thick="1"
                   type="Solid"/>
-        <textattr colour="Black"
+        <textattr colour="Gray"
                   bold="false"/>
         <descriptor x="0.000000"
                     y="0.000000"
                     visible="false"
-                    dead="false">
+                    dead="true">
           <text>19:
 New_Page&apos;C0 1: empty
 New_Page&apos;C1 1: empty
@@ -6912,8 +6898,7 @@ New_Page&apos;C8 1: empty
 New_Page&apos;C4 1: empty
 New_Page&apos;station_storage_R 1: 1`blue
 New_Page&apos;transporter_load 1: 1`red
-New_Page&apos;station_storage_b 1: 1`red
-</text>
+New_Page&apos;station_storage_b 1: 1`red</text>
         </descriptor>
         <roundbox w="45.000000"
                   h="40.000000"/>
@@ -6927,15 +6912,15 @@ New_Page&apos;station_storage_b 1: 1`red
         <fillattr colour="White"
                   pattern=""
                   filled="false"/>
-        <lineattr colour="Black"
+        <lineattr colour="Gray"
                   thick="1"
                   type="Solid"/>
-        <textattr colour="Black"
+        <textattr colour="Gray"
                   bold="false"/>
         <descriptor x="0.000000"
                     y="0.000000"
                     visible="false"
-                    dead="false">
+                    dead="true">
           <text>20:
 New_Page&apos;C0 1: empty
 New_Page&apos;C1 1: 1`()
@@ -6948,8 +6933,7 @@ New_Page&apos;C8 1: empty
 New_Page&apos;C4 1: empty
 New_Page&apos;station_storage_R 1: 1`blue
 New_Page&apos;transporter_load 1: 1`red
-New_Page&apos;station_storage_b 1: 1`red
-</text>
+New_Page&apos;station_storage_b 1: 1`red</text>
         </descriptor>
         <roundbox w="45.000000"
                   h="40.000000"/>
@@ -6963,15 +6947,15 @@ New_Page&apos;station_storage_b 1: 1`red
         <fillattr colour="White"
                   pattern=""
                   filled="false"/>
-        <lineattr colour="Black"
+        <lineattr colour="Gray"
                   thick="1"
                   type="Solid"/>
-        <textattr colour="Black"
+        <textattr colour="Gray"
                   bold="false"/>
         <descriptor x="0.000000"
                     y="0.000000"
                     visible="false"
-                    dead="false">
+                    dead="true">
           <text>10:
 New_Page&apos;C0 1: empty
 New_Page&apos;C1 1: empty
@@ -6984,8 +6968,7 @@ New_Page&apos;C8 1: empty
 New_Page&apos;C4 1: empty
 New_Page&apos;station_storage_R 1: 1`blue
 New_Page&apos;transporter_load 1: 1`blue
-New_Page&apos;station_storage_b 1: 1`red
-</text>
+New_Page&apos;station_storage_b 1: 1`red</text>
         </descriptor>
         <roundbox w="45.000000"
                   h="40.000000"/>
@@ -6999,15 +6982,15 @@ New_Page&apos;station_storage_b 1: 1`red
         <fillattr colour="White"
                   pattern=""
                   filled="false"/>
-        <lineattr colour="Black"
+        <lineattr colour="Gray"
                   thick="1"
                   type="Solid"/>
-        <textattr colour="Black"
+        <textattr colour="Gray"
                   bold="false"/>
         <descriptor x="0.000000"
                     y="0.000000"
                     visible="false"
-                    dead="false">
+                    dead="true">
           <text>7:
 New_Page&apos;C0 1: empty
 New_Page&apos;C1 1: empty
@@ -7020,8 +7003,7 @@ New_Page&apos;C8 1: 1`()
 New_Page&apos;C4 1: empty
 New_Page&apos;station_storage_R 1: 1`blue
 New_Page&apos;transporter_load 1: 1`blue
-New_Page&apos;station_storage_b 1: 1`red
-</text>
+New_Page&apos;station_storage_b 1: 1`red</text>
         </descriptor>
         <roundbox w="45.000000"
                   h="40.000000"/>
@@ -7035,15 +7017,15 @@ New_Page&apos;station_storage_b 1: 1`red
         <fillattr colour="White"
                   pattern=""
                   filled="false"/>
-        <lineattr colour="Black"
+        <lineattr colour="Gray"
                   thick="1"
                   type="Solid"/>
-        <textattr colour="Black"
+        <textattr colour="Gray"
                   bold="false"/>
         <descriptor x="0.000000"
                     y="0.000000"
                     visible="false"
-                    dead="false">
+                    dead="true">
           <text>12:
 New_Page&apos;C0 1: empty
 New_Page&apos;C1 1: empty
@@ -7056,8 +7038,7 @@ New_Page&apos;C8 1: empty
 New_Page&apos;C4 1: empty
 New_Page&apos;station_storage_R 1: 1`blue
 New_Page&apos;transporter_load 1: 1`blue
-New_Page&apos;station_storage_b 1: 1`red
-</text>
+New_Page&apos;station_storage_b 1: 1`red</text>
         </descriptor>
         <roundbox w="45.000000"
                   h="40.000000"/>
@@ -7071,15 +7052,15 @@ New_Page&apos;station_storage_b 1: 1`red
         <fillattr colour="White"
                   pattern=""
                   filled="false"/>
-        <lineattr colour="Black"
+        <lineattr colour="Gray"
                   thick="1"
                   type="Solid"/>
-        <textattr colour="Black"
+        <textattr colour="Gray"
                   bold="false"/>
         <descriptor x="0.000000"
                     y="0.000000"
                     visible="false"
-                    dead="false">
+                    dead="true">
           <text>18:
 New_Page&apos;C0 1: empty
 New_Page&apos;C1 1: empty
@@ -7092,8 +7073,7 @@ New_Page&apos;C8 1: empty
 New_Page&apos;C4 1: empty
 New_Page&apos;station_storage_R 1: 1`blue
 New_Page&apos;transporter_load 1: 1`red
-New_Page&apos;station_storage_b 1: 1`red
-</text>
+New_Page&apos;station_storage_b 1: 1`red</text>
         </descriptor>
         <roundbox w="45.000000"
                   h="40.000000"/>
@@ -7107,15 +7087,15 @@ New_Page&apos;station_storage_b 1: 1`red
         <fillattr colour="White"
                   pattern=""
                   filled="false"/>
-        <lineattr colour="Black"
+        <lineattr colour="Gray"
                   thick="1"
                   type="Solid"/>
-        <textattr colour="Black"
+        <textattr colour="Gray"
                   bold="false"/>
         <descriptor x="0.000000"
                     y="0.000000"
                     visible="false"
-                    dead="false">
+                    dead="true">
           <text>21:
 New_Page&apos;C0 1: empty
 New_Page&apos;C1 1: empty
@@ -7128,8 +7108,7 @@ New_Page&apos;C8 1: empty
 New_Page&apos;C4 1: empty
 New_Page&apos;station_storage_R 1: 1`blue
 New_Page&apos;transporter_load 1: 1`red
-New_Page&apos;station_storage_b 1: 1`red
-</text>
+New_Page&apos;station_storage_b 1: 1`red</text>
         </descriptor>
         <roundbox w="45.000000"
                   h="40.000000"/>
@@ -7143,15 +7122,15 @@ New_Page&apos;station_storage_b 1: 1`red
         <fillattr colour="White"
                   pattern=""
                   filled="false"/>
-        <lineattr colour="Black"
+        <lineattr colour="Gray"
                   thick="1"
                   type="Solid"/>
-        <textattr colour="Black"
+        <textattr colour="Gray"
                   bold="false"/>
         <descriptor x="0.000000"
                     y="0.000000"
                     visible="false"
-                    dead="false">
+                    dead="true">
           <text>22:
 New_Page&apos;C0 1: empty
 New_Page&apos;C1 1: empty
@@ -7164,8 +7143,7 @@ New_Page&apos;C8 1: 1`()
 New_Page&apos;C4 1: empty
 New_Page&apos;station_storage_R 1: 1`blue
 New_Page&apos;transporter_load 1: 1`red
-New_Page&apos;station_storage_b 1: 1`red
-</text>
+New_Page&apos;station_storage_b 1: 1`red</text>
         </descriptor>
         <roundbox w="45.000000"
                   h="40.000000"/>
@@ -7451,14 +7429,14 @@ New_Page&apos;station_storage_b 1: 1`red
     </options>
     <binders>
       <cpnbinder id="ID2222"
-                 x="208"
-                 y="133"
+                 x="381"
+                 y="146"
                  width="2267"
                  height="1087">
         <sheets>
           <cpnsheet id="ID2215"
-                    panx="249.000000"
-                    pany="340.000000"
+                    panx="137.000000"
+                    pany="265.000000"
                     zoom="1.250414"
                     instance="ID2149">
             <zorder>
