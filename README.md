@@ -1,5 +1,5 @@
 # Performance comparison of Simple Reflex Agents Using Stigmergy with Model-Based Agents in Self-Organizing Transportation
-Project to compare the performances of naive simple reflex agents (SRA), SRAs using stigmergy, model-based agents (MBA) and a monolithic approach in a disturbed transportation setting that simulates a dynamic, real-world industrial shop floor.   
+This is the artifact of our paper to compare the performances of naive simple reflex agents (SRA), SRAs using stigmergy, model-based agents (MBA) and a monolithic approach in a disturbed transportation setting that simulates a dynamic, real-world industrial shop floor.   
 
 The goal is to get an overview of the differences in performance, as well as exploring further usages and models of stigmergy for SRAs. Overall, we want to investigate, if SRAs with stigmergy can perform better in a defined transportation task than MBAs, when they can use stigmergy.
 
@@ -35,4 +35,4 @@ result - contains our measured data for this setup with 10k simulated cycles and
 
 ## Setup of the artifact [GAMA](https://gama-platform.github.io/) _with_ a VM
 
-- tbd
+- tbd (VM + requirements)
