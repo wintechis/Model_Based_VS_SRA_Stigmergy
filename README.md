@@ -17,9 +17,22 @@ models - models that share the same environment behaviour (= dynamic, stochastic
 - 3_MBA_Transporter: a model where MBAs are decentralized in their knowledge usage. Each agent has its own internal states, but may communicate with another agent that it meets during its walk to update each others knowledge. They use simple, greedy pathfinding to get to their destination. If this in unknown, the walk randomly around the shop floor until they find it, then the agent updates its own knowledge base. If it is at it destination, but does not find the expected station, their own entry is deleted. If it meets another agent that has the old, deprecated knowledge, it will adopt this wrong knowledge.
 - 4_Blackboard_Transporter: a model where agents use a common shared knowledge base that all can read and update. They use very simple pathfinding to get to their destination. If this in unknown, the walk randomly around the shop floor until they find it - then the agent updates the global, central knowledge base. If it is at it destination, but does not find the expected station, the entry is deleted.
 
-## Usage
+result - contains our measured data for this setup with 10k simulated cycles and 40 repetitions per model:
+-  \*.csv : results per model, names as above
+-  Model_vs_StigInf_vs_Global.ods: a consolidated table of all measured values, including charts
 
-- Install GAMA (https://gama-platform.github.io/)
-- Import the project into your workspace (https://gama-platform.github.io/wiki/ImportingModels)
+## Setup of the artifact for [GAMA](https://gama-platform.github.io/) _without_ a VM
+
+- Install GAMA according to these [steps](https://gama-platform.github.io/wiki/Installation)
+  -  [System Requirements](https://gama-platform.github.io/wiki/Installation#system-requirements)
+- [Import the project into your workspace](https://gama-platform.github.io/wiki/ImportingModels)
 - Select the model you are interested in
-- Run the included experiments
+- Run the included experiments in /models/:
+  - "\*_Transporter": run a simulation with a GUI, an animated shop floor and charts
+  - "No_Charts": same as above, but without charts, but added shop floor names
+  - "\*_Transporter_batch": run a batch of simulations, pre-set to 10k cycles and 40 repetitions. Results are saved under the above given names in /models/result/
+- Note that the simulation results are saved in separate files and have to be put externally together, e.g. to be displayed in a chart
+
+## Setup of the artifact [GAMA](https://gama-platform.github.io/) _with_ a VM
+
+- tbd
