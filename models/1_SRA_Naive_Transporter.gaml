@@ -1,18 +1,16 @@
 /**
-* Name: ModelBasedTransporter_GlobalKnowledge
-* Model_Based_VS_SRA_Stigmergy 
+* Name: SRA Naive
+* Model_Based_VS_SRA_Stigmergy
 * Author: Sebastian Schmid
-* Description: uses model-based agents with global, shared knowledge as a monolith 
+* Description: uses SRA without stigmergy or communication and does only random walk / search   
 * Tags: 
 */
 
-
 @no_warning
-model ModelBasedTransporter
-
+model SRA_Naive
 
 global{
-	int shop_floor_diameter <- 500 min:10 max: 500; //with cell width and heigth 20 this gives 25 x 25 cells 
+	int shop_floor_diameter <-500 min:10 max: 500;
 	geometry shape <- square(shop_floor_diameter);
 	int no_station <- 4 min: 2 max: 20;
 	int no_transporter <- 17 min: 1 max: 100;
@@ -23,7 +21,7 @@ global{
 		//describes the distribution mode for stations:
 		/*strict:		4 stations making a square near the center  
 		 *random: 		picks a random spot to place a station
-		 *structured:	stations are placed in a symmetrical distance around the world center (other options?)
+		 *structured:	stations are placed in a symmetrical distance around the world center
 		 *corners: 		stations are placed towards the world corners, but there also randomly  
 		 */
 	string selected_placement_mode <- placement_mode[0]; //default is 'strict'
@@ -34,17 +32,14 @@ global{
 
 	list<rgb> colors <- list_with(no_station, rnd_color(255)); //creates a list with no. of stations random colors. 
 	
-	list<string> color_mode const:true <- ["strict","unique", "random"];  
+	list<string> color_mode const:true <- ["unique", "random"];  
 	//describes the coloring mode for stations:
 		/*unique: 		each color is only allowed once
 		 *random:		colors are picked randomly and can therefor occure more than once
 		 */
 	string selected_color_mode <- color_mode[0]; //default is 'unique'
-
-	int disturbance_cycles <- 500#cycles; //in strict mode: all N cycles, we change the color of our stations
-
-	/*I define the color of the thing as maximum (= 1.0) s.t. all other gradient have to lie below that. To make them distinguishable, the STRONG mark may have (color_gradient_max )*THING_COLOR. All other WEAK gradients are below. */
-	float color_gradient_max <- 0.75 max: 0.99;
+	
+	int disturbance_cycles <- 500#cycles; //in strict mode: all N cycles, we change the color of our stations		
 	
 	/* Investigation variables - PART I (other part is places behind init block)*/
 		map<rgb, int> delivered <- []; //will be used to keep track of how many things of each color have been delivered. "keys" of this maps contains the list of station colors. also used in Statio init!!
@@ -57,10 +52,12 @@ global{
 		list<float> moving_average <- []; //holds the last "window_for_last_N_deliveries" values for deliveries to calculate a moving average 
 		float moving_average_SUM <- 0; //holds the average value over the moving average
 		
-		list<float> moving_average_steps <- []; //  holds the last "window_for_last_N_deliveries" values for the amount of steps it took a transporter to find its destination after picking up an item
+		map<string, int> transporter_usage <- []; //transporter will add themselves in their init block
 		
-	map<rgb, point> station_position <- []; //represents the knowledge about positions of already found or communicated stations. Entries have shape [rgb::location]
-		
+		rgb observe_color <- #red;
+	
+	list<float> moving_average_steps <- []; //  holds the last "window_for_last_N_deliveries" values for the amount of steps it took a transporter to find its destination after picking up an item
+			
 	
 	init{
 							
@@ -74,6 +71,8 @@ global{
 		/*Assign colors to all stations wrt the simulation settings */
 		switch selected_color_mode{
 			match "strict"{
+				//the strict coloring mode for the strict placement mode that only uses 4 stations
+				
 				if(no_station != 4)
 				{
 					write "Coloring mode is still set to strict!";					
@@ -86,8 +85,9 @@ global{
 				loop s over: station{
 					
 					ask s{
-						proba_thing_creation <- 0.8; //fixed PROBABILITY of item creation here to 0.8
 						
+						proba_thing_creation <- 0.8; //fixed PROBABILITY of item creation here to 0.8
+												
 						accept_color <- col_tmp[i]; //the color we accept
 						color <- accept_color; //the color we display
 						
@@ -97,7 +97,6 @@ global{
 					i <- i+1;//to get next colo
 				}
 			}
-			
 			match "unique"{
 				ask station{
 					rgb col_tmp <- one_of(where(colors, !(in(each, delivered.keys)) )); //choose a random color that hasn't been already chosen
@@ -137,15 +136,14 @@ global{
 		/*After the colors have been assigned, choose valid colors for thing production */
 		ask stations{
 			
-			valid_colors <- delivered.keys; //delivered keys holds the list of all colors used by stations
-			remove all: self.accept_color from: valid_colors; //remove the station's own color s.t. only other colors are produced			
+			valid_colors <- delivered.keys - accept_color; //delivered keys holds the list of all colors used by stations, exclude my own color		
 		}
 		
 		/*Place stations acc. to simulation settings */
 		switch selected_placement_mode{
 			match "strict"{
 				
-				//This declaration here is intentionally a bit awkward, beacuse it's not done yet and only implemented for 4 stations...
+				//This declaration here is intentionally a bit awkward, because it's implemented for fixed 4 stations...
 				
 				float factor <- strict_placement_factor;
 				
@@ -162,7 +160,7 @@ global{
 				loop s over: stations{	
 
 					ask s{
-							location<-my_cell.location ;//cellAgent.location;
+							location<-my_cell.location ;
 						}	
 				}
 			}
@@ -248,8 +246,8 @@ global{
 	}
 	
 	/*For random color change of stations */
-	//every N cycles, we take the already given colors and switch them randomly around
-	reflex change_station_colors when: (cycle > 1) and every(disturbance_cycles) and (selected_placement_mode = "strict"){
+	//every "disturbance_cycles" cycles, we take the already given colors and switch them randomly around
+	reflex change_station_colors when: (cycle > 1) and every(disturbance_cycles){
 		
 		list<rgb> col_tmp <- nil; //will hold all current colors
 		ask station{
@@ -280,32 +278,9 @@ global{
 		}	
 	}
 	
-	action create_blockade{
-		
-		shop_floor cell <- first(shop_floor overlapping #user_location); //get shop_floor that is overlapped by location of user interaction (=mouse click)
-		
-		//write "" + s + " gets a blockade!";
-		
-		ask cell{
-			
-			do delete_ALL_color_marks;
-			
-			if(empty(blockade inside cell)){
-				create blockade {
-					my_cell <- cell;
-					location <- my_cell.location;
-				}
-			}else{
-				blockade b <- first(blockade inside cell);
-				ask b{ do die;}
-			}
-		}
-		
-		
-	}
-	
 	/* Investigation variables - PART II (other part is places before init block)*/
 	//nothing	
+
 }
 
 
@@ -318,14 +293,6 @@ species superclass{
 	}
 }
 
-//represents a cell that is now blocked and cannot be accessed anymore
-species blockade parent: superclass{
-	
-	aspect base{
-
-		draw file("bricks.jpg") size: {cell_width, cell_width} ; 	
-	}
-}
 
 species thing parent: superclass{
 	rgb color <- #white;
@@ -337,6 +304,9 @@ species thing parent: superclass{
 		draw circle(0.25*cell_width) color: color border:#black;
 	}
 	
+	map get_states{
+		return create_map(["color", "location"],[color, location]);
+	}
 		
 	init{
 		cycle_created <- cycle; //set the current cycle as "creation date" for this thing
@@ -374,99 +344,51 @@ species station parent: superclass{
 		//a thing if something is stored. nil if it is empty
 		return storage;		
 	}
-	
-	//This action models the central information about states and affordances of this artifact
-	//in a web based communication, this would be the result of an HTTP GET request. 
+	 
 	map get_states{
 		return create_map(['storage', "accept_color"],[storage, accept_color]);
 	}
 	
 }
 
-species transporter parent: superclass{
+species transporter parent: superclass {
 	thing load <- nil;
-//	map<rgb, point> station_position <- []; //represents the knowledge about positions of already found or communicated stations. Entries have shape [rgb::location]
 	
 	float amount_of_steps<- 0.0; //the amount of steps this transporter made after it pickep up an item   
 	
 	init{
-		
+	
 	}
 	
-	//if i am empty or do not know where my item's station is -> wander
-	reflex random_movement when:((load = nil) or !(station_position contains_key load.color)) {
+	//whatever you do, you always wander around - as long as there is no other transporter blocking you or a station in your way
+	reflex wander {
 		
 		//generate a list of all my neighbor cells in a random order
 		list<shop_floor> s <- shuffle(my_cell.neighbors); //get all cells with distance ONE
 		
 		loop cell over: s{ //check all cells in order if they are already taken.
-			if(empty(transporter inside cell) and empty(station inside cell) and empty(blockade inside cell)) //as long as there is no other transporter or station
+			if(empty(transporter inside cell) and empty(station inside cell)) //as long as there is no other transporter or station
 			{
-				do take_a_step_to(cell); //if the cell is free - go there		
+				my_cell <- cell; //if the cell is free - go there
+				location <- my_cell.location;
 			}
 		}
-	}
-	
-	//if I transport an item and know it's station, I will directly go to nearest neighboring field of this station 
-	reflex exact_movement when:((load != nil) and (station_position contains_key load.color)) {
-		
-		shop_floor target <- shop_floor(station_position at load.color); //YES, the target is the station itself, but we will not enter the stations cell. When we are next to it, our item will be loaded off, s.t. we won't enter the station 
-		
-		//contains neighboring cells in ascending order of distance, meaning: first cell has least distance
-		list<shop_floor> options <- my_cell.neighbors sort_by (each distance_to target);
-		
-		loop while:!empty(options){ //check all options in order if they are already taken.
-			
-			shop_floor cell <- first(options);
-			
-			if(empty(transporter inside cell) and empty(station inside cell) and empty(blockade inside cell)) //as long as there is no other transporter or station
-			{
-				do take_a_step_to(cell); //if the cell is free - go there
-				break;		
-			}else{
-				
-				//remove unreachable cell from option. Sort rest.
-				options <- options - cell;
-				options <- options sort_by (each distance_to target);
-			}
-			
-		}
-		
-		/*if am in the neighborhood of my target... and there is NO station, delete global knowledge knowledge.*/
-		if(target.neighbors contains my_cell)
-		{
-			// I am standing next to where I THINK my station should be. If so: in the next Reflex we deliver it automatically
-			//write name + " is next to its target" color:#lightgrey;
-			
-			station s <- one_of(station inside target); //there should only be one station per cell, but this ensures that only one is picked.
-		
-			//if there is no station or it has the wrong color, my knowledge is WRONG
-			if((s = nil) or (s.accept_color != load.color)) {
-				
-				//write name + ": "+ s.accept_color + " is not what I expected (" + load.color + ")" color:#red;
-				
-				do remove_knowledge(load.color); //remove wrong knowledge
-				
-				if(s != nil){
-					do add_knowledge(s.location, s.accept_color); //nevertheless, if there is a station, update my knowledge
-				}
-			}	
-		}
-	}	
+
+	}		
 	
 	//this reflex is for the case that I have a thing and am now looking for a station. Up to now, i DO NOT have to queue
 	reflex get_rid_of_thing when: (load != nil){			
 		//get the first cell with a station on it that is adjacent to me
 		shop_floor cell_tmp <- (my_cell.neighbors) first_with (!(empty(station inside (each)))); //only ONE (the first cell...)
 		list<shop_floor> cell_tmp_list <- (my_cell.neighbors) where (!(empty(station inside (each)))); //get all stations 
-		 
+ 
 		//check all adjacent cells with stations inside 
 		loop cell over: cell_tmp_list{
 			
 			station s <- one_of(station inside cell); //there should only be one station per cell, but this ensures that only one is picked.
 		
 			//if the station we picked has the color of our item
-			if((s.get_states())["accept_color"] = load.color) {
+			if((s.get_states())["accept_color"] = (load.get_states())["color"]) {
 				
 				/*Update all variables and containers for investigations*/
 					put delivered[load.color]+1 key:load.color in: delivered; //count as delivered in respective colo category
@@ -481,7 +403,6 @@ species transporter parent: superclass{
 					moving_average_steps <- moving_average_steps + amount_of_steps; //add to rest
 					amount_of_steps <- 0.0; //reset amount of steps
 					
-					//MoAvg cycles to deliver
 					if(length(moving_average) > window_for_last_N_deliveries) //make sure that only the requested amount of data is saved
 					{
 						//as time_to_deliver is filled successively, we only have to get rid of the first entry (FIFO)  
@@ -494,17 +415,9 @@ species transporter parent: superclass{
 					{
 						//as time_to_deliver is filled successively, we only have to get rid of the first entry (FIFO)  
 						remove index: 0 from:moving_average_steps;
-						//moving_average_SUM <- sum(moving_average);
 					}
-				
-				//if i did not know about this station before, add it to my model 
-				if(!(station_position contains_key load.color)){
-					do add_knowledge(s.location, load.color); // add/update knowledge about new station
-					//add s.location at:load.color to: station_position;  	
-				}
-		
+								
 				do deliver_load(); //load is delivered
-				
 				break; //as we have loaded off our item, we do not need to check any leftover stations (also it would lead to an expection because load is now nil)
 			}
 		}		
@@ -519,11 +432,6 @@ species transporter parent: superclass{
 		{
 			station s <- first(station inside cell_tmp); //cells can only have one station at a time, hence this list has exactly one entry. 'First' is sufficient to get it.
 			
-			//as I discovered a station, I add its position to my knowledge if i didn't know about it before 
-			if(!(station_position contains_key s.accept_color)){
-				do add_knowledge(s.location, s.accept_color); // add/update knowledge about new station  	
-			}
-						
 			//Request state of s to ask about storage. if this NOT nil, a thing has been created and is waiting there and assigned as load.
 			load <- (s.get_states())["storage"]; //thanks, we'll take your thing as load over from here 
 			
@@ -537,26 +445,15 @@ species transporter parent: superclass{
 		}		
 	}
 	
+	//updates position of the current load s.t. it appears at the same posiiton as the transporter
 	reflex update_thing when: (load != nil){
 		ask load{
 				my_cell <- myself.my_cell; //just ask the thing you carry to go to the same spot as you.
 				location <- myself.my_cell.location;
 			}			
 	}
-		
-	action add_knowledge(point pt, rgb col){
-		
-		add pt at:col to: station_position; // add/update knowledge about new station and assign a point to a color 	
-		
-	}
-	
-	action remove_knowledge(rgb col){
-		remove key: col from: station_position; // remove knowledge about station 	
-		
-	}
-	
+				
 	action deliver_load{
-		
 		ask load{
 			do die;
 		}
@@ -564,27 +461,13 @@ species transporter parent: superclass{
 		load<-nil; //reset load after delivery
 	}
 	
-	action take_a_step_to(shop_floor cell){
-				
-		my_cell <- cell; //if the cell is free - go there
-		location <- my_cell.location;
-		
-		//if I am also carrying something aroung, increase my step counter
-		if(load != nil)
-		{
-			amount_of_steps <- amount_of_steps +1;
-		}
-		
-	}
 			
 	aspect base{
-		
-		draw square(cell_width*0.8) color: #grey border:#black;
+		draw circle(cell_width*0.5) color: #grey border:#black;
 	}
 	
-	aspect info{
-		
-		draw square(cell_width*0.8) color: #grey border:#black;
+	aspect info{	
+		draw circle(cell_width*0.5) color: #grey border:#black;
 		draw replace(name, "transporter", "") size: 10 at: location-(cell_width/2) color: #red;
 	}
 	
@@ -601,33 +484,34 @@ grid shop_floor cell_width: cell_width cell_height: cell_height neighbors: 8 use
 	map<rgb,float> color_marks <- nil; //holds the color marks and is used for recognition of marks
 	bool changed <- false; //inidcates that something has been added or changed and initialised blending of colors again
 	
-	list<shop_floor> neighbors2 <- self neighbors_at 2;  
-	//neighbors_at is pre-defined for grid agents, here with a distance of 2. Result dependes on the grid's topology
+	list<shop_floor> neighbors2 <- self neighbors_at 2;	//neighbors_at is pre-defined for grid agents, here with a distance of 2. Result dependes on the grid's topology
 	
-
+	//reset color
+	reflex when: empty(color_marks){
+		color <- #white;
+	}
 
 	//color blender for display
 	reflex when: ((length(color_marks) >= 1) and changed){
-		//operates the following way: first(color_marks.keys) gets the first rgb value and first(color_marks) the associate strength, which modifies the alpha channel gives blended_color its first value 
-		
-		//rgb blended_color <- rgb(first(color_marks.keys), first(color_marks)); //variable to mix colors. There is at least one color mark
-		rgb blended_color <- first(color_marks.keys);
+		//operates the following way: first(color_marks.keys) gets the first rgb value and first(color_marks) the associate strength, which modifies the alpha channel gives blended_color its first value 		
+		//displays all colors
+
+		rgb blended_color <- first(color_marks.keys); //variable to mix colors. There is at least one color mark
 		blended_color <-rgb(blended_color.red * first(color_marks.values), blended_color.green * first(color_marks.values), blended_color.blue * first(color_marks.values));
-		
 		
 		if(length(color_marks) > 1){
 			
 			list<rgb> colors <- color_marks.keys;
 			list<float> strengths <- color_marks.values;
 				
-			loop i from: 1 to: length(colors)-1 { //REMARK: We skip the first value ON PURPOSE, because it is already in blended_color included!!
+			loop i from: 1 to: length(colors)-1 { //REMARK: We skip the first value ON PURPOSE, because it is already included in blended_color!!
 								
-				blended_color <- blend(blended_color, rgb(colors[i].red*strengths[i], colors[i].green*strengths[i], colors[i].blue*strengths[i])); //mix colors by taking each color and manipulating the alpha channel with the respective strength value 
+				blended_color <- blend(blended_color, rgb(colors[i].red*strengths[i], colors[i].green*strengths[i], colors[i].blue*strengths[i])); //mix colors by taking each channel and manipulating the strength w.r.t. factor 
 			}
 		}
 		
 		color <- blended_color; //display
-		changed <- false;
+		changed <- false;	
 	}
 	
 
@@ -648,21 +532,19 @@ grid shop_floor cell_width: cell_width cell_height: cell_height neighbors: 8 use
 		
 		if(del_color in color_marks)
 		{
-			remove all: del_color from: color_marks;
+			remove key: del_color from: color_marks;
 			changed <- true;
 		}
 		
 	}
 	
-	//deletes a color from the color mark container
-	action delete_ALL_color_marks {
-		
-			color_marks <- nil;
-			changed <- true;		
-	}
-	
 	map<rgb,float> get_color_marks{
 		return color_marks;
+	}
+	
+	action set_color_marks(map<rgb,float> new_color_marks){
+		color_marks <- new_color_marks; //override color marks with new values
+		changed <- true;
 	}
 	
 	float get_color_strength(rgb col)
@@ -671,15 +553,18 @@ grid shop_floor cell_width: cell_width cell_height: cell_height neighbors: 8 use
 	}
 	
 	 aspect info {
-        draw string(name) size: 3 color: #black;
+        draw string(name) + " - " + string(color_marks at #red with_precision 5) size: 3 color: #grey;
+        
     }
 }
 
 
 
 //##########################################################
-experiment Model_Based_Transporters_No_Charts type:gui{
+experiment SRA_Naive_No_Charts type:gui{
 	parameter "Station placement distribution" category: "Simulation settings" var: selected_placement_mode among:placement_mode; //provides drop down list
+	parameter "No. of transporters" category: "Transporter" var: no_transporter<-5;
+	parameter "Disturbance cycles" category: "Simulation settings" var: disturbance_cycles<-500#cycles;	
 		
 	output {	
 		layout #split;
@@ -690,44 +575,33 @@ experiment Model_Based_Transporters_No_Charts type:gui{
 		 		species transporter aspect: info;
 		 		species station aspect: base;
 		 		species thing aspect: base;
-		 		species blockade aspect: base;
-		 		  
-		   		event mouse_down action: create_blockade;
 	
 		 }
-		 
-		  inspect "Knowledge" value: simulation attributes: ["station_position"] type:table;
-		
 	 }
-	 
-	
 	
 }
 
-experiment Model_Based_Transporters type: gui {
+experiment SRA_Naive_Transporter type: gui {
 
 	
 	// Define parameters here if necessary
-	// parameter "My parameter" category: "My parameters" var: one_global_attribute;
-	//parameter "Cell diameter" category: "Shopfloor" var: cell_width<-5;
+	parameter "Cell diameter" category: "Shopfloor" var: cell_width;
 	parameter "No. of stations" category: "Stations" var: no_station;
 	parameter "No. of transporters" category: "Transporter" var: no_transporter ;
 	
 	parameter "Station placement distribution" category: "Simulation settings" var: selected_placement_mode among:placement_mode; //provides drop down list
 	parameter "Station placement parameter (only for strict mode)" category: "Simulation settings" var: strict_placement_factor; //provides drop down list
 	
-	parameter "Station colors" category: "Simulation settings" var: selected_color_mode among:color_mode; //provides drop down list
+	parameter "Station colors" category: "Simulation settings" var: selected_color_mode among:color_mode; //provides drop down list	
+	parameter "Moving average window breadth" category: "Simulation settings" var: window_for_last_N_deliveries ; //window for average of last N deliveries and their cycles
 	
-	parameter "Moving average window breadth" category: "Simulation settings" var: window_for_last_N_deliveries ; //window for average of last N deliveries and their cycles 
-	
+	parameter "Disturbance cycles" category: "Simulation settings" var: disturbance_cycles<-500#cycles; //amount of cycles until stations change their positions
 	
 	
 	//Define attributes, actions, a init section and behaviors if necessary
 	
 	
 	output {
-	
-	//monitor "Things delivered" value: total_delivered refresh_every: 10#cycles;
 
 	layout #split;
 	 display "Shop floor display" { 
@@ -736,13 +610,10 @@ experiment Model_Based_Transporters type: gui {
 	 		species transporter aspect: base;
 	 		species station aspect: base;
 	 		species thing aspect: base;
-	 		species blockade aspect: base;
-	 		
-	 		event mouse_down action: create_blockade;
 
 	 }	 
 	  
-	display statistics{
+	 display statistics{
 			
 			chart "Average steps of last "+ string(window_for_last_N_deliveries) +" transporters to correct destination" type:series size:{1 ,0.25} position:{0, 0}{
 				data "Average steps of last "+ string(window_for_last_N_deliveries) +" transporters to correct destination" value: sum(moving_average_steps)/window_for_last_N_deliveries color:#darkgreen marker:false ;
@@ -763,7 +634,8 @@ experiment Model_Based_Transporters type: gui {
 				data "total delivered things" value: total_delivered color:#red marker:false; 
 
 			}
-												 
+			
+									 
 			chart "Delivery distribution" type:histogram size:{1 ,0.5} position:{0, 0.5} {
 					//datalist takes a list of keys and values from the "delivered" map  
 					datalist delivered.keys value: delivered.values color:delivered.keys ;
@@ -773,19 +645,21 @@ experiment Model_Based_Transporters type: gui {
   
 }
 
-/*Runs an amount of simulations in parallel, keeps the seeds and gives the final values after 10k cycles*/
-experiment Model_GLOBAL_batch type: batch until: (cycle >= 10000) repeat: 40 autorun: true keep_seed: true{
 
+/*Runs an amount of simulations in parallel, keeps the seeds and gives the final values after 10k cycles*/
+experiment SRA_Naive_Transporter_batch type: batch until: (cycle >= 10000) repeat: 40 autorun: true keep_seed: true{
+
+	parameter "Disturbance cycles" category: "Simulation settings" var: disturbance_cycles<-500#cycles; //amount of cycles until stations change their positions
+	
 	
 	reflex save_results_explo {
     ask simulations {
     	
-    	float mean_cyc_to_deliver <- ((self.total_delivered = 0) ? 0 : self.time_to_deliver_SUM/(self.total_delivered)); //
+    	float mean_cyc_to_deliver <- ((self.total_delivered = 0) ? 0 : self.time_to_deliver_SUM/(self.total_delivered));
     	
-    	save [int(self), self.seed, disturbance_cycles ,self.cycle, self.total_delivered, mean_cyc_to_deliver] //..., ((total_delivered = 0) ? 0 : time_to_deliver_SUM/(total_delivered)) 
-          to: "result/Model_GLOBAL_KNOWLWEDGE_results.csv" type: "csv" rewrite: false header: true; //rewrite: (int(self) = 0) ? true : false
+    	save [int(self), self.seed, disturbance_cycles ,self.cycle, self.total_delivered, mean_cyc_to_deliver]  
+          to: "result/1_SRA_naive_results.csv" type: "csv" rewrite: false header: true; 
     	}       
 	}		
 }
-
 

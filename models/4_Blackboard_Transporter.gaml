@@ -1,16 +1,18 @@
 /**
-* Name: model
-* Model_Based_VS_SRA_Stigmergy
+* Name: Blackboard Transporter
+* Model_Based_VS_SRA_Stigmergy 
 * Author: Sebastian Schmid
-* Description: uses SRA with quantitative stigmergy   
+* Description: uses model-based agents with global, shared knowledge as a monolith 
 * Tags: 
 */
 
+
 @no_warning
-model SRA_Gradient_Transporter
+model Blackboard_Transporter
+
 
 global{
-	int shop_floor_diameter <-500 min:10 max: 500;
+	int shop_floor_diameter <- 500 min:10 max: 500; //with cell width and heigth 20 this gives 25 x 25 cells 
 	geometry shape <- square(shop_floor_diameter);
 	int no_station <- 4 min: 2 max: 20;
 	int no_transporter <- 17 min: 1 max: 100;
@@ -32,22 +34,17 @@ global{
 
 	list<rgb> colors <- list_with(no_station, rnd_color(255)); //creates a list with no. of stations random colors. 
 	
-	list<string> color_mode const:true <- ["unique", "random"];  
+	list<string> color_mode const:true <- ["strict","unique", "random"];  
 	//describes the coloring mode for stations:
 		/*unique: 		each color is only allowed once
 		 *random:		colors are picked randomly and can therefor occure more than once
 		 */
 	string selected_color_mode <- color_mode[0]; //default is 'unique'
-	
-	int disturbance_cycles <- 500#cycles; //in strict mode: all N cycles, we change the color of our stations	
-	
-	bool stigmergy_activated <- true; //flag for switching stigmergy on and off
-	bool activate_evaporation <- true; //flag for switching evopartion of stigmergy marks on and off
-	float evaporation_factor <- 0.003 min: 0.0; //how fast the evaporation takes place. Is direct subtracted from color mark value  
-	bool activate_negative_stigmergy <- false;
+
+	int disturbance_cycles <- 500#cycles; //in strict mode: all N cycles, we change the color of our stations
+
 	/*I define the color of the thing as maximum (= 1.0) s.t. all other gradient have to lie below that. To make them distinguishable, the STRONG mark may have (color_gradient_max )*THING_COLOR. All other WEAK gradients are below. */
 	float color_gradient_max <- 0.75 max: 0.99;
-	
 	
 	/* Investigation variables - PART I (other part is places behind init block)*/
 		map<rgb, int> delivered <- []; //will be used to keep track of how many things of each color have been delivered. "keys" of this maps contains the list of station colors. also used in Statio init!!
@@ -60,12 +57,10 @@ global{
 		list<float> moving_average <- []; //holds the last "window_for_last_N_deliveries" values for deliveries to calculate a moving average 
 		float moving_average_SUM <- 0; //holds the average value over the moving average
 		
-		map<string, int> transporter_usage <- []; //transporter will add themselves in their init block
+		list<float> moving_average_steps <- []; //  holds the last "window_for_last_N_deliveries" values for the amount of steps it took a transporter to find its destination after picking up an item
 		
-		rgb observe_color <- #red;
-	
-	list<float> moving_average_steps <- []; //  holds the last "window_for_last_N_deliveries" values for the amount of steps it took a transporter to find its destination after picking up an item
-			
+	map<rgb, point> station_position <- []; //represents the monolithic knowledge about positions of already found or communicated stations. Entries have shape [rgb::location]
+		
 	
 	init{
 							
@@ -79,8 +74,6 @@ global{
 		/*Assign colors to all stations wrt the simulation settings */
 		switch selected_color_mode{
 			match "strict"{
-				//the strict coloring mode for the strict placement mode that only uses 4 stations
-				
 				if(no_station != 4)
 				{
 					write "Coloring mode is still set to strict!";					
@@ -93,9 +86,8 @@ global{
 				loop s over: station{
 					
 					ask s{
-						
 						proba_thing_creation <- 0.8; //fixed PROBABILITY of item creation here to 0.8
-												
+						
 						accept_color <- col_tmp[i]; //the color we accept
 						color <- accept_color; //the color we display
 						
@@ -105,6 +97,7 @@ global{
 					i <- i+1;//to get next colo
 				}
 			}
+			
 			match "unique"{
 				ask station{
 					rgb col_tmp <- one_of(where(colors, !(in(each, delivered.keys)) )); //choose a random color that hasn't been already chosen
@@ -144,17 +137,15 @@ global{
 		/*After the colors have been assigned, choose valid colors for thing production */
 		ask stations{
 			
-			valid_colors <- delivered.keys - accept_color; //delivered keys holds the list of all colors used by stations, exclude my own color
-			
-			//valid_colors <- delivered.keys; //delivered keys holds the list of all colors used by stations
-			//remove all: self.accept_color from: valid_colors; //remove the station's own color s.t. only other colors are produced			
+			valid_colors <- delivered.keys; //delivered keys holds the list of all colors used by stations
+			remove all: self.accept_color from: valid_colors; //remove the station's own color s.t. only other colors are produced			
 		}
 		
 		/*Place stations acc. to simulation settings */
 		switch selected_placement_mode{
 			match "strict"{
 				
-				//This declaration here is intentionally a bit awkward, because it's implemented for fixed 4 stations...
+				//This declaration here is intentionally a bit awkward, beacuse it's not done yet and only implemented for 4 stations...
 				
 				float factor <- strict_placement_factor;
 				
@@ -171,7 +162,7 @@ global{
 				loop s over: stations{	
 
 					ask s{
-							location<-my_cell.location ;
+							location<-my_cell.location ;//cellAgent.location;
 						}	
 				}
 			}
@@ -257,8 +248,8 @@ global{
 	}
 	
 	/*For random color change of stations */
-	//every "disturbance_cycles" cycles, we take the already given colors and switch them randomly around
-	reflex change_station_colors when: (cycle > 1) and every(disturbance_cycles){
+	//every N cycles, we take the already given colors and switch them randomly around
+	reflex change_station_colors when: (cycle > 1) and every(disturbance_cycles) and (selected_placement_mode = "strict"){
 		
 		list<rgb> col_tmp <- nil; //will hold all current colors
 		ask station{
@@ -289,9 +280,10 @@ global{
 		}	
 	}
 	
+
+	
 	/* Investigation variables - PART II (other part is places before init block)*/
 	//nothing	
-
 }
 
 
@@ -315,37 +307,7 @@ species thing parent: superclass{
 		draw circle(0.25*cell_width) color: color border:#black;
 	}
 	
-	map get_states{
-		return create_map(["color", "location"],[color, location]);
-	}
-	
-	
-	//this action receives requests to change state to a new value. parameter consists of name and value
-	//up to now, this action doesn't have any capabilities to check that the given value matches the state's type
-	//this action is NOT USED AT THE MOMENT.  
-	action set_states(string state_name, unknown state_value){	
-		try {
-			switch state_name{
-				match "location" {
-					location <- state_value;
-				}
-				match "cycle_created" {
-					cycle_created <- int(state_value);
-				}
-				match "cycle_delivered" {
-					cycle_delivered <- int(state_value);
-				}
-				
-				default {
-					write "Did not recognize: " + state_name + " " + string(state_value) color:#red;
-				}
-			}
-		}
-		catch{
-			write "Error during state change: " + state_name + " " + string(state_value) color:#red;
-		}
-	}
-	
+		
 	init{
 		cycle_created <- cycle; //set the current cycle as "creation date" for this thing
 	}
@@ -353,7 +315,6 @@ species thing parent: superclass{
 
 species station parent: superclass{
 
-	
 	thing storage<- nil; //if nil, then this storage is empty
 	
 	rgb accept_color <- nil; //colors that this stations accepts
@@ -382,25 +343,23 @@ species station parent: superclass{
 		//a thing if something is stored. nil if it is empty
 		return storage;		
 	}
-	
-	//This action models the central information about states and affordances of this artifact
-	//in a web based communication, this would be the result of an HTTP GET request. 
+	 
 	map get_states{
 		return create_map(['storage', "accept_color"],[storage, accept_color]);
 	}
 	
 }
 
-species transporter parent: superclass {
+species transporter parent: superclass{
 	thing load <- nil;
-	
 	float amount_of_steps<- 0.0; //the amount of steps this transporter made after it pickep up an item   
 	
 	init{
-	
+		
 	}
 	
-	reflex wander when: (load = nil) {
+	//if i am empty or do not know where my item's station is -> wander
+	reflex random_movement when:((load = nil) or !(station_position contains_key load.color)) {
 		
 		//generate a list of all my neighbor cells in a random order
 		list<shop_floor> s <- shuffle(my_cell.neighbors); //get all cells with distance ONE
@@ -408,82 +367,67 @@ species transporter parent: superclass {
 		loop cell over: s{ //check all cells in order if they are already taken.
 			if(empty(transporter inside cell) and empty(station inside cell)) //as long as there is no other transporter or station
 			{
-				my_cell <- cell; //if the cell is free - go there
-				location <- my_cell.location;
+				do take_a_step_to(cell); //if the cell is free - go there		
 			}
 		}
-
 	}
 	
-	reflex color_mark_wandering when:(load != nil) {
+	//if I transport an item and know its station, I will directly go to the nearest neighboring field of this station 
+	reflex exact_movement when:((load != nil) and (station_position contains_key load.color)) {
 		
-		//generate a list of all my neighbor cells in a random order
-		list<shop_floor> s <- shuffle(my_cell.neighbors); //get all cells with distance ONE
-
-		//check for matching colors. if there are matching color marks present, follow them. if not, just take anything else
-		list<shop_floor> cells_with_color_marks <- s where (each.color_marks.keys contains rgb((load.get_states())["color"])); //get cells that do have OUR color marks
+		shop_floor target <- shop_floor(station_position at load.color); //YES, the target is the station itself, but we will not enter the stations cell. When we are next to it, our item will be loaded off, s.t. we won't enter the station 
 		
-		s <- s - cells_with_color_marks; //Remove all cells with color marks from the set of adjacent cells. Later we will forst check for cells with color marks and, if none are left, we will check s  
+		//contains neighboring cells in ascending order of distance, meaning: first cell has least distance
+		list<shop_floor> options <- my_cell.neighbors sort_by (each distance_to target);
 		
-		shop_floor cell<-my_cell; //initialize cell variable with own tranporter's cell. this gurantees that the first check fails (because the transporter itself is already at its own position)... basically a do-while ^^**
-		
-		list<shop_floor> sorted <- nil; //holds all cells with color marks sorted in ascending order of their mark strength 
-		
-		if(!empty (cells_with_color_marks)){
-			sorted <- (shuffle(cells_with_color_marks)) sort_by (each.color_marks at rgb((load.get_states())["color"])); //ascending order of mark strength is default
-			sorted <- reverse(sorted); //now descending order of strength
-		}
-		
-		//We iterate over all possible cells, until we find a free cell 
-		//I know this could be solved above more easily with just taking the first entry of my sorted list, but I want to keep the possibility to go to cells that are not the optimum path, e.g. if optimum is blocked (avoid deadlock) 
-		loop while: !(empty(transporter inside cell) and empty(station inside cell)){ 
+		loop while:!empty(options){ //check all options in order if they are already taken.
 			
-			//if no cells with marks are left to check (or no are there..?), just wander
-			if(empty(sorted)){
-					
-					if(empty(s)){
-						cell<-my_cell; //if no cells are left in neighbors s, just stay where you are
-						break;
-					}
-					else{
-						cell <- first(shuffle(s)); //pick a random neighboring cell without a color mark
-						
-						remove cell from: s; //s.t. we wont pick it again
-					}					
+			shop_floor cell <- first(options);
+			
+			if(empty(transporter inside cell) and empty(station inside cell)) //as long as there is no other transporter or station
+			{
+				do take_a_step_to(cell); //if the cell is free - go there
+				break;		
+			}else{
+				
+				//remove unreachable cell from option. Sort rest.
+				options <- options - cell;
+				options <- options sort_by (each distance_to target);
 			}
-			else{//if there are cells with color marks left
-
-				cell <- first(sorted); //first option is always best, because it's sorted in descending order of strength. If more than one cell have the same strength, the probability to be at the front is the same.
-				remove cell from: sorted; //s.t. we wont pick it again, if the check will state it is occupied
-				sorted <- reverse(sorted sort_by (each.color_marks at rgb((load.get_states())["color"]))); //sort cells again in descending order
-			} 
+			
 		}
 		
-		//if I am also carrying something around and I actually DID take a step , increase my step counter
-		if(load != nil and (my_cell != cell))
+		/*if am in the neighborhood of my target and there is NO station, delete global knowledge knowledge.*/
+		if(target.neighbors contains my_cell)
 		{
-			amount_of_steps <- amount_of_steps +1;
+			// I am standing next to where I THINK my station should be. If so: in the next Reflex we deliver it automatically
+			station s <- one_of(station inside target); //there should only be one station per cell, but this ensures that only one is picked.
+		
+			//if there is no station or it has the wrong color, my knowledge is WRONG
+			if((s = nil) or (s.accept_color != load.color)) {
+				
+				do remove_knowledge(load.color); //remove wrong knowledge
+				
+				if(s != nil){
+					do add_knowledge(s.location, s.accept_color); //nevertheless, if there is a station, update my knowledge
+				}
+			}	
 		}
-		
-		my_cell <- cell; //cell is determined as goal for next step - go there
-		location <- my_cell.location;
-
-	}
-		
+	}	
 	
 	//this reflex is for the case that I have a thing and am now looking for a station. Up to now, i DO NOT have to queue
 	reflex get_rid_of_thing when: (load != nil){			
 		//get the first cell with a station on it that is adjacent to me
 		shop_floor cell_tmp <- (my_cell.neighbors) first_with (!(empty(station inside (each)))); //only ONE (the first cell...)
 		list<shop_floor> cell_tmp_list <- (my_cell.neighbors) where (!(empty(station inside (each)))); //get all stations 
- 
+		 
 		//check all adjacent cells with stations inside 
 		loop cell over: cell_tmp_list{
 			
 			station s <- one_of(station inside cell); //there should only be one station per cell, but this ensures that only one is picked.
 		
 			//if the station we picked has the color of our item
-			if((s.get_states())["accept_color"] = (load.get_states())["color"]) {
+			if((s.get_states())["accept_color"] = load.color) {
 				
 				/*Update all variables and containers for investigations*/
 					put delivered[load.color]+1 key:load.color in: delivered; //count as delivered in respective colo category
@@ -498,6 +442,7 @@ species transporter parent: superclass {
 					moving_average_steps <- moving_average_steps + amount_of_steps; //add to rest
 					amount_of_steps <- 0.0; //reset amount of steps
 					
+					//MoAvg cycles to deliver
 					if(length(moving_average) > window_for_last_N_deliveries) //make sure that only the requested amount of data is saved
 					{
 						//as time_to_deliver is filled successively, we only have to get rid of the first entry (FIFO)  
@@ -512,105 +457,18 @@ species transporter parent: superclass {
 						remove index: 0 from:moving_average_steps;
 					}
 				
-				if(stigmergy_activated){
-					//after our thing has been successfully delivered, let the transporter create a color mark for others (stigmergy)
-					do set_aphid_marks;
+				//if i did not know about this station before, add it to my model 
+				if(!(station_position contains_key load.color)){
+					do add_knowledge(s.location, load.color); // add/update knowledge about new station
+
 				}
-								
+		
 				do deliver_load(); //load is delivered
+				
 				break; //as we have loaded off our item, we do not need to check any leftover stations (also it would lead to an expection because load is now nil)
 			}
 		}		
 	}
-	
-	//check neighobring marks and perpetuate the distribution of color marks that are near me
-	reflex check_aphid_marks{
-		
-		list<shop_floor> cell_tmp <-my_cell.neighbors;// take all neighboring cells
-		
-		map<rgb, float> my_marks <- my_cell.color_marks; //take MY current color marks
-		
-		map<rgb, float> neighbor_marks <- nil; 
-		
-		//check all neighboring cells
-		loop cell over: cell_tmp{
-			
-			map<rgb, float> marks <- cell.color_marks; //get neighbors color marks
-			
-			//check for each entry its color marks
-			loop col over: marks.keys{
-				
-				if((marks at col) > (neighbor_marks at col)){ //check if their color mark is stronger than current one
-					add (marks at col) at: col to: neighbor_marks;//if so, overwrite it and gather these maximum values in the neighbor color mark map
-				}
-				
-			}
-		}
-		
-		//check all entries in the neighbors marks
-		loop col over: neighbor_marks.keys{
-						
-			if((neighbor_marks at col) > (my_marks at col)){//check if the maximum around me is bigger than my value
-				add (neighbor_marks at col)*0.9 at: col to: my_marks; //if so, add an entry to myself with reduced maximum
-				ask my_cell{changed <- true;} //set status to changend s.t. color display is updated 
-			}
-			
-		}
-		
-		ask my_cell	{
-			do set_color_marks(my_marks); //update my color mark values
-		}
-	}
-	
-	
-	//in the above reflexes, we checked our surroundings, looked for a possible maximum of color marks, took a step and checked for stations.
-	//NOW, we check, if we are trapped in a local maximum, e.g. created by evaporation or an "island"?
-	//this can happen independently of our transportation task and the chance to deliver something,....
-	//We just consider marks of the thing we are currently transporting
-	reflex negative_stigmergy when: ((load != nil) and  activate_negative_stigmergy) {
-		
-		do check_for_local_maximum(load.color);		
-	}
-	
-	/*Transporter check all of their surrounding marks, if there is a local maximum and if so, if an applicable station is adjacent. If not, they delete it - althoug it is officially not their responsibility.
-	 *AKA "Please leave your stigmergy marks in the state in which you would like to find them" ...*/  
-	//This applies to all transporters, independently of their load color, and only considers their environment
-	reflex social_negative_stigmergy when: activate_negative_stigmergy {
-		
-		//generate a list of all my neighbor cells in a random order with my color marks
-		list<rgb> local_color_marks <- my_cell.color_marks.keys; //
-		
-		//if there's nothing to compare, abort
-		if(empty(local_color_marks)){
-			return;
-		}
-		
-		list<shop_floor> cells_with_color_marks <- my_cell.neighbors where (each.color_marks.keys contains_any local_color_marks); //get cells that do have any of OUR local color marks
-		
-		if(empty(cells_with_color_marks )){
-			return; //if there are now color marks to be checked, abort mission.
-		}
-		
-		
-		loop col over: local_color_marks {
-			//check for suiting stations nearby
-			//get all possible stations around me; 'accumulate' returns a flat list of all stations inside the given list of cells aka my neighbors; apply a filter to this list of stations for the currently checked color 
-			list<station> cell_with_suiting_station <- (my_cell.neighbors accumulate (station inside each)) where (each.accept_color = col); //returns a list of nearby stations that accept the currently checked color
-			 
-			if(!empty(cell_with_suiting_station)){
-				//if this is NOT empty, there are stations nearby that would accept this checked color, hence the local maximum is valid.
-				//Thus, break - no further check is needed
-				
-				break;
-			}
-			
-			//if NO suitable station is nearby, we check for a local maximum that has to be removed 
-			do check_for_local_maximum(col);
-	
-		}			
-	}
-	
-
 	
 	//search adjacency for a station. If it has a thing, pick it up. Depending in stigmergy settings, also initiate color marks
 	reflex search_thing when: load = nil{			
@@ -621,8 +479,13 @@ species transporter parent: superclass {
 		{
 			station s <- first(station inside cell_tmp); //cells can only have one station at a time, hence this list has exactly one entry. 'First' is sufficient to get it.
 			
+			//as I discovered a station, I add its position to my knowledge if i didn't know about it before 
+			if(!(station_position contains_key s.accept_color)){
+				do add_knowledge(s.location, s.accept_color); // add/update knowledge about new station  	
+			}
+						
 			//Request state of s to ask about storage. if this NOT nil, a thing has been created and is waiting there and assigned as load.
-			load <- (s.get_states())["storage"]; //thanks, we'll take your thing as load over from here 
+			load <- (s.get_states())["storage"]; //take over load from here 
 			
 			if( load != nil){
 				
@@ -634,7 +497,6 @@ species transporter parent: superclass {
 		}		
 	}
 	
-	//updates position of the current load s.t. it appears at the same posiiton as the transporter
 	reflex update_thing when: (load != nil){
 		ask load{
 				my_cell <- myself.my_cell; //just ask the thing you carry to go to the same spot as you.
@@ -642,37 +504,19 @@ species transporter parent: superclass {
 			}			
 	}
 		
-	//check for and remove a specific color marks if it is part of a specific local maximum that should not be there...
-	action check_for_local_maximum(rgb col){
-		list<shop_floor> cells_with_color_marks <- my_cell.neighbors where (each.color_marks.keys contains col); //get cells that do have OUR color marks
+	action add_knowledge(point pt, rgb col){
 		
-		float max_strength_of_neighbors <- 0;
+		add pt at:col to: station_position; // add/update knowledge about new station and assign a point to a color 	
 		
-		if(!empty(cells_with_color_marks)){
-		
-			max_strength_of_neighbors <- cells_with_color_marks max_of (each.color_marks at col); //get maximum strength of my surroundings with seeked color marks 
-		
-		}
-			
-		//if my strength is higher than my surroundings... and I DID NOT deliver my item (load = nil), then I am trapped in a local maximum
-		if((my_cell.color_marks at col) >= max_strength_of_neighbors){ //greater OR EQUAL
-			remove key: col from: my_cell.color_marks ; //deletes color mark without a trace << not using evaporation gives better results up to now! (@@@)	
-			my_cell.changed <- true;
-			
-		}				
 	}
 	
-	action set_aphid_marks{
-		//only for setting the maximum mark on successful delivery
-		ask my_cell{
-			
-			if(get_color_strength(myself.load.color) < color_gradient_max ){ //if it's weaker, overwrite
-				do add_color_mark(myself.load.color, color_gradient_max);	
-			}
-		}	
-	}
+	action remove_knowledge(rgb col){
+		remove key: col from: station_position; // remove knowledge about station 	
 		
+	}
+	
 	action deliver_load{
+		
 		ask load{
 			do die;
 		}
@@ -680,13 +524,27 @@ species transporter parent: superclass {
 		load<-nil; //reset load after delivery
 	}
 	
+	action take_a_step_to(shop_floor cell){
+				
+		my_cell <- cell; //if the cell is free - go there
+		location <- my_cell.location;
+		
+		//if I am also carrying something aroung, increase my step counter
+		if(load != nil)
+		{
+			amount_of_steps <- amount_of_steps +1;
+		}
+		
+	}
 			
 	aspect base{
-		draw circle(cell_width*0.5) color: #grey border:#black;
+		
+		draw square(cell_width*0.8) color: #grey border:#black;
 	}
 	
-	aspect info{	
-		draw circle(cell_width*0.5) color: #grey border:#black;
+	aspect info{
+		
+		draw square(cell_width*0.8) color: #grey border:#black;
 		draw replace(name, "transporter", "") size: 10 at: location-(cell_width/2) color: #red;
 	}
 	
@@ -703,62 +561,29 @@ grid shop_floor cell_width: cell_width cell_height: cell_height neighbors: 8 use
 	map<rgb,float> color_marks <- nil; //holds the color marks and is used for recognition of marks
 	bool changed <- false; //inidcates that something has been added or changed and initialised blending of colors again
 	
-	list<shop_floor> neighbors2 <- self neighbors_at 2;  
-	//neighbors_at is pre-defined for grid agents, here with a distance of 2. Result dependes on the grid's topology
+	list<shop_floor> neighbors2 <- self neighbors_at 2; //neighbors_at is pre-defined for grid agents, here with a distance of 2. Result dependes on the grid's topology
 	
-	//Calculates the evaporation for each cell if marks are there 
-	reflex evaporation when: (activate_evaporation and (length(color_marks) >= 1)){
-		
-		list<rgb> colors <- color_marks.keys;
-		list<float> strengths <- color_marks.values;
-		float tmp <- 0.0;
-		
-		loop i from: 0 to: length(colors)-1 { 
-			
-			tmp <- strengths[i]-evaporation_factor;
-			
-			if(tmp <= 0.0)
-			{
-				remove key:colors[i] from: color_marks;
-			}
-			else
-			{
-				add tmp at:colors[i] to: color_marks;
-			}
-			
-			changed <- true;	
-		}
-	}
-	
-	//reset color
-	reflex when: empty(color_marks){
-		color <- #white;
-	}
-
 	//color blender for display
 	reflex when: ((length(color_marks) >= 1) and changed){
-		//operates the following way: first(color_marks.keys) gets the first rgb value and first(color_marks) the associate strength, which modifies the alpha channel gives blended_color its first value 		
-		//displays all colors
-
+		//operates the following way: first(color_marks.keys) gets the first rgb value and first(color_marks) the associate strength, which modifies the alpha channel gives blended_color its first value 
 		
-				rgb blended_color <- first(color_marks.keys); //variable to mix colors. There is at least one color mark
-				blended_color <-rgb(blended_color.red * first(color_marks.values), blended_color.green * first(color_marks.values), blended_color.blue * first(color_marks.values));
-				
-				if(length(color_marks) > 1){
-					
-					list<rgb> colors <- color_marks.keys;
-					list<float> strengths <- color_marks.values;
-						
-					loop i from: 1 to: length(colors)-1 { //REMARK: We skip the first value ON PURPOSE, because it is already included in blended_color!!
-										
-						blended_color <- blend(blended_color, rgb(colors[i].red*strengths[i], colors[i].green*strengths[i], colors[i].blue*strengths[i])); //mix colors by taking each channel and manipulating the strength w.r.t. factor 
-					}
-				}
-				
-				color <- blended_color; //display
-				changed <- false;
-				
+		rgb blended_color <- first(color_marks.keys);
+		blended_color <-rgb(blended_color.red * first(color_marks.values), blended_color.green * first(color_marks.values), blended_color.blue * first(color_marks.values));
 		
+		
+		if(length(color_marks) > 1){
+			
+			list<rgb> colors <- color_marks.keys;
+			list<float> strengths <- color_marks.values;
+				
+			loop i from: 1 to: length(colors)-1 { //REMARK: We skip the first value ON PURPOSE, because it is already in blended_color included!!
+								
+				blended_color <- blend(blended_color, rgb(colors[i].red*strengths[i], colors[i].green*strengths[i], colors[i].blue*strengths[i])); //mix colors by taking each color and manipulating the alpha channel with the respective strength value 
+			}
+		}
+		
+		color <- blended_color; //display
+		changed <- false;
 	}
 	
 
@@ -779,19 +604,21 @@ grid shop_floor cell_width: cell_width cell_height: cell_height neighbors: 8 use
 		
 		if(del_color in color_marks)
 		{
-			remove key: del_color from: color_marks;
+			remove all: del_color from: color_marks;
 			changed <- true;
 		}
 		
 	}
 	
-	map<rgb,float> get_color_marks{
-		return color_marks;
+	//deletes a color from the color mark container
+	action delete_ALL_color_marks {
+		
+			color_marks <- nil;
+			changed <- true;		
 	}
 	
-	action set_color_marks(map<rgb,float> new_color_marks){
-		color_marks <- new_color_marks; //override color marks with new values
-		changed <- true;
+	map<rgb,float> get_color_marks{
+		return color_marks;
 	}
 	
 	float get_color_strength(rgb col)
@@ -800,33 +627,15 @@ grid shop_floor cell_width: cell_width cell_height: cell_height neighbors: 8 use
 	}
 	
 	 aspect info {
-        draw string(name) + " - " + string(color_marks at #red with_precision 5) size: 3 color: #grey;
-        
+        draw string(name) size: 3 color: #black;
     }
 }
 
 
 
 //##########################################################
-experiment SRA_Transporter_No_Charts type:gui{
-	parameter "Activate stigmergy" category: "Simulation settings" var: stigmergy_activated; //switch stigmergy on or off 
+experiment Blackboard_Transporter_No_Charts type:gui{
 	parameter "Station placement distribution" category: "Simulation settings" var: selected_placement_mode among:placement_mode; //provides drop down list
-	
-	parameter "No. of transporters" category: "Transporter" var: no_transporter<-5;
-	
-	parameter "Activate evaporation" category: "Stigmergy settings" var: activate_evaporation<-false ; //switch evaopration of stigmergy on or off		
-	parameter "Activate negative stigmergy" category: "Simulation settings" var: activate_negative_stigmergy<-true; //window for average of last N deliveries and their cycles
-	 
-	parameter "Disturbance cycles" category: "Simulation settings" var: disturbance_cycles<-500#cycles;
-	parameter "Observe color" category: "Simulation settings" var: observe_color among:[#red, #green, #blue,#orange] on_change:{
-		
-		ask shop_floor{
-			color <- #white;
-		}
-		
-	};
-	
-	
 		
 	output {	
 		layout #split;
@@ -836,42 +645,38 @@ experiment SRA_Transporter_No_Charts type:gui{
 		 		species shop_floor aspect:info;
 		 		species transporter aspect: info;
 		 		species station aspect: base;
-		 		species thing aspect: base;
-	
+		 		species thing aspect: base;	
 		 }
+		 
+		  inspect "Knowledge" value: simulation attributes: ["station_position"] type:table;
+		
 	 }
+	 
+	
 	
 }
 
-experiment SRA_Transporter type: gui {
+experiment Blackboard_Transporter type: gui {
 
 	
 	// Define parameters here if necessary
-	parameter "Cell diameter" category: "Shopfloor" var: cell_width;
 	parameter "No. of stations" category: "Stations" var: no_station;
 	parameter "No. of transporters" category: "Transporter" var: no_transporter ;
 	
 	parameter "Station placement distribution" category: "Simulation settings" var: selected_placement_mode among:placement_mode; //provides drop down list
 	parameter "Station placement parameter (only for strict mode)" category: "Simulation settings" var: strict_placement_factor; //provides drop down list
 	
-	parameter "Station colors" category: "Simulation settings" var: selected_color_mode among:color_mode; //provides drop down list	
-	parameter "Moving average window breadth" category: "Simulation settings" var: window_for_last_N_deliveries ; //window for average of last N deliveries and their cycles
+	parameter "Station colors" category: "Simulation settings" var: selected_color_mode among:color_mode; //provides drop down list
 	
+	parameter "Moving average window breadth" category: "Simulation settings" var: window_for_last_N_deliveries ; //window for average of last N deliveries and their cycles 
 	
-	parameter "Activate stigmergy" category: "Simulation settings" var: stigmergy_activated<-true; //switch stigmergy on or off
-	parameter "Activate evaporation" category: "Simulation settings" var: activate_evaporation<-false ; //switch evaopration of stigmergy on or off
-	parameter "Activate negative stigmergy" category: "Simulation settings" var: activate_negative_stigmergy<-true; //window for average of last N deliveries and their cycles 
-	
-	parameter "Evaporation factor" category: "Simulation settings" var: evaporation_factor<-0.001 ; //switch evaopration of stigmergy on or off	
-	
-	parameter "Disturbance cycles" category: "Simulation settings" var: disturbance_cycles<-500#cycles; //amount of cycles until stations change their positions
 	
 	
 	//Define attributes, actions, a init section and behaviors if necessary
 	
 	
 	output {
-
+	
 	layout #split;
 	 display "Shop floor display" { 
 			
@@ -879,10 +684,9 @@ experiment SRA_Transporter type: gui {
 	 		species transporter aspect: base;
 	 		species station aspect: base;
 	 		species thing aspect: base;
-
 	 }	 
 	  
-	 display statistics{
+	display statistics{
 			
 			chart "Average steps of last "+ string(window_for_last_N_deliveries) +" transporters to correct destination" type:series size:{1 ,0.25} position:{0, 0}{
 				data "Average steps of last "+ string(window_for_last_N_deliveries) +" transporters to correct destination" value: sum(moving_average_steps)/window_for_last_N_deliveries color:#darkgreen marker:false ;
@@ -903,8 +707,7 @@ experiment SRA_Transporter type: gui {
 				data "total delivered things" value: total_delivered color:#red marker:false; 
 
 			}
-			
-									 
+												 
 			chart "Delivery distribution" type:histogram size:{1 ,0.5} position:{0, 0.5} {
 					//datalist takes a list of keys and values from the "delivered" map  
 					datalist delivered.keys value: delivered.values color:delivered.keys ;
@@ -914,43 +717,19 @@ experiment SRA_Transporter type: gui {
   
 }
 
-experiment SRA_Transporter_STIGMERGY_batch type: batch until: (cycle >= 10000) repeat: 10 autorun: true keep_seed: true{
+/*Runs an amount of simulations in parallel, keeps the seeds and gives the final values after 10k cycles*/
+experiment Blackboard_Transporter_batch type: batch until: (cycle >= 10000) repeat: 40 autorun: true keep_seed: true{
 
-	//parameters are sufficiently defined with their default values  
-	parameter "Use stigmergy" var: stigmergy_activated among:[false, true]; //switch stigmergy on or off
-	 
-	//parameter "Color mark radius" var: color_mark_radius min: 2 max: 4 step: 1;
-	//method exhaustive minimize: time_to_deliver_SUM/(total_delivered) ;
 	
 	reflex save_results_explo {
     ask simulations {
     	
     	float mean_cyc_to_deliver <- ((self.total_delivered = 0) ? 0 : self.time_to_deliver_SUM/(self.total_delivered)); //
     	
-    	save [int(self), self.seed, self.stigmergy_activated, self.cycle, self.total_delivered, mean_cyc_to_deliver] //..., ((total_delivered = 0) ? 0 : time_to_deliver_SUM/(total_delivered)) 
-          to: "result/APHID_results.csv" type: "csv" rewrite: false header: true; //rewrite: (int(self) = 0) ? true : false
+    	save [int(self), self.seed, disturbance_cycles ,self.cycle, self.total_delivered, mean_cyc_to_deliver] //..., ((total_delivered = 0) ? 0 : time_to_deliver_SUM/(total_delivered)) 
+          to: "result/4_Blackboard_results.csv" type: "csv" rewrite: false header: true; //rewrite: (int(self) = 0) ? true : false
     	}       
 	}		
 }
 
-/*Runs an amount of simulations in parallel, keeps the seeds and gives the final values after 10k cycles*/
-experiment SRA_Transporter_batch type: batch until: (cycle >= 10000) repeat: 40 autorun: true keep_seed: true{
-		
-	parameter "Activate stigmergy" category: "Simulation settings" var: stigmergy_activated<-true; //switch stigmergy on or off
-	parameter "Activate evaporation" category: "Simulation settings" var: activate_evaporation<-false ; //switch evaopration of stigmergy on or off
-	parameter "Activate negative stigmergy" category: "Simulation settings" var: activate_negative_stigmergy<-true; //window for average of last N deliveries and their cycles 
-	
-	parameter "Disturbance cycles" category: "Simulation settings" var: disturbance_cycles<-500#cycles; //amount of cycles until stations change their positions
-	
-	
-	reflex save_results_explo {
-    ask simulations {
-    	
-    	float mean_cyc_to_deliver <- ((self.total_delivered = 0) ? 0 : self.time_to_deliver_SUM/(self.total_delivered));
-    	
-    	save [int(self), self.seed, disturbance_cycles ,self.cycle, self.activate_negative_stigmergy, self.total_delivered, mean_cyc_to_deliver]  
-          to: "result/SRA_Transporter_batch_results.csv" type: "csv" rewrite: false header: true; 
-    	}       
-	}		
-}
 

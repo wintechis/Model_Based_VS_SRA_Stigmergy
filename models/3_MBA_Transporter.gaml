@@ -1,14 +1,14 @@
 /**
-* Name: ModelBasedTransporter_GlobalKnowledge
+* Name: MBA_Transporter
 * Model_Based_VS_SRA_Stigmergy 
 * Author: Sebastian Schmid
-* Description: uses model-based agents with global, shared knowledge as a monolith 
+* Description: uses model-based agents with local communication and knowledge sharing 
 * Tags: 
 */
 
 
 @no_warning
-model ModelBasedTransporter
+model MBA_Transporter
 
 
 global{
@@ -58,9 +58,7 @@ global{
 		float moving_average_SUM <- 0; //holds the average value over the moving average
 		
 		list<float> moving_average_steps <- []; //  holds the last "window_for_last_N_deliveries" values for the amount of steps it took a transporter to find its destination after picking up an item
-		
-	map<rgb, point> station_position <- []; //represents the knowledge about positions of already found or communicated stations. Entries have shape [rgb::location]
-		
+			
 	
 	init{
 							
@@ -278,7 +276,9 @@ global{
 			
 			i <- i+1;//to get next color
 		}	
-	}	
+	}
+	
+	
 	/* Investigation variables - PART II (other part is places before init block)*/
 	//nothing	
 }
@@ -292,6 +292,7 @@ species superclass{
 		location <- my_cell.location;	
 	}
 }
+
 
 species thing parent: superclass{
 	rgb color <- #white;
@@ -341,8 +342,6 @@ species station parent: superclass{
 		return storage;		
 	}
 	
-	//This action models the central information about states and affordances of this artifact
-	//in a web based communication, this would be the result of an HTTP GET request. 
 	map get_states{
 		return create_map(['storage', "accept_color"],[storage, accept_color]);
 	}
@@ -351,12 +350,43 @@ species station parent: superclass{
 
 species transporter parent: superclass{
 	thing load <- nil;
-//	map<rgb, point> station_position <- []; //represents the knowledge about positions of already found or communicated stations. Entries have shape [rgb::location]
+	map<rgb, point> station_position <- []; //represents the knowledge about positions of already found or communicated stations. Entries have shape [rgb::location]
+	
+	float usage <- 0;
+	float usage_prct <- 0 update: usage / (cycle = 0 ? 1 : cycle);
 	
 	float amount_of_steps<- 0.0; //the amount of steps this transporter made after it pickep up an item   
 	
 	init{
 		
+	}
+	
+	//whenever other transporters are near me - that is: at least one of my adjacent neighbors contains another transporter
+	reflex exchange_knowledge when:(!empty(agents_inside(my_cell.neighbors) where (string(type_of(each)) = "transporter"))) {		
+		list<transporter> neighbor_transporters <- one_of(agents_inside(my_cell.neighbors) where (string(type_of(each)) = "transporter")); ////choose ONE random neighbor and share knowledge each cycle
+		
+		//add all knowledges up, whenever there are differences
+		//We ignore differing knowledge about the world - we cannot say for sure who is right (even if one is "more up to date" than the other... it could still be wrong, because the world changed meanwhile..) 	
+		
+		map<rgb, point> cumulated_knowledge <- station_position;
+		
+		loop n over: neighbor_transporters{
+			
+			cumulated_knowledge <- cumulated_knowledge + n.station_position; //all knowledge, including possible contradictions
+		}
+		
+		neighbor_transporters <- neighbor_transporters + self; //add me to this group
+		
+		
+		ask neighbor_transporters{
+			
+			list<rgb> interested_in <- cumulated_knowledge.keys - station_position.keys; //ignore keys that i already know
+			
+			loop col over: interested_in{
+				add (cumulated_knowledge at col) to: station_position at: col; //add previously unknown keys and values to my knowledge
+				//this possibly means that a WRONG (contradictory) value that has been accumulated above is now shared. Last one overwrites all others here. 
+			}	
+		}		
 	}
 	
 	//if i am empty or do not know where my item's station is -> wander
@@ -376,7 +406,7 @@ species transporter parent: superclass{
 	//if I transport an item and know it's station, I will directly go to nearest neighboring field of this station 
 	reflex exact_movement when:((load != nil) and (station_position contains_key load.color)) {
 		
-		shop_floor target <- shop_floor(station_position at load.color); //YES, the target is the station itself, but we will not enter the stations cell. When we are next to it, our item will be loaded off, s.t. we won't enter the station 
+		shop_floor target <- shop_floor(station_position at load.color); //The target is the station itself, but we will not enter the stations cell. When we are next to it, our item will be loaded off, s.t. we won't enter the station 
 		
 		//contains neighboring cells in ascending order of distance, meaning: first cell has least distance
 		list<shop_floor> options <- my_cell.neighbors sort_by (each distance_to target);
@@ -398,18 +428,15 @@ species transporter parent: superclass{
 			
 		}
 		
-		/*if am in the neighborhood of my target... and there is NO station, delete global knowledge knowledge.*/
+		/*if am in the neighborhood of my target and there is NO station, delete MY knowledge.*/
+		//I only modify my knowledge, as I know _now_ that it is wrong, but during exchange with other transporter I cannot say for sure if MY knowledge is still correct or not
 		if(target.neighbors contains my_cell)
 		{
-			// I am standing next to where I THINK my station should be. If so: in the next Reflex we deliver it automatically
-			//write name + " is next to its target" color:#lightgrey;
-			
+			// I am standing next to where I THINK my station should be. If so: in the next Reflex we deliver it automatically		
 			station s <- one_of(station inside target); //there should only be one station per cell, but this ensures that only one is picked.
 		
 			//if there is no station or it has the wrong color, my knowledge is WRONG
 			if((s = nil) or (s.accept_color != load.color)) {
-				
-				//write name + ": "+ s.accept_color + " is not what I expected (" + load.color + ")" color:#red;
 				
 				do remove_knowledge(load.color); //remove wrong knowledge
 				
@@ -460,13 +487,11 @@ species transporter parent: superclass{
 					{
 						//as time_to_deliver is filled successively, we only have to get rid of the first entry (FIFO)  
 						remove index: 0 from:moving_average_steps;
-						//moving_average_SUM <- sum(moving_average);
 					}
 				
 				//if i did not know about this station before, add it to my model 
 				if(!(station_position contains_key load.color)){
 					do add_knowledge(s.location, load.color); // add/update knowledge about new station
-					//add s.location at:load.color to: station_position;  	
 				}
 		
 				do deliver_load(); //load is delivered
@@ -491,7 +516,7 @@ species transporter parent: superclass{
 			}
 						
 			//Request state of s to ask about storage. if this NOT nil, a thing has been created and is waiting there and assigned as load.
-			load <- (s.get_states())["storage"]; //thanks, we'll take your thing as load over from here 
+			load <- (s.get_states())["storage"]; //take over thing as load from here 
 			
 			if( load != nil){
 				
@@ -509,7 +534,14 @@ species transporter parent: superclass{
 				location <- myself.my_cell.location;
 			}			
 	}
-		
+	
+	reflex update_usage_counter{
+		if(load != nil)
+		{
+			usage <- usage + 1;
+		}
+	}
+	
 	action add_knowledge(point pt, rgb col){
 		
 		add pt at:col to: station_position; // add/update knowledge about new station and assign a point to a color 	
@@ -535,7 +567,7 @@ species transporter parent: superclass{
 		my_cell <- cell; //if the cell is free - go there
 		location <- my_cell.location;
 		
-		//if I am also carrying something aroung, increase my step counter
+		//if I am also carrying something around, increase my step counter
 		if(load != nil)
 		{
 			amount_of_steps <- amount_of_steps +1;
@@ -567,16 +599,11 @@ grid shop_floor cell_width: cell_width cell_height: cell_height neighbors: 8 use
 	map<rgb,float> color_marks <- nil; //holds the color marks and is used for recognition of marks
 	bool changed <- false; //inidcates that something has been added or changed and initialised blending of colors again
 	
-	list<shop_floor> neighbors2 <- self neighbors_at 2;  
-	//neighbors_at is pre-defined for grid agents, here with a distance of 2. Result dependes on the grid's topology
-	
-
+	list<shop_floor> neighbors2 <- self neighbors_at 2; //neighbors_at is pre-defined for grid agents, here with a distance of 2. Result dependes on the grid's topology
 
 	//color blender for display
 	reflex when: ((length(color_marks) >= 1) and changed){
 		//operates the following way: first(color_marks.keys) gets the first rgb value and first(color_marks) the associate strength, which modifies the alpha channel gives blended_color its first value 
-		
-		//rgb blended_color <- rgb(first(color_marks.keys), first(color_marks)); //variable to mix colors. There is at least one color mark
 		rgb blended_color <- first(color_marks.keys);
 		blended_color <-rgb(blended_color.red * first(color_marks.values), blended_color.green * first(color_marks.values), blended_color.blue * first(color_marks.values));
 		
@@ -620,13 +647,6 @@ grid shop_floor cell_width: cell_width cell_height: cell_height neighbors: 8 use
 		
 	}
 	
-	//deletes a color from the color mark container
-	action delete_ALL_color_marks {
-		
-			color_marks <- nil;
-			changed <- true;		
-	}
-	
 	map<rgb,float> get_color_marks{
 		return color_marks;
 	}
@@ -644,7 +664,7 @@ grid shop_floor cell_width: cell_width cell_height: cell_height neighbors: 8 use
 
 
 //##########################################################
-experiment Model_Based_Transporters_No_Charts type:gui{
+experiment MBA_Transporter_No_Charts type:gui{
 	parameter "Station placement distribution" category: "Simulation settings" var: selected_placement_mode among:placement_mode; //provides drop down list
 		
 	output {	
@@ -656,22 +676,16 @@ experiment Model_Based_Transporters_No_Charts type:gui{
 		 		species transporter aspect: info;
 		 		species station aspect: base;
 		 		species thing aspect: base;
+	
 		 }
 		 
-		  inspect "Knowledge" value: simulation attributes: ["station_position"] type:table;
-		
+		  inspect "Knowledge" value: transporter attributes: ["station_position"] type:table;
 	 }
-	 
-	
 	
 }
 
-experiment Model_Based_Transporters type: gui {
+experiment MBA_Transporter type: gui {
 
-	
-	// Define parameters here if necessary
-	// parameter "My parameter" category: "My parameters" var: one_global_attribute;
-	//parameter "Cell diameter" category: "Shopfloor" var: cell_width<-5;
 	parameter "No. of stations" category: "Stations" var: no_station;
 	parameter "No. of transporters" category: "Transporter" var: no_transporter ;
 	
@@ -681,15 +695,8 @@ experiment Model_Based_Transporters type: gui {
 	parameter "Station colors" category: "Simulation settings" var: selected_color_mode among:color_mode; //provides drop down list
 	
 	parameter "Moving average window breadth" category: "Simulation settings" var: window_for_last_N_deliveries ; //window for average of last N deliveries and their cycles 
-	
-	
-	
-	//Define attributes, actions, a init section and behaviors if necessary
-	
-	
+		
 	output {
-	
-	//monitor "Things delivered" value: total_delivered refresh_every: 10#cycles;
 
 	layout #split;
 	 display "Shop floor display" { 
@@ -698,6 +705,7 @@ experiment Model_Based_Transporters type: gui {
 	 		species transporter aspect: base;
 	 		species station aspect: base;
 	 		species thing aspect: base;
+
 	 }	 
 	  
 	display statistics{
@@ -732,7 +740,7 @@ experiment Model_Based_Transporters type: gui {
 }
 
 /*Runs an amount of simulations in parallel, keeps the seeds and gives the final values after 10k cycles*/
-experiment Model_GLOBAL_batch type: batch until: (cycle >= 10000) repeat: 40 autorun: true keep_seed: true{
+experiment MBA_Transporter_batch type: batch until: (cycle >= 10000) repeat: 40 autorun: true keep_seed: true{
 
 	
 	reflex save_results_explo {
@@ -740,8 +748,8 @@ experiment Model_GLOBAL_batch type: batch until: (cycle >= 10000) repeat: 40 aut
     	
     	float mean_cyc_to_deliver <- ((self.total_delivered = 0) ? 0 : self.time_to_deliver_SUM/(self.total_delivered)); //
     	
-    	save [int(self), self.seed, disturbance_cycles ,self.cycle, self.total_delivered, mean_cyc_to_deliver] //..., ((total_delivered = 0) ? 0 : time_to_deliver_SUM/(total_delivered)) 
-          to: "result/Model_GLOBAL_KNOWLWEDGE_results.csv" type: "csv" rewrite: false header: true; //rewrite: (int(self) = 0) ? true : false
+    	save [int(self), self.seed, disturbance_cycles ,self.cycle, self.total_delivered, mean_cyc_to_deliver]
+          to: "result/3_MBA_results.csv" type: "csv" rewrite: false header: true; 
     	}       
 	}		
 }
