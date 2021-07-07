@@ -3,11 +3,19 @@ This is the artifact of our paper to compare the performances of naive simple re
 
 The goal is to get an overview of the differences in performance, as well as exploring further usages and models of stigmergy for SRAs. Overall, we want to investigate, if SRAs with stigmergy can perform better in a defined transportation task than MBAs, when they can use stigmergy.
 
-We simulate a shop floor that contains four major components: a fixed number of stations and transporters, a varying amount of colored items, and a discrete grid of floor tiles which can be read and manipulated by transporters (only used if agents use stigmergy, see below). 
+<img src="https://github.com/wintechis/Model_Based_VS_SRA_Stigmergy/blob/main/setup.png" alt="fig1" width="250"/>
+Fig. 1 - Initial experiment setup of our shop floor.
+
+
+<br>We simulate a shop floor (Fig. 1) that contains four major components (Fig. 2): a fixed number of stations and transporters, a varying amount of colored items, and a discrete grid of floor tiles which can be read and manipulated by transporters (only used if agents use stigmergy, see below). 
 Distinct colored items are randomly produced by stations and have to be transported to another designated station of matching color. Transporters shall fulfill this transportation task. Stations are not related, that means there is no order or specification for the transporters to visit them. 
 Each station can hold at most one item, then it has to wait until a transporter picks up the item before another one is produced. Transporters can carry only one item at a time. 
 
 The simulations have a built-in disturbance in their environment: every 500 simulated cycles the stations switch their color randomly, such that the destinations of the items is dynamic.
+
+
+<img src="https://github.com/wintechis/Model_Based_VS_SRA_Stigmergy/blob/main/BasicScenarioAnnotated.PNG" alt="fig1" width="250">
+Fig 2 - Shop floor components: A) Green station with pink item, B) Transporter with blue item, C) empty transporter, D) empty pink station. All components are located on the shop floor's tiles (black and white grid).
 
 ## Contents
 
@@ -21,7 +29,7 @@ result - contains our measured data for this setup with 10k simulated cycles and
 -  \*.csv : results per model, names as above
 -  Model_vs_StigInf_vs_Global.ods: a consolidated table of all measured values, including charts
 
-## Setup of the artifact for [GAMA](https://gama-platform.github.io/) _without_ a VM
+## Setup of the artifact for [GAMA](https://gama-platform.github.io/)
 
 - Install GAMA according to these [steps](https://gama-platform.github.io/wiki/Installation)
   -  [System Requirements](https://gama-platform.github.io/wiki/Installation#system-requirements)
@@ -33,6 +41,3 @@ result - contains our measured data for this setup with 10k simulated cycles and
   - "\*_Transporter_batch": run a batch of simulations, pre-set to 10k cycles and 40 repetitions. Results are saved under the above given names in /models/result/
 - Note that the simulation results are saved in separate files and have to be put externally together, e.g. to be displayed in a chart
 
-## Setup of the artifact [GAMA](https://gama-platform.github.io/) _with_ a VM
-
-- tbd (VM + requirements)
