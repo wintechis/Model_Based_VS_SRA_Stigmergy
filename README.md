@@ -41,3 +41,6 @@ result - contains our measured data for this setup with 10k simulated cycles and
   - "\*_Transporter_batch": run a batch of simulations, pre-set to 10k cycles and 40 repetitions. Results are saved under the above given names in /models/result/
 - Note that the simulation results are saved in separate files and have to be put externally together, e.g. to be displayed in a chart
 
+## Acknowledgments
+
+This work was funded by the German Federal Ministry of Education and Research through the MOSAIK project (grant no. 01IS18070A).
